@@ -658,6 +658,23 @@ footer.site{background:var(--bg-2);border-top:1px solid var(--line);padding:100p
 .mobile-nav a{display:block;font-family:var(--display);font-size:1.6rem;font-weight:600;padding:16px 0;border-bottom:1px solid var(--line);color:var(--ink);letter-spacing:-.02em;transition:color .2s}
 .mobile-nav a:hover{color:var(--green-xl)}
 
+/* ---------- 18c. Pricing ---------- */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.price-card{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-xl);padding:40px 32px;display:flex;flex-direction:column;transition:transform .4s var(--ease),border-color .4s var(--ease);position:relative}
+.price-card:hover{transform:translateY(-6px);border-color:var(--green-l)}
+.price-card.featured{border-color:var(--green);box-shadow:0 0 0 1px var(--green),0 20px 50px -20px rgba(19,194,123,.4)}
+.price-card .p-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;font-size:.7rem;font-weight:700;padding:6px 16px;border-radius:var(--r-pill);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.price-card .p-tier{font-family:var(--display);font-weight:600;font-size:1.3rem;letter-spacing:-.02em}
+.price-card .p-amt{font-family:var(--display);font-size:3.4rem;font-weight:600;letter-spacing:-.04em;line-height:1;margin:14px 0 4px}
+.price-card .p-amt small{font-size:1rem;font-weight:400;color:var(--ink-mute)}
+.price-card .p-desc{color:var(--ink-mute);font-size:.95rem;margin-bottom:28px;min-height:42px}
+.price-card ul.p-feats{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;flex-grow:1}
+.price-card ul.p-feats li{display:flex;gap:10px;align-items:flex-start;font-size:.95rem;color:var(--ink-dim)}
+.price-card ul.p-feats li svg{width:18px;height:18px;color:var(--green-xl);flex-shrink:0;margin-top:2px}
+.free-banner{background:linear-gradient(135deg,var(--green-d),var(--green));border-radius:var(--r-xl);padding:32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:48px}
+.free-banner h3{font-size:1.8rem;color:#fff}
+.free-banner p{color:rgba(255,255,255,.82);margin-top:6px}
+
 /* ---------- 19. Responsive ---------- */
 @media(max-width:1024px){
   .mega-inner{grid-template-columns:1fr;gap:40px}
@@ -696,6 +713,7 @@ footer.site{background:var(--bg-2);border-top:1px solid var(--line);padding:100p
   .foot-grid{grid-template-columns:1fr 1fr}
   .foot-bottom{flex-direction:column;text-align:center}
   .hero-card-body{grid-template-columns:1fr 1fr}
+  .price-grid{grid-template-columns:1fr}
   body.menu-open .mega{display:none}
   body.menu-open .mega-backdrop{display:none}
 }

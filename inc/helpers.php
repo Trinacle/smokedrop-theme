@@ -150,6 +150,15 @@ function sdn_brands_alphabetical( $featured_only = false ) {
     return $grouped;
 }
 
+/* ---------- Estimate reading time for a post (e.g. "8 min") ---------- */
+function sdn_reading_time( $post_id = null ) {
+    $post_id = $post_id ?: get_the_ID();
+    $content = get_post_field( 'post_content', $post_id );
+    $words   = str_word_count( wp_strip_all_tags( $content ) );
+    $minutes = max( 1, (int) ceil( $words / 200 ) );
+    return $minutes . ' min';
+}
+
 /* ---------- Chevron icon (used in nav) ---------- */
 function sdn_chevron() {
     return '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
