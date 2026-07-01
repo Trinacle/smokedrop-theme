@@ -1,0 +1,219 @@
+/* ==========================================================================
+   SmokeDrop NOIR — interactions
+   - Custom magnetic cursor
+   - Full-screen immersive mega menu (depth-of-field + panel switching)
+   - Horizontal-scroll pinned section
+   - Line-mask reveals, fade reveals, counters, marquee, header scroll
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  /* ---------- Custom cursor (DISABLED per request) ---------- */
+  // Cursor effect removed — using native cursor instead.
+  // Magnetic button effect also removed.
+
+  /* ---------- Ambient neutral smoke haze ---------- */
+  if (!document.querySelector('.ambient')) {
+    const a = document.createElement('div');
+    a.className = 'ambient';
+    a.innerHTML = '<div class="smoke s1"></div><div class="smoke s2"></div><div class="smoke s3"></div><div class="smoke s4"></div>';
+    document.body.appendChild(a);
+  }
+  if (!document.querySelector('.grain')) {
+    const g = document.createElement('div');
+    g.className = 'grain';
+    document.body.appendChild(g);
+  }
+
+  /* ---------- Header scroll ---------- */
+  const header = document.querySelector('header.site');
+  if (header) {
+    const onScroll = function () { header.classList.toggle('scrolled', window.scrollY > 30); };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  /* ---------- Simple dropdown menu (bulletproof hover) ---------- */
+  const triggers = Array.from(document.querySelectorAll('.nav-item.has-mega'));
+  const panels = Array.from(document.querySelectorAll('.mega-panel'));
+  const backdrop = document.querySelector('.mega-backdrop');
+  const mega = document.querySelector('.mega');
+  const siteHeader = document.querySelector('header.site');
+  let closeTimer = null;
+
+  function clearClose() { if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; } }
+  function scheduleClose() { clearClose(); closeTimer = setTimeout(closeMenu, 300); }
+
+  function openMenu(menuId) {
+    clearClose();
+    document.body.classList.add('menu-open');
+    triggers.forEach(function (t) { t.classList.toggle('is-open', t.getAttribute('data-menu') === menuId); });
+    panels.forEach(function (p) { p.style.display = (p.getAttribute('data-panel') === menuId) ? '' : 'none'; });
+  }
+  function closeMenu() {
+    clearClose();
+    document.body.classList.remove('menu-open');
+    triggers.forEach(function (t) { t.classList.remove('is-open'); });
+  }
+
+  // The trick: treat header + mega + backdrop as ONE hover zone.
+  // Only schedule close when mouse leaves the ENTIRE zone.
+  function bindZone(el) {
+    el.addEventListener('mouseenter', clearClose);
+    el.addEventListener('mouseleave', scheduleClose);
+  }
+  triggers.forEach(function (item) {
+    const id = item.getAttribute('data-menu');
+    item.addEventListener('mouseenter', function () { openMenu(id); });
+    item.querySelector('.nav-link').addEventListener('click', function (e) {
+      e.preventDefault();
+      const open = item.classList.contains('is-open');
+      if (open) closeMenu(); else openMenu(id);
+    });
+    bindZone(item);
+  });
+  if (mega) bindZone(mega);
+  if (backdrop) backdrop.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
+
+  /* ---------- Mobile menu ---------- */
+  const mTrigger = document.querySelector('.menu-trigger');
+  const mNav = document.querySelector('.mobile-nav');
+  if (mTrigger && mNav) {
+    const icon = {
+      menu: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>',
+      close: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>'
+    };
+    mTrigger.innerHTML = icon.menu;
+    mTrigger.addEventListener('click', function () {
+      const open = mNav.classList.toggle('is-open');
+      mTrigger.innerHTML = open ? icon.close : icon.menu;
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    mNav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { mNav.classList.remove('is-open'); mTrigger.innerHTML = icon.menu; document.body.style.overflow = ''; });
+    });
+  }
+
+  /* ---------- Reveal + line-mask ---------- */
+  const revealEls = document.querySelectorAll('.reveal, .line-mask');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else { revealEls.forEach(function (el) { el.classList.add('in'); }); }
+
+  /* ---------- Horizontal scroll ---------- */
+  const hSection = document.querySelector('.horiz');
+  if (hSection && window.innerWidth > 1024) {
+    const pin = hSection.querySelector('.horiz-pin');
+    const track = hSection.querySelector('.horiz-track');
+    const fill = hSection.querySelector('.horiz-progress .fill');
+    const counter = hSection.querySelector('.horiz-progress .count');
+    const cards = track ? track.querySelectorAll('.horiz-card').length : 0;
+    let scrollWidth = 0;
+    function recalc() {
+      if (!track) return;
+      scrollWidth = Math.max(0, track.scrollWidth - window.innerWidth);
+      hSection.style.height = (window.innerHeight + scrollWidth) + 'px';
+    }
+    recalc();
+    window.addEventListener('resize', recalc);
+    window.addEventListener('scroll', function () {
+      const rect = hSection.getBoundingClientRect();
+      const top = rect.top;
+      if (top <= 0 && top >= -scrollWidth) {
+        const p = (-top) / scrollWidth;
+        if (track) track.style.transform = 'translate3d(' + (-p * scrollWidth) + 'px,0,0)';
+        if (fill) fill.style.width = (p * 100) + '%';
+        if (counter) counter.textContent = Math.min(cards, Math.ceil(p * cards) || 1);
+      } else if (top > 0 && track) {
+        track.style.transform = 'translate3d(0,0,0)';
+        if (fill) fill.style.width = '0%';
+        if (counter) counter.textContent = '1';
+      }
+    }, { passive: true });
+  }
+
+  /* ---------- Counters ---------- */
+  document.querySelectorAll('[data-count]').forEach(function (el) {
+    const target = parseFloat(el.getAttribute('data-count'));
+    const suffix = el.getAttribute('data-suffix') || '';
+    const dec = (target % 1 !== 0) ? 1 : 0;
+    function fmt(n) { return n >= 1000 ? Math.round(n).toLocaleString() : n.toFixed(dec); }
+    if (!('IntersectionObserver' in window)) { el.textContent = fmt(target) + suffix; return; }
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          const dur = 1800, t0 = performance.now();
+          (function step(t) {
+            const p = Math.min((t - t0) / dur, 1);
+            const eased = 1 - Math.pow(1 - p, 4);
+            el.textContent = fmt(target * eased) + suffix;
+            if (p < 1) requestAnimationFrame(step);
+          })(t0);
+          io.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    io.observe(el);
+  });
+
+  /* ---------- CTA background focus on scroll into view ---------- */
+  const ctaBgs = document.querySelectorAll('.cta-bg');
+  if ('IntersectionObserver' in window && ctaBgs.length) {
+    const cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { en.target.classList.toggle('in-view', en.isIntersecting); });
+    }, { threshold: 0.35 });
+    ctaBgs.forEach(function (c) { cio.observe(c); });
+  }
+
+  /* ---------- FAQ accordion ---------- */
+  document.querySelectorAll('.faq-q').forEach(function (q) {
+    q.addEventListener('click', function () {
+      const item = q.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function (i) { i.classList.remove('open'); });
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  /* ---------- Light/dark theme toggle (respects system default) ---------- */
+  const sunIcon = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/>';
+  const moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  function applyTheme(mode) {
+    const html = document.documentElement;
+    const icon = document.getElementById('theme-icon');
+    const label = document.getElementById('theme-label');
+    if (mode === 'light') {
+      html.classList.add('light');
+      if (icon) icon.innerHTML = moonIcon;
+      if (label) label.textContent = 'Dark';
+    } else {
+      html.classList.remove('light');
+      if (icon) icon.innerHTML = sunIcon;
+      if (label) label.textContent = 'Light';
+    }
+  }
+  // Initial: saved pref > system default
+  const saved = localStorage.getItem('sd-theme');
+  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  applyTheme(saved || (prefersLight ? 'light' : 'dark'));
+  // Listen for system changes if no manual pref
+  if (!saved) {
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function (e) { applyTheme(e.matches ? 'light' : 'dark'); });
+  }
+  // Toggle button
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('#theme-toggle');
+    if (!btn) return;
+    const isLight = document.documentElement.classList.contains('light');
+    const next = isLight ? 'dark' : 'light';
+    localStorage.setItem('sd-theme', next);
+    applyTheme(next);
+  });
+
+  /* ---------- Footer year ---------- */
+  document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
+})();

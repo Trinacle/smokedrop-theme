@@ -1,0 +1,48 @@
+<?php
+/**
+ * Enqueue all CSS and JS
+ *
+ * @package SmokeDropNoir
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+add_action( 'wp_enqueue_scripts', 'sdn_enqueue', 20 );
+function sdn_enqueue() {
+    // Google Fonts: Inter + Inter Tight
+    wp_enqueue_style(
+        'sdn-fonts',
+        'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700&display=swap',
+        array(),
+        null
+    );
+
+    // Main stylesheet (the full design system)
+    wp_enqueue_style(
+        'sdn-styles',
+        get_stylesheet_directory_uri() . '/assets/css/styles.css',
+        array( 'sdn-fonts' ),
+        SDN_VERSION
+    );
+
+    // Main JS (vanilla — no jQuery dependency)
+    wp_enqueue_script(
+        'sdn-main',
+        get_stylesheet_directory_uri() . '/assets/js/main.js',
+        array(),
+        SDN_VERSION,
+        true // load in footer
+    );
+}
+
+/* ---------- Add <html> class for theme-color (helps mobile browsers) ---------- */
+add_filter( 'language_attributes', 'sdn_html_attrs' );
+function sdn_html_attrs( $output ) {
+    // The theme toggle JS adds/removes .light on <html>. Preload the saved theme
+    // to avoid a flash of dark when user prefers light.
+    $saved = isset( $_COOKIE['sd-theme'] ) ? $_COOKIE['sd-theme'] : '';
+    if ( $saved === 'light' ) {
+        $output .= ' class="light"';
+    }
+    return $output;
+}

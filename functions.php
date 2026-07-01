@@ -1,0 +1,117 @@
+<?php
+/**
+ * SmokeDrop Noir — child theme functions
+ *
+ * @package SmokeDropNoir
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+define( 'SDN_VERSION', '1.0.0' );
+define( 'SDN_DIR', get_stylesheet_directory() );
+define( 'SDN_URI', get_stylesheet_directory_uri() );
+
+/* ---------- Include modular files ---------- */
+require_once SDN_DIR . '/inc/enqueue.php';
+require_once SDN_DIR . '/inc/cpt-brands.php';
+require_once SDN_DIR . '/inc/acf-fields.php';
+require_once SDN_DIR . '/inc/helpers.php';
+
+/* ---------- Theme setup ---------- */
+add_action( 'after_setup_theme', 'sdn_theme_setup' );
+function sdn_theme_setup() {
+    // WooCommerce support
+    add_theme_support( 'woocommerce' );
+    add_theme_support( 'wc-product-gallery-zoom' );
+    add_theme_support( 'wc-product-gallery-lightbox' );
+    add_theme_support( 'wc-product-gallery-slider' );
+
+    // Core WordPress features
+    add_theme_support( 'post-thumbnails' );
+    add_theme_support( 'title-tag' );
+    add_theme_support( 'html5', array( 'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script' ) );
+
+    // Image sizes for brand pages
+    add_image_size( 'sdn-brand-hero', 1200, 800, true );
+    add_image_size( 'sdn-brand-gallery', 600, 600, true );
+    add_image_size( 'sdn-blog-thumb', 800, 500, true );
+
+    // Register menu locations
+    register_nav_menus( array(
+        'solutions' => __( 'Mega Menu: Solutions', 'smokedrop-noir' ),
+        'brands'    => __( 'Mega Menu: Brands', 'smokedrop-noir' ),
+        'mobile'    => __( 'Mobile Menu', 'smokedrop-noir' ),
+        'footer_platform' => __( 'Footer: Platform', 'smokedrop-noir' ),
+        'footer_brands'   => __( 'Footer: Brands', 'smokedrop-noir' ),
+        'footer_resources' => __( 'Footer: Resources', 'smokedrop-noir' ),
+    ) );
+}
+
+/* ---------- Remove Astra header/footer entirely (we render our own) ---------- */
+add_action( 'wp_loaded', 'sdn_kill_astra_hooks' );
+function sdn_kill_astra_hooks() {
+    // Remove Astra's header
+    remove_action( 'astra_header', 'astra_header_markup' );
+    remove_action( 'astra_header', 'astra_primary_header_markup' );
+    // Remove Astra's footer
+    remove_action( 'astra_footer', 'astra_footer_markup' );
+    // Remove Astra's content wrappers that constrain width
+    remove_action( 'astra_content_top', 'astra_content_top' );
+    remove_action( 'astra_content_bottom', 'astra_content_bottom' );
+}
+
+/* ---------- Remove default Astra stylesheet conflicts ---------- */
+add_action( 'wp_enqueue_scripts', 'sdn_dequeue_astra', 100 );
+function sdn_dequeue_astra() {
+    // Keep Astra's base reset but remove theme-specific colors
+    wp_dequeue_style( 'astra-theme-css' );
+    wp_dequeue_style( 'astra-dynamic-css' );
+    wp_dequeue_style( 'astra-addon-stylesheet' );
+}
+
+/* ---------- SEO: Open Graph + meta ---------- */
+add_action( 'wp_head', 'sdn_meta_tags', 5 );
+function sdn_meta_tags() {
+    if ( is_front_page() ) {
+        echo '<meta name="description" content="SmokeDrop — the #1 online smoke shop dropshipping app. Import over 20,000 smoke shop products. Shopify, WooCommerce & BigCommerce.">' . "\n";
+        echo '<meta property="og:title" content="SmokeDrop — #1 Online Smoke Shop Dropshipping App">' . "\n";
+        echo '<meta property="og:type" content="website">' . "\n";
+        echo '<meta property="og:url" content="' . esc_url( home_url( '/' ) ) . '">' . "\n";
+        echo '<meta property="og:image" content="' . esc_url( home_url( '/wp-content/uploads/2023/07/drop-shipping-smoke-products-2.png' ) ) . '">' . "\n";
+    }
+    // Structured data
+    if ( is_front_page() ) {
+        echo '<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"SmokeDrop","url":"' . esc_url( home_url( '/' ) ) . '","logo":"' . esc_url( home_url( '/wp-content/uploads/2023/07/logo.png' ) ) . '"}</script>' . "\n";
+    }
+}
+
+/* ---------- Custom body classes ---------- */
+add_filter( 'body_class', 'sdn_body_classes' );
+function sdn_body_classes( $classes ) {
+    $classes[] = 'smokedrop-noir';
+    return $classes;
+}
+
+/* ---------- WooCommerce: remove default wrappers, add our own ---------- */
+remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );
+remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10 );
+
+add_action( 'woocommerce_before_main_content', 'sdn_woo_wrapper_start', 10 );
+function sdn_woo_wrapper_start() {
+    echo '<main id="main" class="site-main"><div class="wrap">';
+}
+
+add_action( 'woocommerce_after_main_content', 'sdn_woo_wrapper_end', 10 );
+function sdn_woo_wrapper_end() {
+    echo '</div></main>';
+}
+
+/* ---------- Remove WooCommerce breadcrumbs (we have our own nav) ---------- */
+remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 );
+
+/* ---------- Helper: get the logo ---------- */
+function sdn_logo( $size = 34 ) {
+    $logo_url = home_url( '/wp-content/uploads/2024/06/sd-white-logo.png' );
+    $fallback = home_url( '/wp-content/uploads/2023/07/logo.png' );
+    return '<img src="' . esc_url( $logo_url ) . '" alt="SmokeDrop" style="height:' . intval( $size ) . 'px;width:auto;" onerror="this.onerror=null;this.src=\'' . esc_url( $fallback ) . '\';this.style.filter=\'brightness(0) invert(1)\';"><span style="display:none;font-family:var(--display);font-weight:600;letter-spacing:-.02em;">SmokeDrop</span>';
+}
