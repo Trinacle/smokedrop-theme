@@ -1,0 +1,48 @@
+name: Deploy theme to Bluehost
+
+# Push to main -> theme is live on thesmokedrop.com automatically.
+# Also runnable on demand from the Actions tab (workflow_dispatch).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-bluehost
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    # Set repo variable DEPLOY_ENABLED=true (Settings -> Secrets and variables ->
+    # Actions -> Variables) once the SSH secrets below are added. Until then this
+    # job is skipped so pushes don't produce failing runs.
+    if: ${{ vars.DEPLOY_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Rsync theme to server
+        run: |
+          rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.cpanel.yml' \
+            --exclude='README.md' \
+            -e "ssh -i ~/.ssh/id_deploy -p ${{ secrets.SSH_PORT }}" \
+            ./ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+
+      - name: Bust LiteSpeed cache (optional)
+        continue-on-error: true
+        run: |
+          ssh -i ~/.ssh/id_deploy -p "${{ secrets.SSH_PORT }}" \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            "find ${{ secrets.DEPLOY_PATH }} -name '*.php' -newermt '-1 minute' >/dev/null 2>&1 || true"
