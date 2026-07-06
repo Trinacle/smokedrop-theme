@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 get_header();
 
-$brands_url = get_post_type_archive_link( 'brand' );
+$brands_url = home_url( '/brands' );
 
 /**
  * Vertical cards. Each: [ tag, title, desc, image, [ stat => label, ... ] ]

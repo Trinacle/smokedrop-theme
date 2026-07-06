@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 get_header();
 
 $shop_url    = get_post_type_archive_link( 'product' ) ?: home_url( '/shop' );
-$brands_url  = get_post_type_archive_link( 'brand' );
+$brands_url  = home_url( '/brands' );
 $blog_url    = get_permalink( get_option( 'page_for_posts' ) ) ?: home_url( '/dropshipping-blog' );
 $contact_url = home_url( '/contact' );
 $pricing_url = home_url( '/pricing' );

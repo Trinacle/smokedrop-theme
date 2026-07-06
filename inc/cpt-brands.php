@@ -44,7 +44,7 @@ function sdn_register_brand_cpt() {
             'slug'       => 'brand', // URLs: /brand/cookies/
             'with_front' => false,
         ),
-        'has_archive'         => 'brands', // /brands/ = the A-Z directory
+        'has_archive'         => false, // /brands/ is the real static "Brands We Carry" Page (page-brands.php), not a CPT archive
         'hierarchical'        => false,
         'supports'            => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields', 'page-attributes' ),
         'taxonomies'          => array( 'product_brand' ), // Link to WooCommerce's brand taxonomy

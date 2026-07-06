@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 get_header();
 
 $pricing_url = home_url( '/pricing' );
-$brands_url  = get_post_type_archive_link( 'brand' );
+$brands_url  = home_url( '/brands' );
 ?>
 
 <main>
