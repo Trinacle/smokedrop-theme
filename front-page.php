@@ -344,8 +344,10 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
             foreach ( $featured as $i => $product ) :
                 $p        = $product->get_id();
                 $title    = $product->get_name();
-                $cats     = wc_get_product_cat_list( ', ', '', $p );
-                $cat_text = $cats ? wp_strip_all_tags( $cats ) : 'Smoke Shop';
+                $cat_terms = get_the_terms( $p, 'product_cat' );
+                $cat_text  = ( $cat_terms && ! is_wp_error( $cat_terms ) )
+                    ? wp_strip_all_tags( implode( ', ', wp_list_pluck( $cat_terms, 'name' ) ) )
+                    : 'Smoke Shop';
                 $img      = wp_get_attachment_image_url( $product->get_image_id(), 'woocommerce_thumbnail' ) ?: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80';
                 $brands   = wp_get_post_terms( $p, 'product_brand', array( 'fields' => 'names' ) );
                 $brand    = ! empty( $brands ) && ! is_wp_error( $brands ) ? $brands[0] : 'SmokeDrop';
