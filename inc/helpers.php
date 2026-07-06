@@ -182,7 +182,7 @@ function sdn_cta( $title = 'Ready to take your drop shipping to the next level?'
                     <?php endif; ?>
                     <div class="hero-actions">
                         <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg">Start Free Trial</a>
-                        <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,.3);color:#fff;">Request demo</a>
+                        <a href="<?php echo esc_url( home_url( '/demo' ) ); ?>" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,.3);color:#fff;">Get a Demo</a>
                     </div>
                 </div>
             </div>

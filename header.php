@@ -85,6 +85,8 @@
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/testimonials' ) ); ?>"><strong>Testimonials</strong><span>What retailers say</span></a>
                     <a class="mega-link" href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>"><strong>Blog</strong><span>Guides & insights</span></a>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/help' ) ); ?>"><strong>Help Center</strong><span>FAQs & docs</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/demo' ) ); ?>"><strong>Get a Demo</strong><span>See SmokeDrop in action</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/call' ) ); ?>"><strong>Schedule Call</strong><span>Book a support call</span></a>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/contact' ) ); ?>"><strong>Contact</strong><span>Talk to our team</span></a>
                 </div>
             </div>

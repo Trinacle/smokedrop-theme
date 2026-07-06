@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 get_header();
 
 $contact_url = home_url( '/contact' );
+$demo_url    = home_url( '/demo' );
 ?>
 
 <main>
@@ -27,7 +28,7 @@ $contact_url = home_url( '/contact' );
         <p class="lede reveal reveal-d3" style="max-width:640px;">Unlock the power of dropshipping and distribute your products to hundreds of smoke shops &amp; online retailers. Fully automated order management. Easy &amp; fast catalog import. <strong style="color:var(--ink);">From $49.99/mo &mdash; no transaction fees, no commissions, ever.</strong></p>
         <div class="hero-actions reveal reveal-d4">
           <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg">Become a supplier</a>
-          <a href="<?php echo esc_url( $contact_url ); ?>" class="btn btn-outline btn-lg">Request demo</a>
+          <a href="<?php echo esc_url( $demo_url ); ?>" class="btn btn-outline btn-lg">Get a Demo</a>
         </div>
       </div>
     </section>

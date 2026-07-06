@@ -678,6 +678,19 @@ footer.site{background:var(--bg-2);border-top:1px solid var(--line);padding:100p
 .free-banner h3{font-size:1.8rem;color:#fff}
 .free-banner p{color:rgba(255,255,255,.82);margin-top:6px}
 
+/* ---------- 18d. Forms & scheduler ---------- */
+.sdn-form{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.sdn-form .frow{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.sdn-form label{display:block;font-size:.85rem;font-weight:600;color:var(--ink-mute);margin-bottom:8px}
+.sdn-form input,.sdn-form textarea,.sdn-form select{width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px 18px;color:var(--ink);font-family:inherit;font-size:.95rem;transition:border-color .3s var(--ease)}
+.sdn-form input:focus,.sdn-form textarea:focus,.sdn-form select:focus{outline:none;border-color:var(--green-xl)}
+.sdn-form textarea{min-height:120px;resize:vertical}
+.sdn-form .form-note{font-size:.82rem;color:var(--ink-mute);text-align:center}
+.form-success{background:var(--green-xl);color:#000;font-weight:600;border-radius:var(--r-lg);padding:20px 24px;text-align:center}
+.form-error{color:#ff6b6b;text-align:center;margin-bottom:20px}
+.scheduler-embed{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-xl);min-height:480px;display:flex;align-items:center;justify-content:center;padding:40px;text-align:center;color:var(--ink-mute)}
+@media(max-width:640px){.sdn-form .frow{grid-template-columns:1fr}}
+
 /* ---------- 19. Responsive ---------- */
 @media(max-width:1024px){
   .mega-inner{grid-template-columns:1fr;gap:40px}
