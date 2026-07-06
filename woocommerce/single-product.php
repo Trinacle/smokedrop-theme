@@ -2,10 +2,12 @@
 /**
  * The template for displaying a single WooCommerce product.
  *
- * Bespoke SmokeDrop Noir product page — 2-col gallery + info,
- * dropship/wholesale actions, specs, related products, retailer sell section.
- * Replaces WooCommerce's default single-product template entirely while still
- * firing the core summary hooks (so the cart form + add-to-cart still work).
+ * Bespoke SmokeDrop Noir product page — premium two-column layout with a
+ * sticky gallery, integrated cart, trust badges, dropship/wholesale CTAs,
+ * tabbed description/specs/reviews, and a related-products rail.
+ *
+ * Still fires the WooCommerce cart form (woocommerce_template_single_add_to_cart)
+ * so add-to-cart, variations, and AJAX all work normally.
  *
  * @package SmokeDropNoir
  */
@@ -17,52 +19,57 @@ get_header();
 while ( have_posts() ) :
     the_post();
     $product = wc_get_product( get_the_ID() );
-    if ( ! $product ) {
-        break;
-    }
+    if ( ! $product ) break;
 
-    // Brand name from the WooCommerce product_brand taxonomy (graceful fallback).
     $brand_terms = get_the_terms( get_the_ID(), 'product_brand' );
     $brand_name  = ( $brand_terms && ! is_wp_error( $brand_terms ) ) ? $brand_terms[0]->name : '';
+    $brand_link  = ( $brand_terms && ! is_wp_error( $brand_terms ) ) ? get_term_link( $brand_terms[0] ) : '';
 
-    // Categories (version-safe: get_the_terms instead of the removed wc_get_product_cat_list).
     $cat_terms = get_the_terms( get_the_ID(), 'product_cat' );
     $cat_names = ( $cat_terms && ! is_wp_error( $cat_terms ) )
-        ? implode( ', ', wp_list_pluck( $cat_terms, 'name' ) )
-        : '';
+        ? implode( ', ', wp_list_pluck( $cat_terms, 'name' ) ) : '';
 
     $gallery_ids = $product->get_gallery_image_ids();
-    $short_desc  = $product->get_short_description() ?: wp_trim_words( wp_strip_all_tags( $product->get_description() ), 28 );
-    $register    = 'https://wholesale.thesmokedrop.com/register';
     $sku         = $product->get_sku();
     $weight      = $product->get_weight();
+    $dimensions  = array_filter( array( $product->get_length(), $product->get_width(), $product->get_height() ) );
+    $register    = 'https://wholesale.thesmokedrop.com/register';
+    $shop_url    = get_permalink( wc_get_page_id( 'shop' ) );
+    $is_variable = $product->is_type( 'variable' );
     ?>
 
-    <main>
-      <!-- PRODUCT SECTION -->
-      <section class="sec" style="padding-top:120px;">
+    <main class="product-main">
+
+      <!-- BREADCRUMB -->
+      <div class="wrap product-crumb">
+        <a href="<?php echo esc_url( $shop_url ); ?>">Marketplace</a>
+        <?php if ( $cat_names ) : ?><span class="sep">/</span><span><?php echo esc_html( $cat_names ); ?></span><?php endif; ?>
+        <?php if ( $brand_name && $brand_link && ! is_wp_error( $brand_link ) ) : ?><span class="sep">/</span><a href="<?php echo esc_url( $brand_link ); ?>"><?php echo esc_html( $brand_name ); ?></a><?php endif; ?>
+      </div>
+
+      <!-- PRODUCT -->
+      <section class="sec product-sec">
         <div class="wrap">
           <div class="product-layout">
 
-            <!-- GALLERY -->
+            <!-- GALLERY (sticky on desktop) -->
             <div class="product-gallery reveal">
-              <div class="main-img">
+              <div class="pg-main">
                 <?php if ( has_post_thumbnail() ) : ?>
-                  <?php the_post_thumbnail( 'large', array( 'alt' => the_title_attribute( 'echo=0' ) ) ); ?>
+                  <?php the_post_thumbnail( 'large', array( 'alt' => the_title_attribute( 'echo=0' ), 'id' => 'pg-main-img' ) ); ?>
                 <?php else : ?>
-                  <img src="<?php echo esc_url( 'https://images.unsplash.com/photo-1604881991720-f91add269bed?w=800&q=80' ); ?>" alt="<?php the_title_attribute(); ?>">
+                  <img id="pg-main-img" src="<?php echo esc_url( 'https://images.unsplash.com/photo-1604881991720-f91add269bed?w=800&q=80' ); ?>" alt="<?php the_title_attribute(); ?>">
                 <?php endif; ?>
+                <span class="pg-flag">&#127482;&#127480; Ships from USA</span>
               </div>
               <?php if ( ! empty( $gallery_ids ) ) : ?>
-                <div class="thumbs">
-                  <?php
-                  $shown = 0;
-                  foreach ( $gallery_ids as $gid ) {
-                      if ( $shown >= 4 ) break;
-                      echo wp_get_attachment_image( $gid, 'medium', false, array( 'loading' => 'lazy' ) );
-                      $shown++;
-                  }
-                  ?>
+                <div class="pg-thumbs">
+                  <?php if ( has_post_thumbnail() ) : ?>
+                    <button class="pg-thumb is-active" data-full="<?php echo esc_url( get_the_post_thumbnail_url( get_the_ID(), 'large' ) ); ?>"><?php the_post_thumbnail( 'thumbnail' ); ?></button>
+                  <?php endif; ?>
+                  <?php foreach ( $gallery_ids as $gid ) : ?>
+                    <button class="pg-thumb" data-full="<?php echo esc_url( wp_get_attachment_image_url( $gid, 'large' ) ); ?>"><?php echo wp_get_attachment_image( $gid, 'thumbnail', false, array( 'loading' => 'lazy' ) ); ?></button>
+                  <?php endforeach; ?>
                 </div>
               <?php endif; ?>
             </div>
@@ -70,109 +77,174 @@ while ( have_posts() ) :
             <!-- INFO -->
             <div class="product-info reveal reveal-d1">
               <?php if ( $brand_name ) : ?>
-                <span class="p-brand"><?php echo esc_html( $brand_name ); ?></span>
+                <a class="p-brand" <?php echo ( $brand_link && ! is_wp_error( $brand_link ) ) ? 'href="' . esc_url( $brand_link ) . '"' : ''; ?>><?php echo esc_html( $brand_name ); ?> &rarr;</a>
               <?php endif; ?>
               <h1 class="entry-title"><?php the_title(); ?></h1>
 
-              <?php if ( $short_desc ) : ?>
-                <div class="p-desc"><?php echo wp_kses_post( wpautop( $short_desc ) ); ?></div>
-              <?php endif; ?>
-
               <?php if ( $product->get_price_html() ) : ?>
-                <p class="p-price"><?php echo $product->get_price_html(); // phpcs:ignore ?></p>
+                <div class="p-price"><?php echo $product->get_price_html(); // phpcs:ignore ?></div>
               <?php endif; ?>
 
-              <!-- Core WooCommerce summary: variation forms, add-to-cart, etc. -->
-              <div class="woo-summary">
-                <?php woocommerce_template_single_add_to_cart(); ?>
+              <?php $short = $product->get_short_description() ?: wp_trim_words( wp_strip_all_tags( $product->get_description() ), 30 ); ?>
+              <?php if ( $short ) : ?>
+                <p class="p-desc"><?php echo wp_kses_post( $short ); ?></p>
+              <?php endif; ?>
+
+              <!-- Integrated cart form -->
+              <div class="cart-row">
+                <?php if ( $product->is_in_stock() ) : ?>
+                  <?php woocommerce_template_single_add_to_cart(); ?>
+                <?php else : ?>
+                  <p class="out-of-stock">Out of stock &mdash; available for dropship preorder.</p>
+                <?php endif; ?>
               </div>
 
               <!-- Dropship + Wholesale CTAs -->
-              <div class="action-buttons">
-                <a href="<?php echo esc_url( $register ); ?>" class="btn btn-lg btn-dropship">Dropship this product</a>
-                <a href="<?php echo esc_url( $register ); ?>" class="btn btn-lg btn-wholesale">Buy wholesale</a>
+              <div class="action-row">
+                <a href="<?php echo esc_url( $register ); ?>" class="btn btn-lime btn-lg btn-dropship">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M5 9v11h14V9"/></svg>
+                  Dropship this product
+                </a>
+                <a href="<?php echo esc_url( $register ); ?>" class="btn btn-outline btn-lg btn-wholesale">Buy wholesale</a>
               </div>
 
-              <!-- Specs -->
-              <table class="spec-table">
-                <?php if ( $brand_name ) : ?><tr><td>Brand</td><td><?php echo esc_html( $brand_name ); ?></td></tr><?php endif; ?>
-                <?php if ( $cat_names ) : ?><tr><td>Category</td><td><?php echo esc_html( $cat_names ); ?></td></tr><?php endif; ?>
-                <?php if ( $sku ) : ?><tr><td>SKU</td><td><?php echo esc_html( $sku ); ?></td></tr><?php endif; ?>
-                <?php if ( $weight ) : ?><tr><td>Weight</td><td><?php echo esc_html( $weight . ' ' . get_option( 'woocommerce_weight_unit' ) ); ?></td></tr><?php endif; ?>
-                <tr><td>Availability</td><td><?php echo $product->is_in_stock() ? 'In stock' : 'Out of stock'; ?></td></tr>
-              </table>
-
-              <!-- Features -->
-              <div class="feature-list">
-                <div class="fl-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><div><strong>Dropship or buy wholesale</strong><span>Import to your store with zero inventory, or stock up at wholesale pricing.</span></div></div>
-                <div class="fl-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/></svg><div><strong>Automatic order sync</strong><span>Orders sync with suppliers automatically. Tracking numbers update across everyone.</span></div></div>
-                <div class="fl-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/><polyline points="9 12 11 14 15 10"/></svg><div><strong>Blind dropshipping</strong><span>Ships under your brand within 24 hours. Your customer never sees our name.</span></div></div>
+              <!-- Trust badges -->
+              <div class="trust-mini">
+                <div class="tm-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span>Auto inventory sync</span></div>
+                <div class="tm-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/><polyline points="9 12 11 14 15 10"/></svg><span>Blind dropshipping</span></div>
+                <div class="tm-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>No transaction fees</span></div>
               </div>
+
+              <!-- Quick specs -->
+              <dl class="spec-dl">
+                <?php if ( $brand_name ) : ?><div><dt>Brand</dt><dd><?php echo esc_html( $brand_name ); ?></dd></div><?php endif; ?>
+                <?php if ( $cat_names ) : ?><div><dt>Category</dt><dd><?php echo esc_html( $cat_names ); ?></dd></div><?php endif; ?>
+                <?php if ( $sku ) : ?><div><dt>SKU</dt><dd><?php echo esc_html( $sku ); ?></dd></div><?php endif; ?>
+                <div><dt>Availability</dt><dd><?php echo $product->is_in_stock() ? 'In stock' : 'Out of stock'; ?></dd></div>
+                <?php if ( $weight ) : ?><div><dt>Weight</dt><dd><?php echo esc_html( $weight . ' ' . get_option( 'woocommerce_weight_unit' ) ); ?></dd></div><?php endif; ?>
+              </dl>
             </div>
 
           </div>
         </div>
       </section>
 
-      <?php
-      // More from this brand — query related products in the same brand term.
-      if ( $brand_name && $brand_terms ) {
-          $related = wc_get_products( array(
-              'status'         => 'publish',
-              'limit'          => 4,
-              'orderby'        => 'rand',
-              'exclude'        => array( get_the_ID() ),
-              'product_brand' => $brand_terms[0]->slug,
-          ) );
-
-          if ( ! empty( $related ) ) {
-              ?>
-              <section class="sec" style="background:var(--bg-2);">
-                <div class="wrap">
-                  <h2 class="h-sec reveal" style="font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:32px;">More from <?php echo esc_html( $brand_name ); ?></h2>
-                  <div class="related-grid">
-                    <?php
-                    $d = array( '', ' reveal-d1', ' reveal-d2', ' reveal-d3' );
-                    foreach ( $related as $i => $rel ) {
-                        $rel_brand = '';
-                        $rb = get_the_terms( $rel->get_id(), 'product_brand' );
-                        if ( $rb && ! is_wp_error( $rb ) ) $rel_brand = $rb[0]->name;
-                        ?>
-                        <a href="<?php echo esc_url( $rel->get_permalink() ); ?>" class="related-card reveal<?php echo esc_attr( $d[ $i % 4 ] ); ?>">
-                          <?php echo $rel->get_image( 'medium', array( 'loading' => 'lazy' ), true ); // phpcs:ignore ?>
-                          <div class="rc-body">
-                            <?php if ( $rel_brand ) : ?><span class="rc-brand"><?php echo esc_html( $rel_brand ); ?></span><?php endif; ?>
-                            <h4><?php echo esc_html( $rel->get_name() ); ?></h4>
-                          </div>
-                        </a>
-                        <?php
-                    }
-                    ?>
-                  </div>
-                </div>
-              </section>
-              <?php
-          }
-      }
-      ?>
-
-      <!-- RETAILER SELL: Why dropship with SmokeDrop -->
-      <section class="sec">
+      <!-- TABS: Description / Specs / Reviews -->
+      <section class="sec product-tabs-sec">
         <div class="wrap">
-          <div class="center" style="max-width:760px;margin:0 auto 56px;">
-            <p class="eyebrow reveal" style="justify-content:center;">Sell this product with zero inventory</p>
-            <h2 class="h-sec reveal reveal-d1" style="margin-top:16px;">Add this to your store<br>in <span class="italic gradient-text">a few clicks.</span></h2>
-          </div>
-          <div class="feat-grid">
-            <div class="feat-card reveal"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg></div><h4>Import in a few clicks</h4><p>Add this product and 20,000+ more to your online store in just a few clicks.</p></div>
-            <div class="feat-card reveal reveal-d1"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/></svg></div><h4>Automatic order sync</h4><p>Automatic order syncing with suppliers. Tracking numbers sync across everyone.</p></div>
-            <div class="feat-card reveal reveal-d2"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10v4M10 10v4M14 10v4M18 10v4"/></svg></div><h4>Shopify, WooCommerce &amp; BigCommerce</h4><p>Native apps for the platforms you already use. One-click install.</p></div>
+          <div class="product-tabs reveal">
+            <div class="ptab-head" role="tablist">
+              <button class="ptab-btn is-active" data-tab="desc" role="tab">Description</button>
+              <button class="ptab-btn" data-tab="specs" role="tab">Specs</button>
+              <button class="ptab-btn" data-tab="reviews" role="tab">Reviews</button>
+            </div>
+            <div class="ptab-body">
+              <div class="ptab-pane is-active" data-pane="desc">
+                <?php
+                $long = $product->get_description();
+                if ( $long ) {
+                    echo wp_kses_post( wpautop( $long ) );
+                } else {
+                    echo '<p>' . esc_html( $short ?: 'No description available.' ) . '</p>';
+                }
+                ?>
+              </div>
+              <div class="ptab-pane" data-pane="specs">
+                <table class="spec-table">
+                  <?php if ( $brand_name ) : ?><tr><td>Brand</td><td><?php echo esc_html( $brand_name ); ?></td></tr><?php endif; ?>
+                  <?php if ( $cat_names ) : ?><tr><td>Category</td><td><?php echo esc_html( $cat_names ); ?></td></tr><?php endif; ?>
+                  <?php if ( $sku ) : ?><tr><td>SKU</td><td><?php echo esc_html( $sku ); ?></td></tr><?php endif; ?>
+                  <?php if ( $weight ) : ?><tr><td>Weight</td><td><?php echo esc_html( $weight . ' ' . get_option( 'woocommerce_weight_unit' ) ); ?></td></tr><?php endif; ?>
+                  <?php if ( ! empty( $dimensions ) ) : ?><tr><td>Dimensions</td><td><?php echo esc_html( implode( ' × ', $dimensions ) . ' ' . get_option( 'woocommerce_dimension_unit' ) ); ?></td></tr><?php endif; ?>
+                  <tr><td>Availability</td><td><?php echo $product->is_in_stock() ? 'In stock' : 'Out of stock'; ?></td></tr>
+                </table>
+              </div>
+              <div class="ptab-pane" data-pane="reviews">
+                <?php
+                if ( comments_open() || get_comments_number() ) {
+                    comments_template();
+                } else {
+                    echo '<p>No reviews yet. Be the first to review this product.</p>';
+                }
+                ?>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
+      <?php
+      // Related products — same brand, fallback to same category, fallback to recent.
+      $related_args = array( 'status' => 'publish', 'limit' => 4, 'orderby' => 'rand', 'exclude' => array( get_the_ID() ) );
+      if ( $brand_terms && ! is_wp_error( $brand_terms ) ) {
+          $related_args['product_brand'] = $brand_terms[0]->slug;
+      } elseif ( $cat_terms && ! is_wp_error( $cat_terms ) ) {
+          $related_args['category'] = array( $cat_terms[0]->slug );
+      }
+      $related = function_exists( 'wc_get_products' ) ? wc_get_products( $related_args ) : array();
+      if ( ! empty( $related ) ) :
+          ?>
+          <section class="sec product-related-sec" style="background:var(--bg-2);">
+            <div class="wrap">
+              <h2 class="h-sec reveal" style="font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:32px;"><?php echo $brand_name ? 'More from ' . esc_html( $brand_name ) : 'Related products'; ?></h2>
+              <div class="market">
+                <?php
+                $d = array( '', ' reveal-d1', ' reveal-d2', ' reveal-d3' );
+                foreach ( $related as $i => $rel ) {
+                    $rb = get_the_terms( $rel->get_id(), 'product_brand' );
+                    $rbname = ( $rb && ! is_wp_error( $rb ) ) ? $rb[0]->name : '';
+                    ?>
+                    <a href="<?php echo esc_url( $rel->get_permalink() ); ?>" class="market-card reveal<?php echo esc_attr( $d[ $i % 4 ] ); ?>" style="text-decoration:none;color:inherit;">
+                      <div class="mimg">
+                        <?php $img = wp_get_attachment_image_url( $rel->get_image_id(), 'woocommerce_thumbnail' ) ?: 'https://images.unsplash.com/photo-1604881991720-f91add269bed?w=400&q=80'; ?>
+                        <img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $rel->get_name() ); ?>" loading="lazy">
+                      </div>
+                      <div class="mbody">
+                        <?php if ( $rbname ) : ?><span class="mbrand"><?php echo esc_html( $rbname ); ?></span><?php endif; ?>
+                        <h4><?php echo esc_html( $rel->get_name() ); ?></h4>
+                        <?php if ( $rel->get_price_html() ) : ?><span class="mprice-text"><?php echo $rel->get_price_html(); // phpcs:ignore ?></span><?php endif; ?>
+                      </div>
+                    </a>
+                    <?php
+                }
+                ?>
+              </div>
+            </div>
+          </section>
+          <?php
+      endif;
+      ?>
+
+      <!-- SELL CTA -->
       <?php sdn_cta(); ?>
+
     </main>
+
+    <script>
+    // Gallery thumbnail swap.
+    (function(){
+      var main = document.getElementById('pg-main-img');
+      document.querySelectorAll('.pg-thumb').forEach(function(t){
+        t.addEventListener('click', function(){
+          if (!main) return;
+          main.src = t.getAttribute('data-full');
+          document.querySelectorAll('.pg-thumb').forEach(function(x){ x.classList.remove('is-active'); });
+          t.classList.add('is-active');
+        });
+      });
+      // Tabs.
+      var btns = document.querySelectorAll('.ptab-btn');
+      var panes = document.querySelectorAll('.ptab-pane');
+      btns.forEach(function(b){
+        b.addEventListener('click', function(){
+          var tab = b.getAttribute('data-tab');
+          btns.forEach(function(x){ x.classList.remove('is-active'); });
+          panes.forEach(function(p){ p.classList.toggle('is-active', p.getAttribute('data-pane') === tab); });
+          b.classList.add('is-active');
+        });
+      });
+    })();
+    </script>
 
     <?php
 endwhile;

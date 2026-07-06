@@ -3,7 +3,8 @@
  * Template Name: Pricing
  * Template Post Type: page
  *
- * SmokeDrop pricing page — Retailer + Supplier plans + free trial banner + FAQ.
+ * SmokeDrop pricing page — Retailer + Supplier plans with an inline
+ * monthly/yearly billing toggle (no redirect), pricing visible above the fold.
  *
  * @package SmokeDropNoir
  */
@@ -13,45 +14,27 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 get_header();
 
 $supply_url  = home_url( '/suppliers' );
+$register    = 'https://wholesale.thesmokedrop.com/register';
 $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
 ?>
 
 <main>
 
-    <!-- HERO -->
-    <section class="page-hero">
-      <div class="ph-smoke"><div class="ph-blob b1"></div><div class="ph-blob b2"></div><div class="ph-blob b3"></div></div>
-      <div class="ph-inner center">
+    <!-- COMPACT HERO + PRICING (single section, pricing visible above the fold) -->
+    <section class="pricing-hero">
+      <div class="pricing-hero-inner wrap">
         <p class="eyebrow reveal" style="justify-content:center;">Pricing</p>
-        <h1 class="display reveal reveal-d1" style="margin:24px 0;">Two plans.<br><span class="italic gradient-text">No nickel-and-diming.</span></h1>
-        <p class="lede reveal reveal-d2" style="max-width:620px;margin:0 auto;">Whether you're a retailer sourcing product or a supplier reaching new stores, SmokeDrop is one flat monthly plan &mdash; no transaction fees, no commissions, ever.</p>
-      </div>
-    </section>
+        <h1 class="pricing-h1 reveal reveal-d1">Two plans.<br><span class="italic gradient-text">No nickel-and-diming.</span></h1>
+        <p class="pricing-sub reveal reveal-d2">One flat fee. <strong style="color:var(--ink);">No transaction fees, no commissions, ever.</strong> Switch billing anytime.</p>
 
-    <!-- FREE TRIAL BANNER -->
-    <section class="sec-sm">
-      <div class="wrap">
-        <div class="free-banner reveal">
-          <div>
-            <h3>Free 7-day trial. Every plan.</h3>
-            <p>Try SmokeDrop free for 7 days &mdash; no transaction fees, no commissions, cancel anytime.</p>
-          </div>
-          <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg" style="background:#fff;color:var(--green);">Start Free Trial</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- PRICING TIERS -->
-    <section class="sec" style="padding-top:0;">
-      <div class="wrap">
-        <div class="pricing-toggle reveal">
+        <div class="pricing-toggle reveal reveal-d3">
           <span class="pt-label pt-label-monthly is-active">Monthly</span>
           <button type="button" id="billing-toggle" class="pt-switch" aria-pressed="false" aria-label="Toggle monthly or yearly billing"><span class="pt-knob"></span></button>
           <span class="pt-label pt-label-yearly">Yearly <span class="pt-badge">Save up to 24%</span></span>
         </div>
 
-        <div class="price-grid-2" id="price-grid">
-          <div class="price-card featured reveal">
+        <div class="price-grid-2 reveal reveal-d3" id="price-grid">
+          <div class="price-card featured">
             <div class="p-badge">For Retailers</div>
             <div class="p-tier">Retailer</div>
             <div class="p-amt billing-monthly">$99.99<small>/mo</small></div>
@@ -68,11 +51,11 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
               <li><?php echo $check_svg; // phpcs:ignore ?>Priority e-mail support</li>
               <li><?php echo $check_svg; // phpcs:ignore ?>Onboarding call from an industry expert</li>
             </ul>
-            <p style="font-size:.85rem;color:var(--ink-mute);margin-bottom:14px;">Free trial 7 days</p>
-            <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-block">Start Free Trial</a>
+            <p style="font-size:.85rem;color:var(--ink-mute);margin-bottom:14px;">7-day free trial</p>
+            <a href="<?php echo esc_url( $register ); ?>" class="btn btn-lime btn-block">Start Free Trial</a>
           </div>
 
-          <div class="price-card reveal reveal-d1">
+          <div class="price-card">
             <div class="p-badge" style="background:var(--ink);">For Suppliers</div>
             <div class="p-tier">Supplier</div>
             <div class="p-amt billing-monthly">$49.99<small>/mo</small></div>
@@ -89,12 +72,10 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
               <li><?php echo $check_svg; // phpcs:ignore ?>Priority e-mail support</li>
               <li><?php echo $check_svg; // phpcs:ignore ?>Onboarding call from an industry expert</li>
             </ul>
-            <p style="font-size:.85rem;color:var(--ink-mute);margin-bottom:14px;">Free trial 7 days</p>
-            <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-outline btn-block">Start Free Trial</a>
+            <p style="font-size:.85rem;color:var(--ink-mute);margin-bottom:14px;">7-day free trial</p>
+            <a href="<?php echo esc_url( $register ); ?>" class="btn btn-outline btn-block">Start Free Trial</a>
           </div>
         </div>
-
-        <p class="center reveal reveal-d3" style="color:var(--ink-mute);font-size:.92rem;margin-top:36px;">Both plans include real-time order tracking and priority support. No transaction fees or commissions, ever.</p>
       </div>
     </section>
 
@@ -136,11 +117,14 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
           </div>
           <div class="faq-item">
             <button class="faq-q">What's the difference between monthly and yearly billing? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
-            <div class="faq-a"><p>Same features either way. Paying yearly saves 24% on the Retailer plan and 17% on the Supplier plan compared to paying monthly.</p></div>
+            <div class="faq-a"><p>Same features either way. Paying yearly saves 24% on the Retailer plan and 17% on the Supplier plan compared to paying monthly. You can switch billing cycles anytime from your account.</p></div>
           </div>
         </div>
       </div>
     </section>
+
+    <?php sdn_cta(); ?>
+
 </main>
 
 <script>
@@ -150,13 +134,19 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
   var mLabel = document.querySelector('.pt-label-monthly');
   var yLabel = document.querySelector('.pt-label-yearly');
   if (!toggle || !grid) return;
-  toggle.addEventListener('click', function(){
-    var yearly = !grid.classList.contains('is-yearly');
+  function setYearly(yearly){
     grid.classList.toggle('is-yearly', yearly);
     toggle.classList.toggle('is-yearly', yearly);
     toggle.setAttribute('aria-pressed', yearly ? 'true' : 'false');
     if (mLabel) mLabel.classList.toggle('is-active', !yearly);
     if (yLabel) yLabel.classList.toggle('is-active', yearly);
+  }
+  toggle.addEventListener('click', function(){
+    setYearly(!grid.classList.contains('is-yearly'));
+  });
+  // Keyboard a11y on the toggle.
+  toggle.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft'){ setYearly(e.key === 'ArrowRight'); e.preventDefault(); }
   });
 })();
 </script>
