@@ -3,7 +3,7 @@
  * Template Name: Pricing
  * Template Post Type: page
  *
- * SmokeDrop pricing page — three tiers + supplier free banner + FAQ.
+ * SmokeDrop pricing page — Retailer + Supplier plans + free trial banner + FAQ.
  *
  * @package SmokeDropNoir
  */
@@ -13,7 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 get_header();
 
 $supply_url  = home_url( '/suppliers' );
-$contact_url = home_url( '/contact' );
 $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
 ?>
 
@@ -24,20 +23,20 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
       <div class="ph-smoke"><div class="ph-blob b1"></div><div class="ph-blob b2"></div><div class="ph-blob b3"></div></div>
       <div class="ph-inner center">
         <p class="eyebrow reveal" style="justify-content:center;">Pricing</p>
-        <h1 class="display reveal reveal-d1" style="margin:24px 0;">Pricing that scales<br><span class="italic gradient-text">with your sales.</span></h1>
-        <p class="lede reveal reveal-d2" style="max-width:620px;margin:0 auto;">Start free. No contracts, no hidden fees, no PO fees. You only pay more as you sell more &mdash; and you'll always know your margin upfront.</p>
+        <h1 class="display reveal reveal-d1" style="margin:24px 0;">Two plans.<br><span class="italic gradient-text">No nickel-and-diming.</span></h1>
+        <p class="lede reveal reveal-d2" style="max-width:620px;margin:0 auto;">Whether you're a retailer sourcing product or a supplier reaching new stores, SmokeDrop is one flat monthly plan &mdash; no transaction fees, no commissions, ever.</p>
       </div>
     </section>
 
-    <!-- SUPPLIER FREE BANNER -->
+    <!-- FREE TRIAL BANNER -->
     <section class="sec-sm">
       <div class="wrap">
         <div class="free-banner reveal">
           <div>
-            <h3>Suppliers &amp; Brands: 100% free.</h3>
-            <p>No listing fees. No transaction fees. Unlimited retailers.</p>
+            <h3>Free 7-day trial. Every plan.</h3>
+            <p>Try SmokeDrop free for 7 days &mdash; no transaction fees, no commissions, cancel anytime.</p>
           </div>
-          <a href="<?php echo esc_url( $supply_url ); ?>" class="btn btn-lime btn-lg" style="background:#fff;color:var(--green);">Become a supplier</a>
+          <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg" style="background:#fff;color:var(--green);">Start Free Trial</a>
         </div>
       </div>
     </section>
@@ -45,52 +44,47 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
     <!-- PRICING TIERS -->
     <section class="sec" style="padding-top:0;">
       <div class="wrap">
-        <div class="price-grid">
-          <div class="price-card reveal">
-            <div class="p-tier">Free Trial</div>
-            <div class="p-amt">14 days<small> free</small></div>
-            <div class="p-desc">Full access to SmokeDrop. No credit card required. Cancel anytime.</div>
+        <div class="price-grid-2">
+          <div class="price-card featured reveal">
+            <div class="p-badge">For Retailers</div>
+            <div class="p-tier">Retailer</div>
+            <div class="p-amt">$99.99<small>/mo</small></div>
+            <div class="p-yearly">or <strong>$799.99/yr</strong> &mdash; save 24%</div>
+            <div class="p-desc" style="margin-top:14px;">Import unlimited products and buy wholesale from hundreds of suppliers.</div>
             <ul class="p-feats">
-              <li><?php echo $check_svg; // phpcs:ignore ?>Full catalog access &mdash; 20,000+ products</li>
-              <li><?php echo $check_svg; // phpcs:ignore ?>Shopify, WooCommerce &amp; BigCommerce</li>
-              <li><?php echo $check_svg; // phpcs:ignore ?>Real-time inventory sync</li>
-              <li><?php echo $check_svg; // phpcs:ignore ?>Blind dropshipping</li>
-              <li><?php echo $check_svg; // phpcs:ignore ?>Automatic order fulfillment</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>Import unlimited products into your store</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>Buy wholesale</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>Access to hundreds of suppliers</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>No transaction fees &amp; no commissions</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>Auto order fulfillment &amp; order tracking</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>Priority e-mail support</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>Onboarding call from an industry expert</li>
             </ul>
-            <a href="https://app.thesmokedrop.com" class="btn btn-outline btn-block">Start free trial</a>
+            <p style="font-size:.85rem;color:var(--ink-mute);margin-bottom:14px;">Free trial 7 days</p>
+            <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-block">Start Free Trial</a>
           </div>
 
-          <div class="price-card featured reveal reveal-d1">
-            <div class="p-badge">Most popular</div>
-            <div class="p-tier">SmokeDrop</div>
-            <div class="p-amt">$99<small>/mo</small></div>
-            <div class="p-desc">Everything you need to run a full smoke shop dropshipping business.</div>
+          <div class="price-card reveal reveal-d1">
+            <div class="p-badge" style="background:var(--ink);">For Suppliers</div>
+            <div class="p-tier">Supplier</div>
+            <div class="p-amt">$49.99<small>/mo</small></div>
+            <div class="p-yearly">or <strong>$499.99/yr</strong> &mdash; save 17%</div>
+            <div class="p-desc" style="margin-top:14px;">Supply unlimited products and sell wholesale to hundreds of retailers.</div>
             <ul class="p-feats">
-              <li><?php echo $check_svg; // phpcs:ignore ?>20,000+ products from 300+ brands</li>
-              <li><?php echo $check_svg; // phpcs:ignore ?>Everything in the free trial</li>
-              <li><?php echo $check_svg; // phpcs:ignore ?>Import to your store in a few clicks</li>
-              <li><?php echo $check_svg; // phpcs:ignore ?>Automatic order syncing with suppliers</li>
-              <li><?php echo $check_svg; // phpcs:ignore ?>Tracking numbers sync across suppliers &amp; customers</li>
-              <li><?php echo $check_svg; // phpcs:ignore ?>We carry all the latest items from the top brands</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>Supply unlimited products</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>Dropship &amp; sell your products wholesale</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>Sell to hundreds of retailers</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>No transaction fees &amp; no commissions</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>Auto order fulfillment &amp; order tracking</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>Priority e-mail support</li>
+              <li><?php echo $check_svg; // phpcs:ignore ?>Onboarding call from an industry expert</li>
             </ul>
-            <a href="https://apps.shopify.com/smoke-drop" class="btn btn-lime btn-block">Install on Shopify &mdash; $99/mo</a>
-          </div>
-
-          <div class="price-card reveal reveal-d2">
-            <div class="p-tier">Yearly</div>
-            <div class="p-amt">Save<small> big</small></div>
-            <div class="p-desc">Pre-pay yearly and lock in a better rate. Same features, lower monthly cost.</div>
-            <ul class="p-feats">
-              <li><?php echo $check_svg; // phpcs:ignore ?>Everything in the monthly plan</li>
-              <li><?php echo $check_svg; // phpcs:ignore ?>Discounted yearly billing</li>
-              <li><?php echo $check_svg; // phpcs:ignore ?>No PO fees, no transaction fees</li>
-              <li><?php echo $check_svg; // phpcs:ignore ?>Priority support</li>
-            </ul>
-            <a href="<?php echo esc_url( $contact_url ); ?>" class="btn btn-outline btn-block">Get yearly pricing</a>
+            <p style="font-size:.85rem;color:var(--ink-mute);margin-bottom:14px;">Free trial 7 days</p>
+            <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-outline btn-block">Start Free Trial</a>
           </div>
         </div>
 
-        <p class="center reveal reveal-d3" style="color:var(--ink-mute);font-size:.92rem;margin-top:36px;">All plans include real-time inventory sync, automatic order fulfillment, and tracking sync. No PO fees, ever.</p>
+        <p class="center reveal reveal-d3" style="color:var(--ink-mute);font-size:.92rem;margin-top:36px;">Both plans include real-time order tracking and priority support. No transaction fees or commissions, ever.</p>
       </div>
     </section>
 
@@ -98,14 +92,14 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
     <section class="sec" style="background:var(--bg-2);">
       <div class="wrap center">
         <p class="eyebrow reveal" style="justify-content:center;">Included in every plan</p>
-        <h2 class="display reveal reveal-d1" style="margin-top:24px;font-size:clamp(2rem,4vw,3.4rem);">No nickel-and-diming.</h2>
+        <h2 class="display reveal reveal-d1" style="margin-top:24px;font-size:clamp(2rem,4vw,3.4rem);">No Transaction Fees.<br>No Commissions. Ever.</h2>
         <div class="bento-tag-row reveal reveal-d2" style="justify-content:center;margin-top:40px;">
-          <span class="bento-tag">No contracts</span>
-          <span class="bento-tag">No per-SKU fees</span>
-          <span class="bento-tag">No PO fees</span>
+          <span class="bento-tag">7-day free trial</span>
           <span class="bento-tag">No transaction fees</span>
-          <span class="bento-tag">Cancel anytime</span>
-          <span class="bento-tag">14-day free trial</span>
+          <span class="bento-tag">No commissions</span>
+          <span class="bento-tag">Auto order tracking</span>
+          <span class="bento-tag">Priority support</span>
+          <span class="bento-tag">Onboarding call</span>
         </div>
       </div>
     </section>
@@ -119,20 +113,20 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
         </div>
         <div class="faq-list reveal">
           <div class="faq-item open">
-            <button class="faq-q">Is there really a free plan? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
-            <div class="faq-a"><p>Yes. The 14-day free trial gives you full access &mdash; real-time sync, integrations, and blind dropshipping for the whole catalog. You only add a card when you're ready to go live.</p></div>
+            <button class="faq-q">Is there a free trial? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+            <div class="faq-a"><p>Yes. Both the Retailer and Supplier plans include a 7-day free trial with full access &mdash; real-time order tracking, priority support, and the full catalog or retailer network.</p></div>
           </div>
           <div class="faq-item">
-            <button class="faq-q">Are there per-transaction or PO fees? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
-            <div class="faq-a"><p>No. Unlike some platforms that charge a percentage of every supplier cost (a hidden margin tax), SmokeDrop has no PO fees, no per-order fees, and no transaction fees. You pay the wholesale cost plus your monthly plan.</p></div>
+            <button class="faq-q">Are there transaction fees or commissions? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+            <div class="faq-a"><p>No. SmokeDrop charges one flat monthly (or yearly) plan fee &mdash; no transaction fees and no commissions on anything you buy or sell.</p></div>
           </div>
           <div class="faq-item">
             <button class="faq-q">I'm a supplier or brand &mdash; what does it cost? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
-            <div class="faq-a"><p>Suppliers and brands are 100% free &mdash; no listing fees, no transaction fees, unlimited retailers. <a href="<?php echo esc_url( $supply_url ); ?>" style="color:var(--green-xl);">Learn about becoming a supplier</a>.</p></div>
+            <div class="faq-a"><p>The Supplier plan is $49.99/mo (or $499.99/yr, saving 17%), with no transaction fees or commissions on sales. <a href="<?php echo esc_url( $supply_url ); ?>" style="color:var(--green-xl);">Learn about becoming a supplier</a>.</p></div>
           </div>
           <div class="faq-item">
-            <button class="faq-q">Can I switch plans later? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
-            <div class="faq-a"><p>Anytime. Upgrades take effect immediately; downgrades take effect at the next billing cycle. No penalties, no contracts.</p></div>
+            <button class="faq-q">What's the difference between monthly and yearly billing? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+            <div class="faq-a"><p>Same features either way. Paying yearly saves 24% on the Retailer plan and 17% on the Supplier plan compared to paying monthly.</p></div>
           </div>
         </div>
       </div>

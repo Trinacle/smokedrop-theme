@@ -36,7 +36,7 @@ $brands_url  = get_post_type_archive_link( 'brand' );
 
     <!-- TRUST BAR -->
     <div class="trust-bar reveal">
-      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/><polyline points="9 12 11 14 15 10"/></svg><div><strong>14-day free trial</strong><span>No credit card</span></div></div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/><polyline points="9 12 11 14 15 10"/></svg><div><strong>7-day free trial</strong><span>No commissions</span></div></div>
       <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h13l4 4v6h-3"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg><div><strong>Automatic sync</strong><span>Orders &amp; tracking</span></div></div>
       <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><div><strong>No PO fees</strong><span>Keep your margin</span></div></div>
       <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M5 9v11h14V9"/></svg><div><strong>300+ brands</strong><span>20,000+ products</span></div></div>
@@ -113,7 +113,7 @@ $brands_url  = get_post_type_archive_link( 'brand' );
             <h2 class="display" style="font-size:clamp(2rem,4vw,3.4rem);color:#fff;">Stock every brand.<br><span class="italic">Hold zero inventory.</span></h2>
             <p class="lede" style="max-width:560px;margin:24px auto 0;">Join hundreds of retailers dropshipping the biggest smoke, vape &amp; hemp brands.</p>
             <div class="hero-actions" style="justify-content:center;margin-top:36px;">
-              <a href="https://app.thesmokedrop.com" class="btn btn-lime btn-lg" style="background:#fff;color:var(--green);">Start free trial</a>
+              <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg" style="background:#fff;color:var(--green);">Start free trial</a>
               <a href="<?php echo esc_url( $pricing_url ); ?>" class="btn btn-outline btn-lg" style="border-color:rgba(255,255,255,.3);color:#fff;">View pricing</a>
             </div>
           </div>

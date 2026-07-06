@@ -24,9 +24,9 @@ $contact_url = home_url( '/contact' );
           <span class="line-mask line-mask-d1"><span>hundreds of <em class="italic gradient-text">smoke</em></span></span>
           <span class="line-mask line-mask-d2"><span>shops &amp; retailers.</span></span>
         </h1>
-        <p class="lede reveal reveal-d3" style="max-width:640px;">Unlock the power of dropshipping and distribute your products to hundreds of smoke shops &amp; online retailers. Fully automated order management. Easy &amp; fast catalog import. <strong style="color:var(--ink);">100% free for suppliers, no transaction fees, ever.</strong></p>
+        <p class="lede reveal reveal-d3" style="max-width:640px;">Unlock the power of dropshipping and distribute your products to hundreds of smoke shops &amp; online retailers. Fully automated order management. Easy &amp; fast catalog import. <strong style="color:var(--ink);">From $49.99/mo &mdash; no transaction fees, no commissions, ever.</strong></p>
         <div class="hero-actions reveal reveal-d4">
-          <a href="https://app.thesmokedrop.com" class="btn btn-lime btn-lg">Become a supplier</a>
+          <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg">Become a supplier</a>
           <a href="<?php echo esc_url( $contact_url ); ?>" class="btn btn-outline btn-lg">Request demo</a>
         </div>
       </div>
@@ -35,7 +35,7 @@ $contact_url = home_url( '/contact' );
     <!-- Free banner -->
     <section class="sec-sm" style="border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-2);">
       <div class="wrap center">
-        <p class="reveal" style="font-family:var(--display);font-size:clamp(1.4rem,3vw,2.2rem);font-weight:600;letter-spacing:-.02em;">Suppliers are <span class="gradient-text">100% free.</span> No listing fees. No transaction fees. Unlimited retailers.</p>
+        <p class="reveal" style="font-family:var(--display);font-size:clamp(1.4rem,3vw,2.2rem);font-weight:600;letter-spacing:-.02em;">Supplier plans start at <span class="gradient-text">$49.99/mo.</span> No transaction fees. No commissions. Unlimited retailers.</p>
       </div>
     </section>
 

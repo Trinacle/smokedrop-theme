@@ -660,6 +660,9 @@ footer.site{background:var(--bg-2);border-top:1px solid var(--line);padding:100p
 
 /* ---------- 18c. Pricing ---------- */
 .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.price-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:stretch;max-width:820px;margin:0 auto}
+.price-card .p-yearly{font-size:.85rem;color:var(--ink-mute);margin-top:-2px}
+.price-card .p-yearly strong{color:var(--green-xl)}
 .price-card{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-xl);padding:40px 32px;display:flex;flex-direction:column;transition:transform .4s var(--ease),border-color .4s var(--ease);position:relative}
 .price-card:hover{transform:translateY(-6px);border-color:var(--green-l)}
 .price-card.featured{border-color:var(--green);box-shadow:0 0 0 1px var(--green),0 20px 50px -20px rgba(19,194,123,.4)}

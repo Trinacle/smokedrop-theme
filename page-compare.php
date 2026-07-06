@@ -92,7 +92,7 @@ $matrix = array(
         <p class="eyebrow reveal" style="justify-content:center;">The verdict</p>
         <h2 class="display reveal reveal-d1" style="margin-top:24px;">Switch to SmokeDrop.<br><span class="italic gradient-text">Keep your margin.</span></h2>
         <p class="lede reveal reveal-d2" style="margin-top:24px;max-width:580px;">Migrate from Crowdship, Spocket, or Duoplane in days, not months. Free to start, no PO fees, no hidden margin tax.</p>
-        <a href="https://app.thesmokedrop.com" class="btn btn-lime btn-lg reveal reveal-d3" style="margin-top:32px;">Start free migration</a>
+        <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg reveal reveal-d3" style="margin-top:32px;">Start free migration</a>
       </div>
     </section>
 </main>

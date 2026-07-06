@@ -85,7 +85,7 @@ $verticals = array(
           <span class="bento-tag">&#10003; Compliant packaging</span>
           <span class="bento-tag">&#10003; High-risk merchant processing</span>
         </div>
-        <a href="https://app.thesmokedrop.com" class="btn btn-lime btn-lg reveal reveal-d4" style="margin-top:40px;">Start free trial</a>
+        <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg reveal reveal-d4" style="margin-top:40px;">Start free trial</a>
       </div>
     </section>
 </main>

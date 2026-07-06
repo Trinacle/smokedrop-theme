@@ -58,7 +58,7 @@
 
     <div class="nav-cta">
         <a href="https://apps.shopify.com/smoke-drop" class="btn btn-outline hide-mob" style="font-size:.85rem;padding:8px 16px;">Shopify App</a>
-        <a href="https://app.thesmokedrop.com" class="btn btn-lime">Get Started</a>
+        <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime">Get Started</a>
         <button class="menu-trigger" aria-label="Menu" aria-expanded="false"></button>
     </div>
 </header>
@@ -73,12 +73,12 @@
                 <div class="mega-grid">
                     <div class="mega-col-head">Solutions</div>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/retailers' ) ); ?>"><strong>For Retailers</strong><span>Automate dropshipping & sync inventory</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>"><strong>For Suppliers</strong><span>Launch a dropship channel, free</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>"><strong>For Suppliers</strong><span>Launch a dropship channel, from $49.99/mo</span></a>
                     <a class="mega-link" href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>"><strong>For Brands</strong><span>Grow distribution</span></a>
 
                     <div class="mega-col-head">Platform</div>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/platform' ) ); ?>"><strong>Platform Overview</strong><span>How SmokeDrop works</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/pricing' ) ); ?>"><strong>Pricing</strong><span>Free trial, $99/mo, yearly</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/pricing' ) ); ?>"><strong>Pricing</strong><span>7-day free trial, from $49.99/mo</span></a>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/compare' ) ); ?>"><strong>Compare</strong><span>vs Crowdship, Spocket, Duoplane</span></a>
 
                     <div class="mega-col-head">Resources</div>

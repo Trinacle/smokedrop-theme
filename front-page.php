@@ -44,7 +44,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
         </h1>
         <p class="lede reveal reveal-d3">Import over 20,000 smoke shop products to your online store. The dropshipping platform built for smoke shops &mdash; connect to 300+ smoke, vape, hemp and glass brands. Customers order from you. Suppliers ship for you. You keep the margin.</p>
         <div class="hero-actions reveal reveal-d4">
-          <a href="https://app.thesmokedrop.com" class="btn btn-lime btn-lg" data-magnetic>Start dropshipping free <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg" data-magnetic>Start Free Trial <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
           <a href="#how" class="btn btn-outline btn-lg" data-magnetic>See how it works</a>
         </div>
       </div>
@@ -270,7 +270,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
             <span class="gs-num">01</span>
             <div class="gs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-3.5 8-9 10-5.5-2-9-5-9-10V6l9-4 9 4z"/></svg></div>
             <h4>Create your SmokeDrop account</h4>
-            <p>Sign up free at app.thesmokedrop.com. No credit card required. Takes less than a minute to get started.</p>
+            <p>Start your 7-day free trial as a retailer or supplier at wholesale.thesmokedrop.com. Takes less than a minute to get started.</p>
           </div>
           <div class="gs-card reveal reveal-d1">
             <span class="gs-num">02</span>
@@ -603,14 +603,14 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
             <svg viewBox="0 0 24 24" fill="#95bf47"><path d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/></svg>
             <div><strong>Install on Shopify</strong><small>One-click from the App Store</small></div>
           </a>
-          <a href="https://app.thesmokedrop.com" class="btn btn-lime btn-lg">Create free account</a>
+          <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg">Start Free Trial</a>
         </div>
       </div>
     </section>
 
     <!-- ===== TRUST BAR ===== -->
     <div class="trust-bar reveal">
-      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/><polyline points="9 12 11 14 15 10"/></svg><div><strong>14-day free trial</strong><span>No credit card</span></div></div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/><polyline points="9 12 11 14 15 10"/></svg><div><strong>7-day free trial</strong><span>No commissions</span></div></div>
       <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div><strong>Automatic sync</strong><span>Orders &amp; tracking</span></div></div>
       <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><div><strong>No PO fees</strong><span>Keep your margin</span></div></div>
       <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M5 9v11h14V9"/></svg><div><strong>300+ brands</strong><span>20,000+ products</span></div></div>
