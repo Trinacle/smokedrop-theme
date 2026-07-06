@@ -14,26 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 get_header();
 
 $supply_url = home_url( '/suppliers' );
-
-// Real brand logos (verified working files from thesmokedrop.com/wp-content/uploads/)
-$sdn_brands = array(
-	array( 'name' => 'PAX', 'file' => '2023/07/pax-1-300x162.png' ),
-	array( 'name' => 'Puffco', 'file' => '2023/07/puffco-300x162.png' ),
-	array( 'name' => 'RAW', 'file' => '2023/07/raw-300x162.png' ),
-	array( 'name' => 'Cookies', 'file' => '2023/07/brand-cookies-2-300x162.png' ),
-	array( 'name' => 'GRAV', 'file' => '2023/07/gravb-300x162.png' ),
-	array( 'name' => 'Dr. Dabber', 'file' => '2023/07/drdabber-300x162.png' ),
-	array( 'name' => 'Vessel', 'file' => '2024/08/vessel0-300x162.jpg' ),
-	array( 'name' => 'Pulsar', 'file' => '2023/07/pulsar-300x162.png' ),
-	array( 'name' => 'Hemper', 'file' => '2023/07/hemper-300x162.png' ),
-	array( 'name' => 'Marley Natural', 'file' => '2023/07/marley-300x162.png' ),
-	array( 'name' => 'Eyce', 'file' => '2023/07/eyce-300x162.png' ),
-	array( 'name' => 'Wax Maid', 'file' => '2023/07/wax-maid-300x162.png' ),
-	array( 'name' => 'Firefly', 'file' => '2024/08/firefly-300x162.jpg' ),
-	array( 'name' => 'Alchemy Naturals', 'file' => '2024/08/alchemy-naturals-300x162.jpg' ),
-	array( 'name' => 'AFG Distribution', 'file' => '2024/08/afg-logo-hd-300x162.png' ),
-	array( 'name' => 'O.pen', 'file' => '2024/08/o.pen_-300x162.jpg' ),
-);
+$sdn_brands = sdn_real_brand_logos();
 
 $row_a = array_slice( $sdn_brands, 0, 6 );
 $row_b = array_slice( $sdn_brands, 6, 5 );
@@ -80,7 +61,7 @@ $row_c = array_slice( $sdn_brands, 11 );
         </div>
         <div class="brand-grid reveal reveal-d2">
           <?php foreach ( $sdn_brands as $b ) : ?>
-            <div class="brand-card">
+            <div class="brand-card" id="brand-<?php echo esc_attr( $b['slug'] ); ?>">
               <img src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['file'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy">
             </div>
           <?php endforeach; ?>

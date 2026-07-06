@@ -42,7 +42,7 @@
   let closeTimer = null;
 
   function clearClose() { if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; } }
-  function scheduleClose() { clearClose(); closeTimer = setTimeout(closeMenu, 300); }
+  function scheduleClose() { clearClose(); closeTimer = setTimeout(closeMenu, 450); }
 
   function openMenu(menuId) {
     clearClose();

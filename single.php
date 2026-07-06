@@ -25,7 +25,7 @@ $sdn_title     = get_the_title();
 
 <main>
     <!-- FEATURED IMAGE HERO -->
-    <section class="post-hero">
+    <section class="post-hero post-hero-wide">
       <?php if ( $sdn_thumb ) : ?>
         <div class="post-hero-bg" style="background-image:url('<?php echo esc_url( $sdn_thumb ); ?>');"></div>
       <?php endif; ?>
@@ -55,6 +55,11 @@ $sdn_title     = get_the_title();
             <a href="https://apps.shopify.com/smoke-drop" class="shopify-cta" style="display:flex;">
               <svg viewBox="0 0 24 24" fill="#95bf47" width="24" height="24"><path d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/></svg>
               <div><strong>Install on Shopify</strong><small>One-click from the App Store</small></div>
+            </a>
+
+            <a href="<?php echo esc_url( home_url( '/download-smokedrop-plugin' ) ); ?>" class="shopify-cta" style="display:flex;">
+              <svg viewBox="0 0 24 24" fill="#7f54b3" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 8h4a3 3 0 0 1 0 6h-1l3 4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div><strong>Download WooCommerce Plugin</strong><small>Self-hosted WordPress stores</small></div>
             </a>
 
             <div class="sidebar-block">

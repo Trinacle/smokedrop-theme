@@ -8,8 +8,6 @@
 
 <footer class="footer site-footer">
     <div class="footer-inner">
-        <h2 class="foot-mega">SMOKEDROP</h2>
-
         <div class="foot-newsletter">
             <div>
                 <h3>Get the drop.</h3>
@@ -75,7 +73,8 @@
                 <a href="<?php echo esc_url( home_url( '/privacy-policy' ) ); ?>" style="color:var(--ink-mute);">Privacy</a> &middot;
                 <a href="<?php echo esc_url( home_url( '/terms-of-use' ) ); ?>" style="color:var(--ink-mute);">Terms</a> &middot;
                 <a href="<?php echo esc_url( home_url( '/retailer-terms-of-use-agreement' ) ); ?>" style="color:var(--ink-mute);">Retailer Agreement</a> &middot;
-                <a href="<?php echo esc_url( home_url( '/terms-of-use-for-suppliers' ) ); ?>" style="color:var(--ink-mute);">Supplier Agreement</a>
+                <a href="<?php echo esc_url( home_url( '/terms-of-use-for-suppliers' ) ); ?>" style="color:var(--ink-mute);">Supplier Agreement</a> &middot;
+                <a href="<?php echo esc_url( home_url( '/sitemap' ) ); ?>" style="color:var(--ink-mute);">Sitemap</a>
             </div>
             <div style="display:flex;align-items:center;gap:16px;">
                 <button id="theme-toggle" aria-label="Toggle light/dark mode" style="display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--ink-mute);font-size:.82rem;font-weight:500;cursor:pointer;transition:all .25s;">

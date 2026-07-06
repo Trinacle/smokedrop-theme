@@ -74,8 +74,12 @@ function sdn_flag_bespoke_template( $template ) {
         'page-suppliers.php', 'page-platform.php', 'page-compare.php',
         'page-industries.php', 'page-demo.php', 'page-call.php',
         'page-brands.php', 'page-contact.php', 'page-about.php',
+        'page-sitemap.php',
         'home.php', 'category.php', 'single.php',
         'archive-brand.php', 'single-brand.php',
+        // WooCommerce overrides live in /woocommerce/ but resolve to these
+        // basenames and DO pass through template_include, so flag them bespoke.
+        'single-product.php', 'archive-product.php',
     );
     if ( in_array( basename( $template ), $bespoke, true ) ) {
         $GLOBALS['sdn_bespoke'] = true;

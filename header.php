@@ -95,36 +95,28 @@
             <div class="mega-panel" data-panel="brands" style="display:none;">
                 <div class="mega-grid">
                     <?php
-                    // Dynamically pull featured brands
-                    $featured_brands = sdn_brands_alphabetical( true );
-                    if ( ! empty( $featured_brands ) ) :
-                        echo '<div class="mega-col-head">Featured Brands</div>';
-                        $count = 0;
-                        foreach ( $featured_brands as $letter => $brands ) {
-                            foreach ( $brands as $brand ) {
-                                if ( $count >= 5 ) break 2;
-                                echo '<a class="mega-link" href="' . esc_url( get_permalink( $brand->ID ) ) . '"><strong>' . esc_html( $brand->post_title ) . '</strong><span>' . esc_html( sdn_get_brand_field( 'brand_categories', $brand->ID ) ?: 'Brand' ) . '</span></a>';
-                                $count++;
-                            }
+                    // Real brands from the live marketplace (sdn_real_brand_logos()
+                    // is the source of truth until the brand CPT is populated).
+                    $sdn_mega_brands = sdn_real_brand_logos();
+                    $sdn_brands_url  = home_url( '/brands' );
+                    if ( ! empty( $sdn_mega_brands ) ) :
+                        echo '<div class="mega-col-head">All Brands</div>';
+                        foreach ( $sdn_mega_brands as $b ) {
+                            printf(
+                                '<a class="mega-link" href="%1$s#brand-%2$s"><strong>%3$s</strong><span>View on the marketplace</span></a>',
+                                esc_url( $sdn_brands_url ),
+                                esc_attr( $b['slug'] ),
+                                esc_html( $b['name'] )
+                            );
                         }
-                    else :
-                        // Fallback hardcoded brands
-                        ?>
-                        <div class="mega-col-head">Featured Brands</div>
-                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>Cookies</strong><span>Vaporizers, bongs, apparel</span></a>
-                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>DynaVap</strong><span>Battery-free vaporizers</span></a>
-                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>PAX</strong><span>Premium vaporizers</span></a>
-                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>Puffco</strong><span>Concentrate devices</span></a>
-                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>RAW</strong><span>Rolling papers</span></a>
-                        <?php
                     endif;
                     ?>
 
                     <div class="mega-col-head">Shop by Category</div>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>Vaporizers</strong><span>Dry herb & concentrate</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>Hemp & CBD</strong><span>Flower, prerolls, edibles</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>Glass & Rigs</strong><span>Bongs, dab rigs, tools</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>All Brands</strong><span>Browse 300+ in the catalog</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>Vaporizers</strong><span>Dry herb & concentrate</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>Hemp & CBD</strong><span>Flower, prerolls, edibles</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>Glass & Rigs</strong><span>Bongs, dab rigs, tools</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>All Brands</strong><span>Browse 300+ in the catalog</span></a>
                 </div>
             </div>
 

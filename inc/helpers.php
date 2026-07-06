@@ -7,6 +7,28 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/* ---------- Real brand logos (verified working files, used until the Brand CPT is populated) ---------- */
+function sdn_real_brand_logos() {
+    return array(
+        array( 'name' => 'PAX', 'slug' => 'pax', 'file' => '2023/07/pax-1-300x162.png' ),
+        array( 'name' => 'Puffco', 'slug' => 'puffco', 'file' => '2023/07/puffco-300x162.png' ),
+        array( 'name' => 'RAW', 'slug' => 'raw', 'file' => '2023/07/raw-300x162.png' ),
+        array( 'name' => 'Cookies', 'slug' => 'cookies', 'file' => '2023/07/brand-cookies-2-300x162.png' ),
+        array( 'name' => 'GRAV', 'slug' => 'grav', 'file' => '2023/07/gravb-300x162.png' ),
+        array( 'name' => 'Dr. Dabber', 'slug' => 'dr-dabber', 'file' => '2023/07/drdabber-300x162.png' ),
+        array( 'name' => 'Vessel', 'slug' => 'vessel', 'file' => '2024/08/vessel0-300x162.jpg' ),
+        array( 'name' => 'Pulsar', 'slug' => 'pulsar', 'file' => '2023/07/pulsar-300x162.png' ),
+        array( 'name' => 'Hemper', 'slug' => 'hemper', 'file' => '2023/07/hemper-300x162.png' ),
+        array( 'name' => 'Marley Natural', 'slug' => 'marley-natural', 'file' => '2023/07/marley-300x162.png' ),
+        array( 'name' => 'Eyce', 'slug' => 'eyce', 'file' => '2023/07/eyce-300x162.png' ),
+        array( 'name' => 'Wax Maid', 'slug' => 'wax-maid', 'file' => '2023/07/wax-maid-300x162.png' ),
+        array( 'name' => 'Firefly', 'slug' => 'firefly', 'file' => '2024/08/firefly-300x162.jpg' ),
+        array( 'name' => 'Alchemy Naturals', 'slug' => 'alchemy-naturals', 'file' => '2024/08/alchemy-naturals-300x162.jpg' ),
+        array( 'name' => 'AFG Distribution', 'slug' => 'afg-distribution', 'file' => '2024/08/afg-logo-hd-300x162.png' ),
+        array( 'name' => 'O.pen', 'slug' => 'o-pen', 'file' => '2024/08/o.pen_-300x162.jpg' ),
+    );
+}
+
 /* ---------- Get a brand field with fallback (works even without ACF) ---------- */
 function sdn_get_brand_field( $field, $post_id = null ) {
     $post_id = $post_id ?: get_the_ID();

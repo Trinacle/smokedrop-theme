@@ -47,29 +47,18 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
           <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg" data-magnetic>Start Free Trial <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
           <a href="#how" class="btn btn-outline btn-lg" data-magnetic>See how it works</a>
         </div>
-      </div>
-    </section>
-
-    <!-- ===== SHOPPING CART INTEGRATIONS (bigger icons + API) ===== -->
-    <section class="sec-sm" style="border-bottom:1px solid var(--line);">
-      <div class="wrap center">
-        <p class="reveal" style="color:var(--ink-mute);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:32px;">Shopping Cart Integrations</p>
-        <div class="integrations-row reveal">
-          <a href="https://apps.shopify.com/smoke-drop" class="int-logo" style="background:#fff;border:1px solid var(--line);min-width:120px;">
-            <img src="<?php echo esc_url( $sdu( '5f1a58272cd5b8c219db0ba4_shopify-logo.svg' ) ); ?>" alt="Shopify" style="height:52px;width:auto;" onerror="this.style.display='none'">
+        <div class="hero-integrations reveal reveal-d5">
+          <a href="https://apps.shopify.com/smoke-drop" class="hi-chip">
+            <img src="<?php echo esc_url( $sdu( '5f1a58272cd5b8c219db0ba4_shopify-logo.svg' ) ); ?>" alt="Shopify" onerror="this.style.display='none'">
             <span>Shopify</span>
           </a>
-          <a href="<?php echo esc_url( $brands_url ); ?>#integrations" class="int-logo" style="background:#fff;border:1px solid var(--line);min-width:120px;">
-            <img src="<?php echo esc_url( $sdu( '5f1a59d6f884854a22b65124_woocommerce-logo.svg' ) ); ?>" alt="WooCommerce" style="height:52px;width:auto;" onerror="this.style.display='none'">
+          <a href="<?php echo esc_url( $brands_url ); ?>#integrations" class="hi-chip">
+            <img src="<?php echo esc_url( $sdu( '5f1a59d6f884854a22b65124_woocommerce-logo.svg' ) ); ?>" alt="WooCommerce" onerror="this.style.display='none'">
             <span>WooCommerce</span>
           </a>
-          <a href="<?php echo esc_url( $brands_url ); ?>#integrations" class="int-logo" style="background:#fff;border:1px solid var(--line);min-width:120px;">
-            <img src="<?php echo esc_url( $sdu( '5f1a5a542662b9b5006821de_bigcommerce-logo.svg' ) ); ?>" alt="BigCommerce" style="height:52px;width:auto;" onerror="this.style.display='none'">
+          <a href="<?php echo esc_url( $brands_url ); ?>#integrations" class="hi-chip">
+            <img src="<?php echo esc_url( $sdu( '5f1a5a542662b9b5006821de_bigcommerce-logo.svg' ) ); ?>" alt="BigCommerce" onerror="this.style.display='none'">
             <span>BigCommerce</span>
-          </a>
-          <a href="<?php echo esc_url( $brands_url ); ?>#integrations" class="int-logo" style="background:#fff;border:1px solid var(--line);min-width:120px;">
-            <span class="int-mark api" style="width:52px;height:52px;font-size:1.2rem;">&lt;/&gt;</span>
-            <span>Custom API</span>
           </a>
         </div>
       </div>
@@ -89,27 +78,9 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
         </div>
       </div>
       <?php
-      // Real brand logos (verified working files from thesmokedrop.com/wp-content/uploads/)
-      $sdn_brand_row1 = array(
-          array( 'name' => 'PAX', 'file' => '2023/07/pax-1-300x162.png' ),
-          array( 'name' => 'Puffco', 'file' => '2023/07/puffco-300x162.png' ),
-          array( 'name' => 'RAW', 'file' => '2023/07/raw-300x162.png' ),
-          array( 'name' => 'Cookies', 'file' => '2023/07/brand-cookies-2-300x162.png' ),
-          array( 'name' => 'GRAV', 'file' => '2023/07/gravb-300x162.png' ),
-          array( 'name' => 'Dr. Dabber', 'file' => '2023/07/drdabber-300x162.png' ),
-          array( 'name' => 'Vessel', 'file' => '2024/08/vessel0-300x162.jpg' ),
-          array( 'name' => 'Pulsar', 'file' => '2023/07/pulsar-300x162.png' ),
-      );
-      $sdn_brand_row2 = array(
-          array( 'name' => 'Hemper', 'file' => '2023/07/hemper-300x162.png' ),
-          array( 'name' => 'Marley Natural', 'file' => '2023/07/marley-300x162.png' ),
-          array( 'name' => 'Eyce', 'file' => '2023/07/eyce-300x162.png' ),
-          array( 'name' => 'Wax Maid', 'file' => '2023/07/wax-maid-300x162.png' ),
-          array( 'name' => 'Firefly', 'file' => '2024/08/firefly-300x162.jpg' ),
-          array( 'name' => 'Alchemy Naturals', 'file' => '2024/08/alchemy-naturals-300x162.jpg' ),
-          array( 'name' => 'AFG Distribution', 'file' => '2024/08/afg-logo-hd-300x162.png' ),
-          array( 'name' => 'O.pen', 'file' => '2024/08/o.pen_-300x162.jpg' ),
-      );
+      $sdn_all_brands  = sdn_real_brand_logos();
+      $sdn_brand_row1  = array_slice( $sdn_all_brands, 0, 8 );
+      $sdn_brand_row2  = array_slice( $sdn_all_brands, 8 );
       ?>
       <div class="lw-wall">
         <div class="lw-row">
@@ -566,31 +537,47 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
           <p class="eyebrow reveal" style="justify-content:center;">FAQs</p>
           <h2 class="display reveal reveal-d1" style="margin-top:24px;">Questions,<br><span class="italic gradient-text">answered.</span></h2>
         </div>
+        <?php
+        $sdn_home_faqs = array(
+            array(
+                'q'    => 'What is dropshipping?',
+                'a'    => 'Dropshipping means selling products in your own store without holding any inventory yourself &mdash; your supplier ships directly to the customer, and you keep the margin between wholesale and retail.',
+                'slug' => 'what-is-dropshipping-for-beginners',
+            ),
+            array(
+                'q'    => 'How do I start dropshipping on Shopify?',
+                'a'    => 'Install the SmokeDrop app from the Shopify App Store, connect your store, and import products from the catalog. Orders sync automatically once a customer checks out.',
+                'slug' => 'how-to-start-dropshipping-on-shopify-using-smokedrop',
+            ),
+            array(
+                'q'    => 'Is dropshipping profitable?',
+                'a'    => 'It can be &mdash; margins come from the spread between wholesale and retail pricing, and from keeping overhead low since there\'s no inventory or warehouse to fund.',
+                'slug' => 'is-dropshipping-profitable-using-smokedrop',
+            ),
+            array(
+                'q'    => 'How are dropship orders processed?',
+                'a'    => 'When a customer orders from your store, SmokeDrop routes the order to the supplier, who fulfills and ships it. Order status and tracking sync back to your store automatically.',
+                'slug' => 'how-dropship-orders-are-processed',
+            ),
+            array(
+                'q'    => 'How do I find good suppliers?',
+                'a'    => 'Look for suppliers with real-time inventory sync, transparent wholesale pricing, and no per-order fees. SmokeDrop\'s marketplace gives you access to hundreds of vetted suppliers in one place.',
+                'slug' => 'what-are-the-best-suppliers-for-dropshipping',
+            ),
+            array(
+                'q'    => 'How does product pricing work?',
+                'a'    => 'You buy at the supplier\'s wholesale price and set your own retail price in your store &mdash; SmokeDrop doesn\'t take a cut of that margin.',
+                'slug' => 'product-pricing-explained',
+            ),
+        );
+        ?>
         <div class="faq-list reveal">
-          <div class="faq-item open">
-            <button class="faq-q">How does SmokeDrop dropshipping work? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
-            <div class="faq-a"><p>You connect your store (Shopify, WooCommerce, or BigCommerce), browse the catalog of 20,000+ products from 300+ brands, and import what you want to sell. When a customer orders, SmokeDrop routes it to the nearest supplier, who ships it blind under your brand within 24 hours. You keep the margin between wholesale and retail.</p></div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-q">Do I need to buy inventory upfront? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
-            <div class="faq-a"><p>No. That's the entire point. You list products, sell them at retail, and the supplier ships directly to your customer. Zero warehouse, zero upfront inventory, zero minimums.</p></div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-q">What platforms does SmokeDrop integrate with? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
-            <div class="faq-a"><p>Native apps for Shopify, WooCommerce, and BigCommerce, plus a full REST API for custom stacks. Average install time is under 10 minutes, no developer required.</p></div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-q">How does inventory sync work? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
-            <div class="faq-a"><p>Inventory syncs in real time across your store and suppliers. Tracking numbers sync across suppliers, retailers, and customers, so you never sell what you don't have.</p></div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-q">I'm a supplier or brand. How do I join? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
-            <div class="faq-a"><p>Suppliers list their catalog once and reach hundreds of retailers with automated ordering and demand analytics. Brands get brand-control tools and curated storefronts. <a href="<?php echo esc_url( $contact_url ); ?>" style="color:var(--green-xl);">Contact us</a> to apply.</p></div>
-          </div>
-          <div class="faq-item">
-            <button class="faq-q">How fast do orders ship? <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
-            <div class="faq-a"><p>Most orders ship within 24 hours via smart routing to the supplier nearest your customer. We maintain a 98% on-time fulfillment rate across the network.</p></div>
-          </div>
+          <?php foreach ( $sdn_home_faqs as $sdn_fi => $sdn_faq ) : ?>
+            <div class="faq-item<?php echo 0 === $sdn_fi ? ' open' : ''; // phpcs:ignore ?>">
+              <button class="faq-q"><?php echo esc_html( $sdn_faq['q'] ); ?> <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+              <div class="faq-a"><p><?php echo wp_kses_post( $sdn_faq['a'] ); ?> <a href="<?php echo esc_url( home_url( '/' . $sdn_faq['slug'] . '/' ) ); ?>" style="color:var(--green-xl);">Read the full guide &rarr;</a></p></div>
+            </div>
+          <?php endforeach; ?>
         </div>
       </div>
     </section>
