@@ -182,7 +182,9 @@ remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 )
 
 /* ---------- Helper: get the logo ---------- */
 function sdn_logo( $size = 34 ) {
-    $logo_url = home_url( '/wp-content/uploads/2024/06/sd-white-logo.png' );
-    $fallback = home_url( '/wp-content/uploads/2023/07/logo.png' );
-    return '<img src="' . esc_url( $logo_url ) . '" alt="SmokeDrop" style="height:' . intval( $size ) . 'px;width:auto;" onerror="this.onerror=null;this.src=\'' . esc_url( $fallback ) . '\';this.style.filter=\'brightness(0) invert(1)\';"><span style="display:none;font-family:var(--display);font-weight:600;letter-spacing:-.02em;">SmokeDrop</span>';
+    $dark_url  = home_url( '/wp-content/uploads/2024/06/sd-white-logo.png' ); // for dark backgrounds
+    $light_url = home_url( '/wp-content/uploads/2023/07/logo.png' );          // for light backgrounds
+    $h         = intval( $size );
+    return '<img src="' . esc_url( $dark_url ) . '" alt="SmokeDrop" class="logo-dark" style="height:' . $h . 'px;width:auto;">'
+        . '<img src="' . esc_url( $light_url ) . '" alt="SmokeDrop" class="logo-light" style="height:' . $h . 'px;width:auto;">';
 }

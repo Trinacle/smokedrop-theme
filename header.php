@@ -29,7 +29,7 @@
             <a class="nav-link" href="<?php echo esc_url( home_url( '/' ) ); ?>">Solutions <?php echo sdn_chevron(); // phpcs:ignore ?></a>
         </div>
         <div class="nav-item has-mega" data-menu="brands">
-            <a class="nav-link" href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>">Brands <?php echo sdn_chevron(); // phpcs:ignore ?></a>
+            <a class="nav-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>">Brands <?php echo sdn_chevron(); // phpcs:ignore ?></a>
         </div>
         <?php
         // Direct nav items — editable via WordPress Menus (Appearance > Menus)
@@ -74,7 +74,7 @@
                     <div class="mega-col-head">Solutions</div>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/retailers' ) ); ?>"><strong>For Retailers</strong><span>Automate dropshipping & sync inventory</span></a>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>"><strong>For Suppliers</strong><span>Launch a dropship channel, from $49.99/mo</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>"><strong>For Brands</strong><span>Grow distribution</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>"><strong>For Wholesalers</strong><span>Grow distribution</span></a>
 
                     <div class="mega-col-head">Platform</div>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/platform' ) ); ?>"><strong>Platform Overview</strong><span>How SmokeDrop works</span></a>
@@ -111,20 +111,20 @@
                         // Fallback hardcoded brands
                         ?>
                         <div class="mega-col-head">Featured Brands</div>
-                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brand/cookies' ) ); ?>"><strong>Cookies</strong><span>Vaporizers, bongs, apparel</span></a>
-                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brand/dynavap' ) ); ?>"><strong>DynaVap</strong><span>Battery-free vaporizers</span></a>
-                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brand/pax' ) ); ?>"><strong>PAX</strong><span>Premium vaporizers</span></a>
-                        <a class="mega-link" href="#"><strong>Puffco</strong><span>Concentrate devices</span></a>
-                        <a class="mega-link" href="#"><strong>RAW</strong><span>Rolling papers</span></a>
+                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>Cookies</strong><span>Vaporizers, bongs, apparel</span></a>
+                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>DynaVap</strong><span>Battery-free vaporizers</span></a>
+                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>PAX</strong><span>Premium vaporizers</span></a>
+                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>Puffco</strong><span>Concentrate devices</span></a>
+                        <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>RAW</strong><span>Rolling papers</span></a>
                         <?php
                     endif;
                     ?>
 
                     <div class="mega-col-head">Shop by Category</div>
-                    <a class="mega-link" href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>"><strong>Vaporizers</strong><span>Dry herb & concentrate</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>"><strong>Hemp & CBD</strong><span>Flower, prerolls, edibles</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>"><strong>Glass & Rigs</strong><span>Bongs, dab rigs, tools</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>"><strong>All Brands</strong><span>Browse 300+ in the catalog</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>Vaporizers</strong><span>Dry herb & concentrate</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>Hemp & CBD</strong><span>Flower, prerolls, edibles</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>Glass & Rigs</strong><span>Bongs, dab rigs, tools</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>"><strong>All Brands</strong><span>Browse 300+ in the catalog</span></a>
                 </div>
             </div>
 
@@ -137,8 +137,8 @@
     <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
     <a href="<?php echo esc_url( home_url( '/retailers' ) ); ?>">For Retailers</a>
     <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Suppliers</a>
-    <a href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>">For Brands</a>
-    <a href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>">Brands</a>
+    <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Wholesalers</a>
+    <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">Brands We Carry</a>
     <a href="<?php echo esc_url( get_post_type_archive_link( 'product' ) ?: home_url( '/shop' ) ); ?>">Marketplace</a>
     <a href="<?php echo esc_url( home_url( '/pricing' ) ); ?>">Pricing</a>
     <a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">Blog</a>

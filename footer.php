@@ -41,7 +41,7 @@
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Overview</a>
                 <a href="<?php echo esc_url( home_url( '/retailers' ) ); ?>">For Retailers</a>
                 <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Suppliers</a>
-                <a href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>">For Brands</a>
+                <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Wholesalers</a>
                 <a href="<?php echo esc_url( home_url( '/pricing' ) ); ?>">Pricing</a>
                 <a href="<?php echo esc_url( home_url( '/platform' ) ); ?>">Integrations</a>
             </div>
@@ -49,17 +49,16 @@
                 <h5>Solutions</h5>
                 <a href="<?php echo esc_url( home_url( '/retailers' ) ); ?>">For Retailers</a>
                 <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Suppliers</a>
-                <a href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>">For Brands</a>
+                <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Wholesalers</a>
                 <a href="<?php echo esc_url( home_url( '/industries' ) ); ?>">Industries</a>
                 <a href="<?php echo esc_url( get_post_type_archive_link( 'product' ) ?: home_url( '/shop' ) ); ?>">Marketplace</a>
             </div>
             <div class="foot-col">
-                <h5>Brands</h5>
-                <a href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>">All Brands</a>
-                <a href="<?php echo esc_url( home_url( '/brand/cookies' ) ); ?>">Cookies</a>
-                <a href="<?php echo esc_url( home_url( '/brand/dynavap' ) ); ?>">DynaVap</a>
-                <a href="<?php echo esc_url( home_url( '/brand/pax' ) ); ?>">PAX</a>
-                <a href="<?php echo esc_url( get_post_type_archive_link( 'brand' ) ); ?>">View 300+</a>
+                <h5>Brands We Carry</h5>
+                <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">Cookies</a>
+                <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">DynaVap</a>
+                <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">PAX</a>
+                <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">View 300+</a>
             </div>
             <div class="foot-col">
                 <h5>Resources</h5>
