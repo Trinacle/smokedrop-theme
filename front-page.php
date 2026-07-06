@@ -88,14 +88,39 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
           <div class="lw-stat"><div class="n">1,000+</div><div class="l">Retailers</div></div>
         </div>
       </div>
+      <?php
+      // Real brand logos (verified working files from thesmokedrop.com/wp-content/uploads/)
+      $sdn_brand_row1 = array(
+          array( 'name' => 'PAX', 'file' => '2023/07/pax-1-300x162.png' ),
+          array( 'name' => 'Puffco', 'file' => '2023/07/puffco-300x162.png' ),
+          array( 'name' => 'RAW', 'file' => '2023/07/raw-300x162.png' ),
+          array( 'name' => 'Cookies', 'file' => '2023/07/brand-cookies-2-300x162.png' ),
+          array( 'name' => 'GRAV', 'file' => '2023/07/gravb-300x162.png' ),
+          array( 'name' => 'Dr. Dabber', 'file' => '2023/07/drdabber-300x162.png' ),
+          array( 'name' => 'Vessel', 'file' => '2024/08/vessel0-300x162.jpg' ),
+          array( 'name' => 'Pulsar', 'file' => '2023/07/pulsar-300x162.png' ),
+      );
+      $sdn_brand_row2 = array(
+          array( 'name' => 'Hemper', 'file' => '2023/07/hemper-300x162.png' ),
+          array( 'name' => 'Marley Natural', 'file' => '2023/07/marley-300x162.png' ),
+          array( 'name' => 'Eyce', 'file' => '2023/07/eyce-300x162.png' ),
+          array( 'name' => 'Wax Maid', 'file' => '2023/07/wax-maid-300x162.png' ),
+          array( 'name' => 'Firefly', 'file' => '2024/08/firefly-300x162.jpg' ),
+          array( 'name' => 'Alchemy Naturals', 'file' => '2024/08/alchemy-naturals-300x162.jpg' ),
+          array( 'name' => 'AFG Distribution', 'file' => '2024/08/afg-logo-hd-300x162.png' ),
+          array( 'name' => 'O.pen', 'file' => '2024/08/o.pen_-300x162.jpg' ),
+      );
+      ?>
       <div class="lw-wall">
         <div class="lw-row">
-          <span class="lgo">PAX</span><span class="lgo">Puffco</span><span class="lgo">RAW</span><span class="lgo">Cookies</span><span class="lgo">GRAV</span><span class="lgo">Dr.&nbsp;Dabber</span><span class="lgo">Vessel</span><span class="lgo">Storz&nbsp;&amp;&nbsp;Bickel</span><span class="lgo">Empire&nbsp;Glassworks</span><span class="lgo">Pulsar</span>
-          <span class="lgo">PAX</span><span class="lgo">Puffco</span><span class="lgo">RAW</span><span class="lgo">Cookies</span><span class="lgo">GRAV</span><span class="lgo">Dr.&nbsp;Dabber</span><span class="lgo">Vessel</span><span class="lgo">Storz&nbsp;&amp;&nbsp;Bickel</span><span class="lgo">Empire&nbsp;Glassworks</span><span class="lgo">Pulsar</span>
+          <?php for ( $r1 = 0; $r1 < 2; $r1++ ) : foreach ( $sdn_brand_row1 as $b ) : ?>
+            <span class="lgo"><img class="lgo-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['file'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy"></span>
+          <?php endforeach; endfor; ?>
         </div>
         <div class="lw-row rev" style="margin-top:40px;">
-          <span class="lgo">Afghan&nbsp;Hemp</span><span class="lgo">Tyson&nbsp;2.0</span><span class="lgo">G-Pen</span><span class="lgo">Stundenglass</span><span class="lgo">Hemper</span><span class="lgo">Davinci</span><span class="lgo">Marley&nbsp;Natural</span><span class="lgo">Smoke&nbsp;Cartel</span><span class="lgo">DankStop</span><span class="lgo">Ooze</span>
-          <span class="lgo">Afghan&nbsp;Hemp</span><span class="lgo">Tyson&nbsp;2.0</span><span class="lgo">G-Pen</span><span class="lgo">Stundenglass</span><span class="lgo">Hemper</span><span class="lgo">Davinci</span><span class="lgo">Marley&nbsp;Natural</span><span class="lgo">Smoke&nbsp;Cartel</span><span class="lgo">DankStop</span><span class="lgo">Ooze</span>
+          <?php for ( $r2 = 0; $r2 < 2; $r2++ ) : foreach ( $sdn_brand_row2 as $b ) : ?>
+            <span class="lgo"><img class="lgo-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['file'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy"></span>
+          <?php endforeach; endfor; ?>
         </div>
       </div>
       <div class="lw-foot">

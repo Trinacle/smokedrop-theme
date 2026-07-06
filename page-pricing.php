@@ -44,12 +44,20 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
     <!-- PRICING TIERS -->
     <section class="sec" style="padding-top:0;">
       <div class="wrap">
-        <div class="price-grid-2">
+        <div class="pricing-toggle reveal">
+          <span class="pt-label pt-label-monthly is-active">Monthly</span>
+          <button type="button" id="billing-toggle" class="pt-switch" aria-pressed="false" aria-label="Toggle monthly or yearly billing"><span class="pt-knob"></span></button>
+          <span class="pt-label pt-label-yearly">Yearly <span class="pt-badge">Save up to 24%</span></span>
+        </div>
+
+        <div class="price-grid-2" id="price-grid">
           <div class="price-card featured reveal">
             <div class="p-badge">For Retailers</div>
             <div class="p-tier">Retailer</div>
-            <div class="p-amt">$99.99<small>/mo</small></div>
-            <div class="p-yearly">or <strong>$799.99/yr</strong> &mdash; save 24%</div>
+            <div class="p-amt billing-monthly">$99.99<small>/mo</small></div>
+            <div class="p-amt billing-yearly">$66.67<small>/mo</small></div>
+            <div class="p-yearly billing-monthly">or <strong>$799.99/yr</strong> &mdash; save 24%</div>
+            <div class="p-yearly billing-yearly">$799.99 billed annually &mdash; save 24%</div>
             <div class="p-desc" style="margin-top:14px;">Import unlimited products and buy wholesale from hundreds of suppliers.</div>
             <ul class="p-feats">
               <li><?php echo $check_svg; // phpcs:ignore ?>Import unlimited products into your store</li>
@@ -67,8 +75,10 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
           <div class="price-card reveal reveal-d1">
             <div class="p-badge" style="background:var(--ink);">For Suppliers</div>
             <div class="p-tier">Supplier</div>
-            <div class="p-amt">$49.99<small>/mo</small></div>
-            <div class="p-yearly">or <strong>$499.99/yr</strong> &mdash; save 17%</div>
+            <div class="p-amt billing-monthly">$49.99<small>/mo</small></div>
+            <div class="p-amt billing-yearly">$41.67<small>/mo</small></div>
+            <div class="p-yearly billing-monthly">or <strong>$499.99/yr</strong> &mdash; save 17%</div>
+            <div class="p-yearly billing-yearly">$499.99 billed annually &mdash; save 17%</div>
             <div class="p-desc" style="margin-top:14px;">Supply unlimited products and sell wholesale to hundreds of retailers.</div>
             <ul class="p-feats">
               <li><?php echo $check_svg; // phpcs:ignore ?>Supply unlimited products</li>
@@ -132,6 +142,24 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
       </div>
     </section>
 </main>
+
+<script>
+(function(){
+  var toggle = document.getElementById('billing-toggle');
+  var grid   = document.getElementById('price-grid');
+  var mLabel = document.querySelector('.pt-label-monthly');
+  var yLabel = document.querySelector('.pt-label-yearly');
+  if (!toggle || !grid) return;
+  toggle.addEventListener('click', function(){
+    var yearly = !grid.classList.contains('is-yearly');
+    grid.classList.toggle('is-yearly', yearly);
+    toggle.classList.toggle('is-yearly', yearly);
+    toggle.setAttribute('aria-pressed', yearly ? 'true' : 'false');
+    if (mLabel) mLabel.classList.toggle('is-active', !yearly);
+    if (yLabel) yLabel.classList.toggle('is-active', yearly);
+  });
+})();
+</script>
 
 <?php
 get_footer();

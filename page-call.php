@@ -29,16 +29,9 @@ $contact_url = home_url( '/contact' );
     <section class="sec" style="padding-top:0;">
       <div class="wrap wrap-tight">
         <div class="scheduler-embed reveal">
-          <?php
-          /**
-           * Paste the real scheduler embed here (e.g. a Calendly inline widget):
-           *
-           * <div class="calendly-inline-widget" data-url="https://calendly.com/your-slug" style="min-width:320px;height:640px;"></div>
-           * <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
-           */
-          ?>
-          <p>Scheduler coming soon. In the meantime, <a href="<?php echo esc_url( $contact_url ); ?>" style="color:var(--green-xl);">contact us</a> and we'll set up a time.</p>
+          <div class="calendly-inline-widget" data-url="https://calendly.com/d/36t-kf9-qmx/the-smokedrop-on-boarding-call" style="min-width:320px;width:100%;height:680px;"></div>
         </div>
+        <p class="center form-note" style="margin-top:20px;">Trouble loading the scheduler? <a href="<?php echo esc_url( $contact_url ); ?>" style="color:var(--green-xl);">Contact us</a> and we'll set up a time.</p>
       </div>
     </section>
 </main>

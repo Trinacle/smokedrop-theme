@@ -33,6 +33,17 @@ function sdn_enqueue() {
         SDN_VERSION,
         true // load in footer
     );
+
+    // Calendly scheduler widget — only on the Schedule Call page
+    if ( is_page_template( 'page-call.php' ) ) {
+        wp_enqueue_script(
+            'sdn-calendly',
+            'https://assets.calendly.com/assets/external/widget.js',
+            array(),
+            null,
+            true
+        );
+    }
 }
 
 /* ---------- Add <html> class for theme-color (helps mobile browsers) ---------- */

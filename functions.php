@@ -73,6 +73,8 @@ function sdn_flag_bespoke_template( $template ) {
         'front-page.php', 'page-pricing.php', 'page-retailers.php',
         'page-suppliers.php', 'page-platform.php', 'page-compare.php',
         'page-industries.php', 'page-demo.php', 'page-call.php',
+        'page-brands.php', 'page-contact.php', 'page-about.php',
+        'home.php', 'category.php', 'single.php',
         'archive-brand.php', 'single-brand.php',
     );
     if ( in_array( basename( $template ), $bespoke, true ) ) {
