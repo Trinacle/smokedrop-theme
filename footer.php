@@ -39,7 +39,7 @@
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Overview</a>
                 <a href="<?php echo esc_url( home_url( '/retailers' ) ); ?>">For Retailers</a>
                 <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Suppliers</a>
-                <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Wholesalers</a>
+                <a href="<?php echo esc_url( home_url( '/wholesalers' ) ); ?>">For Wholesalers</a>
                 <a href="<?php echo esc_url( home_url( '/pricing' ) ); ?>">Pricing</a>
                 <a href="<?php echo esc_url( home_url( '/platform' ) ); ?>">Integrations</a>
             </div>
@@ -47,15 +47,16 @@
                 <h5>Solutions</h5>
                 <a href="<?php echo esc_url( home_url( '/retailers' ) ); ?>">For Retailers</a>
                 <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Suppliers</a>
-                <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Wholesalers</a>
+                <a href="<?php echo esc_url( home_url( '/wholesalers' ) ); ?>">For Wholesalers</a>
                 <a href="<?php echo esc_url( home_url( '/industries' ) ); ?>">Industries</a>
                 <a href="<?php echo esc_url( get_post_type_archive_link( 'product' ) ?: home_url( '/shop' ) ); ?>">Marketplace</a>
             </div>
             <div class="foot-col">
                 <h5>Brands We Carry</h5>
-                <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">Cookies</a>
-                <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">DynaVap</a>
-                <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">PAX</a>
+                <a href="<?php echo esc_url( home_url( '/brand/cookies/' ) ); ?>">Cookies</a>
+                <a href="<?php echo esc_url( home_url( '/brand/pax/' ) ); ?>">PAX</a>
+                <a href="<?php echo esc_url( home_url( '/brand/puffco/' ) ); ?>">Puffco</a>
+                <a href="<?php echo esc_url( home_url( '/brand/vessel/' ) ); ?>">Vessel</a>
                 <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">View 300+</a>
             </div>
             <div class="foot-col">
@@ -63,6 +64,8 @@
                 <a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">Blog</a>
                 <a href="<?php echo esc_url( home_url( '/testimonials' ) ); ?>">Testimonials</a>
                 <a href="<?php echo esc_url( home_url( '/help' ) ); ?>">Help Center</a>
+                <a href="<?php echo esc_url( home_url( '/demo' ) ); ?>">Get a Demo</a>
+                <a href="<?php echo esc_url( home_url( '/call' ) ); ?>">Schedule Call</a>
                 <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>">Contact</a>
                 <a href="<?php echo esc_url( home_url( '/about' ) ); ?>">About</a>
             </div>

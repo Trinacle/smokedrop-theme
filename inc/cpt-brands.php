@@ -110,3 +110,36 @@ function sdn_flush_brand_rewrites() {
     sdn_register_virtual_brand_rewrite();
     flush_rewrite_rules();
 }
+
+/* ---------- Seed the Brands CPT with the 16 real marketplace brands ----------
+ * Runs once on init (guarded by the sdn_brands_seeded option), so the brands
+ * appear in wp-admin → Brands without needing WP-CLI or manual entry. Idempotent:
+ * skips any slug that already exists. Trigger again by deleting the option.
+ */
+add_action( 'init', 'sdn_seed_real_brands', 20 );
+function sdn_seed_real_brands() {
+    if ( get_option( 'sdn_brands_seeded' ) ) return;
+    if ( ! post_type_exists( 'brand' ) ) return;
+
+    foreach ( sdn_real_brand_logos() as $b ) {
+        // Skip if a brand post already exists for this slug.
+        if ( get_page_by_path( $b['slug'], OBJECT, 'brand' ) ) continue;
+
+        $post_id = wp_insert_post( array(
+            'post_type'    => 'brand',
+            'post_status'  => 'publish',
+            'post_title'   => $b['name'],
+            'post_name'    => $b['slug'],
+            'post_content' => $b['name'] . ' products are available for dropship and wholesale on SmokeDrop. Import to your store in a few clicks, with automatic inventory sync and blind dropshipping.',
+        ) );
+
+        if ( $post_id && ! is_wp_error( $post_id ) ) {
+            // Attach the logo URL as the brand_logo post meta (used by
+            // sdn_brand_logo_url() when rendering single-brand.php).
+            $logo_url = home_url( '/wp-content/uploads/' . $b['file'] );
+            update_post_meta( $post_id, 'brand_logo', $logo_url );
+        }
+    }
+
+    update_option( 'sdn_brands_seeded', 1 );
+}
