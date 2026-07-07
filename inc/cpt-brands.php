@@ -61,45 +61,31 @@ function sdn_bind_brand_cpt_to_product_brand( $taxonomy, $object_type, $args ) {
     }
 }
 
-/* ---------- Virtual brand fallback (for brands not yet in the CPT) ----------
- * Now that the 16 real brands are seeded as CPT posts, WP's native permalink
- * rules handle /brand/{slug}/ and load single-brand.php automatically.
- * This rewrite is a LOW-priority fallback: it only catches brands that exist
- * in sdn_brand_directory() but have no CPT post, so newly-added brands work
- * immediately without a manual wp-admin entry.
+/* ---------- Brand URL routing (/brand/{slug}/) ----------
+ * We route ALL /brand/{slug}/ traffic through one explicit rewrite rule +
+ * pre_get_posts handler, instead of relying on the brand CPT's native
+ * permalink rules (which proved unreliable to flush on this LiteSpeed host).
+ * single-brand.php then resolves the brand — from a real CPT post if one
+ * exists, otherwise from the directory array. This works for all 380 brands
+ * whether or not they have a CPT post, with a single rule.
  */
 add_action( 'init', 'sdn_register_virtual_brand_rewrite' );
 function sdn_register_virtual_brand_rewrite() {
-    // 'bottom' priority = only used if WP's native CPT permalink doesn't match.
-    add_rewrite_rule( '^brand/([a-z0-9-]+)/?$', 'index.php?sdn_brand_slug=$matches[1]', 'bottom' );
+    add_rewrite_rule( '^brand/([a-z0-9-]+)/?$', 'index.php?sdn_brand_slug=$matches[1]', 'top' );
     add_rewrite_tag( '%sdn_brand_slug%', '([^&]+)' );
     add_rewrite_tag( '%sdn_virtual_brand%', '([01])' );
 }
 
-/* ---------- Resolve a virtual brand fallback into the main query ---------- */
+/* ---------- Resolve a /brand/{slug}/ request into the main query ---------- */
 add_action( 'pre_get_posts', 'sdn_resolve_virtual_brand', 1 );
 function sdn_resolve_virtual_brand( $query ) {
     if ( is_admin() || ! $query->is_main_query() ) return;
     $slug = $query->get( 'sdn_brand_slug' );
     if ( ! $slug ) return;
 
-    // Safety: if a real CPT brand post exists for this slug, don't intercept —
-    // WP's native single-brand.php template will handle it.
-    $existing = get_page_by_path( $slug, OBJECT, 'brand' );
-    if ( $existing ) {
-        $query->set( 'sdn_brand_slug', '' ); // clear so native handling proceeds
-        return;
-    }
-
-    // Verify the slug is a known brand in the directory; otherwise let it 404.
-    $known = false;
-    foreach ( sdn_brand_directory() as $b ) {
-        $bslug = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $b['name'] );
-        if ( $bslug === $slug ) { $known = true; break; }
-    }
-    if ( ! $known ) return;
-
+    // Flag so template_include loads single-brand.php for every brand URL.
     $query->set( 'sdn_virtual_brand', 1 );
+    $query->is_404 = false;
     $query->is_single = false;
     $query->is_page = false;
     $query->is_archive = false;

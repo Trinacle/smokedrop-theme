@@ -43,8 +43,9 @@ if ( have_posts() ) {
 
 // Fall back to virtual brand data from the directory array.
 if ( ! $sdn_name ) {
-    // Virtual brands arrive via the sdn_brand_slug query var (set by the
-    // rewrite rule in cpt-brands.php). Real CPT posts arrive via have_posts().
+    // All /brand/{slug}/ traffic arrives via the sdn_brand_slug query var
+    // (routed by the rewrite rule in cpt-brands.php). Try a real CPT post
+    // first, then the directory array.
     $requested = get_query_var( 'sdn_brand_slug' );
     if ( ! $requested && isset( $GLOBALS['wp']->query_vars['name'] ) ) {
         $requested = $GLOBALS['wp']->query_vars['name'];
@@ -52,13 +53,38 @@ if ( ! $sdn_name ) {
     if ( ! $requested && isset( $GLOBALS['wp']->query_vars['brand'] ) ) {
         $requested = $GLOBALS['wp']->query_vars['brand'];
     }
-    foreach ( sdn_brand_directory() as $b ) {
-        $bslug = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $b['name'] );
-        if ( $bslug === $requested ) {
-            $sdn_slug     = $bslug;
-            $sdn_name     = str_replace( '\\u2019', "'", $b['name'] );
-            $sdn_logo_url = ! empty( $b['logo'] ) ? home_url( '/wp-content/uploads/' . $b['logo'] ) : '';
-            break;
+
+    // 1) Real CPT brand post by slug (takes priority over the directory array).
+    if ( $requested ) {
+        $cpt_post = get_page_by_path( $requested, OBJECT, 'brand' );
+        if ( $cpt_post && $cpt_post->post_status === 'publish' ) {
+            $sdn_is_cpt   = true;
+            $sdn_slug     = $cpt_post->post_name;
+            $sdn_name     = get_the_title( $cpt_post );
+            $sdn_logo_url = sdn_brand_logo_url( $cpt_post->ID );
+        }
+    }
+
+    // 2) Directory array fallback (for brands not yet in the CPT, or to fill
+    //    in a logo when the CPT post has none).
+    if ( ! $sdn_name ) {
+        foreach ( sdn_brand_directory() as $b ) {
+            $bslug = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $b['name'] );
+            if ( $bslug === $requested ) {
+                $sdn_slug     = $bslug;
+                $sdn_name     = str_replace( '\\u2019', "'", $b['name'] );
+                $sdn_logo_url = ! empty( $b['logo'] ) ? home_url( '/wp-content/uploads/' . $b['logo'] ) : '';
+                break;
+            }
+        }
+    }
+
+    // 3) If neither, but a CPT post exists, use its title.
+    if ( ! $sdn_name && $requested ) {
+        $cpt_post = get_page_by_path( $requested, OBJECT, 'brand' );
+        if ( $cpt_post && $cpt_post->post_status === 'publish' ) {
+            $sdn_slug = $cpt_post->post_name;
+            $sdn_name = get_the_title( $cpt_post );
         }
     }
 }
