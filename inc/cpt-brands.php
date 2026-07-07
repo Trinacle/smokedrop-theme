@@ -166,8 +166,8 @@ function sdn_seed_real_brands() {
  */
 add_action( 'init', 'sdn_flush_brand_rewrites_once', 30 );
 function sdn_flush_brand_rewrites_once() {
-    if ( get_option( 'sdn_brand_rewrite_version' ) === '2' ) return;
+    if ( get_option( 'sdn_brand_rewrite_version' ) === '3' ) return;
     sdn_register_virtual_brand_rewrite();
     flush_rewrite_rules();
-    update_option( 'sdn_brand_rewrite_version', '2' );
+    update_option( 'sdn_brand_rewrite_version', '3' );
 }
