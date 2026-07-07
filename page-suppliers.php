@@ -82,6 +82,27 @@ $demo_url    = home_url( '/demo' );
       </div>
     </section>
 
+    <!-- WHY BECOME A SUPPLIER -->
+    <section class="sec">
+      <div class="wrap">
+        <div style="max-width:780px;margin-bottom:48px;">
+          <p class="eyebrow reveal">Why become a supplier?</p>
+          <h2 class="display reveal reveal-d1" style="margin-top:24px;">The fastest, lowest-cost path<br><span class="italic gradient-text">to retail distribution.</span></h2>
+        </div>
+        <div class="feat-grid">
+          <div class="feat-card reveal"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h4>Hundreds of retailers, one integration</h4><p>List once and reach hundreds of vetted smoke shop retailers. No per-store setup, no per-account management.</p></div>
+          <div class="feat-card reveal reveal-d1"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h4>100% free to start</h4><p>No listing fees, no transaction fees, no commissions. The Supplier plan ($49.99/mo) only unlocks advanced automation when you're ready to scale.</p></div>
+          <div class="feat-card reveal reveal-d2"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/></svg></div><h4>Fully automated orders</h4><p>Customer orders route straight to your fulfillment. Tracking numbers sync back to retailers and end customers automatically.</p></div>
+          <div class="feat-card reveal"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-3 3 2 4-5"/></svg></div><h4>Demand analytics</h4><p>See sell-through by retailer, region, and SKU. Forecast demand and restock before you run out.</p></div>
+          <div class="feat-card reveal reveal-d1"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/><polyline points="9 12 11 14 15 10"/></svg></div><h4>MAP enforcement</h4><p>Set minimum advertised pricing once. We block underpriced listings automatically across every retailer.</p></div>
+          <div class="feat-card reveal reveal-d2"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h13l4 4v6h-3"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div><h4>Automated payouts</h4><p>Escrow-based supplier payments on autopilot, with batch invoicing, Net Terms, and credit memos.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BRANDS MARQUEE -->
+    <?php sdn_brands_marquee_section(); ?>
+
     <!-- Onboarding steps -->
     <section class="sec">
       <div class="wrap">

@@ -98,6 +98,12 @@ $check_svg  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
     </div>
   </section>
 
+  <!-- BRANDS MARQUEE -->
+  <?php sdn_brands_marquee_section(); ?>
+
+  <!-- PRODUCTS WITH BUBBLE FILTERS -->
+  <?php sdn_products_section( 8, 'Buy wholesale' ); ?>
+
   <!-- PRICING TEASER -->
   <section class="sec">
     <div class="wrap wrap-tight center">

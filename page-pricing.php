@@ -35,7 +35,6 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
 
         <div class="price-grid-2 reveal reveal-d3" id="price-grid">
           <div class="price-card featured">
-            <div class="p-badge">For Retailers</div>
             <div class="p-tier">Retailer</div>
             <div class="p-amt billing-monthly">$99.99<small>/mo</small></div>
             <div class="p-amt billing-yearly">$66.67<small>/mo</small></div>
@@ -56,7 +55,6 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
           </div>
 
           <div class="price-card">
-            <div class="p-badge" style="background:var(--ink);">For Suppliers</div>
             <div class="p-tier">Supplier</div>
             <div class="p-amt billing-monthly">$49.99<small>/mo</small></div>
             <div class="p-amt billing-yearly">$41.67<small>/mo</small></div>
@@ -83,7 +81,7 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
     <section class="sec" style="background:var(--bg-2);">
       <div class="wrap center">
         <p class="eyebrow reveal" style="justify-content:center;">Included in every plan</p>
-        <h2 class="display reveal reveal-d1" style="margin-top:24px;font-size:clamp(2rem,4vw,3.4rem);">No Transaction Fees.<br>No Commissions. Ever.</h2>
+        <h2 class="display reveal reveal-d1" style="margin-top:24px;font-size:clamp(2rem,4vw,3.4rem);">No Transaction Fees.<br>No Commissions.</h2>
         <div class="bento-tag-row reveal reveal-d2" style="justify-content:center;margin-top:40px;">
           <span class="bento-tag">7-day free trial</span>
           <span class="bento-tag">No transaction fees</span>

@@ -28,7 +28,7 @@ $brand_terms = get_terms( array( 'taxonomy' => 'product_brand', 'hide_empty' => 
     <div class="ph-inner center">
       <p class="eyebrow reveal" style="justify-content:center;">The Marketplace</p>
       <h1 class="display reveal reveal-d1" style="margin:24px 0;">20,000+ products.<br><span class="italic gradient-text">One integration.</span></h1>
-      <p class="lede reveal reveal-d2" style="max-width:620px;margin:0 auto;">Water pipes, vaporizers, CBD, glass &amp; accessories from 300+ brands. Dropship or buy wholesale, with real-time inventory sync.</p>
+      <p class="lede reveal reveal-d2" style="max-width:780px;margin:0 auto;">Water pipes, vaporizers, CBD, glass &amp; accessories from 300+ brands. Dropship or buy wholesale, with real-time inventory sync.</p>
       <div class="hero-actions reveal reveal-d3" style="justify-content:center;margin-top:32px;">
         <a href="<?php echo esc_url( $register ); ?>" class="btn btn-lime btn-lg">Start Free Trial</a>
         <a href="<?php echo esc_url( $brands_url ); ?>" class="btn btn-outline btn-lg">Browse brands</a>

@@ -95,6 +95,32 @@
     });
   }
 
+  /* ---------- Header search overlay ---------- */
+  const searchTrigger = document.getElementById('header-search-trigger');
+  const searchOverlay = document.getElementById('header-search-overlay');
+  if (searchTrigger && searchOverlay) {
+    const openSearch = function () {
+      searchOverlay.hidden = false;
+      document.body.style.overflow = 'hidden';
+      const input = searchOverlay.querySelector('input');
+      if (input) setTimeout(function () { input.focus(); }, 50);
+    };
+    const closeSearch = function () {
+      searchOverlay.hidden = true;
+      document.body.style.overflow = '';
+    };
+    searchTrigger.addEventListener('click', openSearch);
+    searchOverlay.addEventListener('click', function (e) {
+      if (e.target === searchOverlay || e.target.classList.contains('header-search-close')) closeSearch();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !searchOverlay.hidden) closeSearch();
+      if (e.key === '/' && searchOverlay.hidden && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault(); openSearch();
+      }
+    });
+  }
+
   /* ---------- Reveal + line-mask ---------- */
   const revealEls = document.querySelectorAll('.reveal, .line-mask');
   if ('IntersectionObserver' in window) {

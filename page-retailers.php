@@ -105,6 +105,12 @@ $brands_url  = home_url( '/brands' );
       </div>
     </section>
 
+    <!-- BRANDS MARQUEE -->
+    <?php sdn_brands_marquee_section(); ?>
+
+    <!-- PRODUCTS WITH BUBBLE FILTERS -->
+    <?php sdn_products_section( 8, 'Stock these best-sellers' ); ?>
+
     <!-- CTA -->
     <section class="sec" style="background:var(--bg-2);">
       <div class="wrap">

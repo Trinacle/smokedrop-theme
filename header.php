@@ -31,6 +31,9 @@
         <div class="nav-item has-mega" data-menu="brands">
             <a class="nav-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>">Brands <?php echo sdn_chevron(); // phpcs:ignore ?></a>
         </div>
+        <div class="nav-item has-mega" data-menu="resources">
+            <a class="nav-link" href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">Resources <?php echo sdn_chevron(); // phpcs:ignore ?></a>
+        </div>
         <?php
         // Direct nav items — editable via WordPress Menus (Appearance > Menus)
         // Fallback to hardcoded links if no menu is assigned
@@ -47,21 +50,32 @@
         } else {
             // Hardcoded fallback (matches the static prototype)
             ?>
-            <div class="nav-item"><a class="nav-link" href="<?php echo esc_url( get_post_type_archive_link( 'product' ) ?: home_url( '/shop' ) ); ?>">Marketplace</a></div>
+            <div class="nav-item"><a class="nav-link" href="<?php echo esc_url( get_post_type_archive_link( 'product' ) ?: home_url( '/marketplace' ) ); ?>">Marketplace</a></div>
             <div class="nav-item"><a class="nav-link" href="<?php echo esc_url( home_url( '/pricing' ) ); ?>">Pricing</a></div>
-            <div class="nav-item"><a class="nav-link" href="<?php echo esc_url( home_url( '/compare' ) ); ?>">Compare</a></div>
-            <div class="nav-item"><a class="nav-link" href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">Resources</a></div>
+            <div class="nav-item has-mega" data-menu="advertise"><a class="nav-link" href="<?php echo esc_url( home_url( '/advertise' ) ); ?>">Advertise <?php echo sdn_chevron(); // phpcs:ignore ?></a></div>
             <?php
         }
         ?>
     </nav>
 
     <div class="nav-cta">
+        <button class="header-search-btn" aria-label="Search products" id="header-search-trigger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
         <a href="https://apps.shopify.com/smoke-drop" class="btn btn-outline hide-mob" style="font-size:.85rem;padding:8px 16px;">Shopify App</a>
         <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime">Get Started</a>
         <button class="menu-trigger" aria-label="Menu" aria-expanded="false"></button>
     </div>
 </header>
+
+<!-- HEADER SEARCH OVERLAY -->
+<div class="header-search-overlay" id="header-search-overlay" hidden>
+    <form role="search" method="get" action="<?php echo esc_url( home_url( '/search' ) ); ?>" class="header-search-form">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" name="s" placeholder="Search 20,000+ products and brands…" autocomplete="off" autofocus>
+        <button type="button" class="header-search-close" aria-label="Close search">&times;</button>
+    </form>
+</div>
 
 <!-- SIMPLE DROPDOWN MENU -->
 <div class="mega">
@@ -79,7 +93,7 @@
                     <div class="mega-col-head">Platform</div>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/platform' ) ); ?>"><strong>Platform Overview</strong><span>How SmokeDrop works</span></a>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/pricing' ) ); ?>"><strong>Pricing</strong><span>7-day free trial, from $49.99/mo</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/compare' ) ); ?>"><strong>Compare</strong><span>vs Crowdship, Spocket, Duoplane</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/advertise' ) ); ?>"><strong>Advertise</strong><span>Reach 1,000+ retailers</span></a>
 
                     <div class="mega-col-head">Resources</div>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/testimonials' ) ); ?>"><strong>Testimonials</strong><span>What retailers say</span></a>
@@ -95,17 +109,15 @@
             <div class="mega-panel" data-panel="brands" style="display:none;">
                 <div class="mega-grid">
                     <?php
-                    // Real brands from the live marketplace (sdn_real_brand_logos()
-                    // is the source of truth until the brand CPT is populated).
+                    // Top brands (logo'd) linking to their /brand/{slug}/ page.
                     $sdn_mega_brands = sdn_real_brand_logos();
                     $sdn_brands_url  = home_url( '/brands' );
                     if ( ! empty( $sdn_mega_brands ) ) :
-                        echo '<div class="mega-col-head">All Brands</div>';
+                        echo '<div class="mega-col-head">Featured Brands</div>';
                         foreach ( $sdn_mega_brands as $b ) {
                             printf(
-                                '<a class="mega-link" href="%1$s#brand-%2$s"><strong>%3$s</strong><span>View on the marketplace</span></a>',
-                                esc_url( $sdn_brands_url ),
-                                esc_attr( $b['slug'] ),
+                                '<a class="mega-link" href="%1$s"><strong>%2$s</strong><span>View products &amp; dropship</span></a>',
+                                esc_url( home_url( '/brand/' . $b['slug'] . '/' ) ),
                                 esc_html( $b['name'] )
                             );
                         }
@@ -113,10 +125,66 @@
                     ?>
 
                     <div class="mega-col-head">Shop by Category</div>
-                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>Vaporizers</strong><span>Dry herb & concentrate</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>Hemp & CBD</strong><span>Flower, prerolls, edibles</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>Glass & Rigs</strong><span>Bongs, dab rigs, tools</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>All Brands</strong><span>Browse 300+ in the catalog</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>Vaporizers</strong><span>Dry herb &amp; concentrate</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>Hemp &amp; CBD</strong><span>Flower, prerolls, edibles</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>Glass &amp; Rigs</strong><span>Bongs, dab rigs, tools</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>All Brands</strong><span>Browse 380+ in the catalog</span></a>
+                </div>
+            </div>
+
+            <!-- RESOURCES PANEL -->
+            <div class="mega-panel" data-panel="resources" style="display:none;">
+                <div class="mega-grid">
+                    <div class="mega-col-head">Getting Started</div>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/demo' ) ); ?>"><strong>Get a Demo</strong><span>See SmokeDrop in action</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/help' ) ); ?>"><strong>Help Center</strong><span>FAQs &amp; docs</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/call' ) ); ?>"><strong>Schedule a Call</strong><span>Book a support call</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/quick-start-guide' ) ); ?>"><strong>Quick Start Guide</strong><span>Live in under an hour</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/recomend-tools-for-ecommerce' ) ); ?>"><strong>Recommended Tools</strong><span>E-commerce stack we trust</span></a>
+
+                    <?php
+                    // Blog categories (top 6 by post count).
+                    $sdn_mega_cats = get_categories( array(
+                        'taxonomy'   => 'category',
+                        'hide_empty' => true,
+                        'number'     => 6,
+                        'orderby'    => 'count',
+                        'order'      => 'DESC',
+                    ) );
+                    if ( ! empty( $sdn_mega_cats ) && ! is_wp_error( $sdn_mega_cats ) ) :
+                        echo '<div class="mega-col-head">Blog Categories</div>';
+                        foreach ( $sdn_mega_cats as $cat ) {
+                            printf(
+                                '<a class="mega-link" href="%1$s"><strong>%2$s</strong><span>%3$s articles</span></a>',
+                                esc_url( get_category_link( $cat ) ),
+                                esc_html( $cat->name ),
+                                (int) $cat->count
+                            );
+                        }
+                    endif;
+                    ?>
+
+                    <div class="mega-col-head">More</div>
+                    <a class="mega-link" href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>"><strong>Blog</strong><span>Guides &amp; insights</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/testimonials' ) ); ?>"><strong>Testimonials</strong><span>What retailers say</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/contact' ) ); ?>"><strong>Contact</strong><span>Talk to our team</span></a>
+                </div>
+            </div>
+
+            <!-- ADVERTISE PANEL -->
+            <div class="mega-panel" data-panel="advertise" style="display:none;">
+                <div class="mega-grid">
+                    <div class="mega-col-head">Advertise with SmokeDrop</div>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/advertise' ) ); ?>"><strong>Featured Listings</strong><span>Top of search &amp; category</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/advertise' ) ); ?>#homepage"><strong>Homepage Takeovers</strong><span>Logo wall &amp; hero placement</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/advertise' ) ); ?>#newsletter"><strong>Newsletter Sponsorship</strong><span>Reach 1,000+ retailers</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/advertise' ) ); ?>#sponsored"><strong>Sponsored Content</strong><span>Brand spotlights &amp; guides</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/advertise' ) ); ?>#retargeting"><strong>Retargeting &amp; Display</strong><span>Reach buyers across the web</span></a>
+
+                    <div class="mega-col-head">Why advertise</div>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/advertise' ) ); ?>"><strong>Audience</strong><span>1,000+ active smoke shop retailers</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/advertise' ) ); ?>"><strong>Pricing</strong><span>From $199/mo, no long-term contract</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/contact' ) ); ?>"><strong>Talk to Sales</strong><span>Build a custom ad package</span></a>
                 </div>
             </div>
 
@@ -129,11 +197,13 @@
     <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
     <a href="<?php echo esc_url( home_url( '/retailers' ) ); ?>">For Retailers</a>
     <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Suppliers</a>
-    <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Wholesalers</a>
+    <a href="<?php echo esc_url( home_url( '/wholesalers' ) ); ?>">For Wholesalers</a>
     <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">Brands We Carry</a>
-    <a href="<?php echo esc_url( get_post_type_archive_link( 'product' ) ?: home_url( '/shop' ) ); ?>">Marketplace</a>
+    <a href="<?php echo esc_url( get_post_type_archive_link( 'product' ) ?: home_url( '/marketplace' ) ); ?>">Marketplace</a>
     <a href="<?php echo esc_url( home_url( '/pricing' ) ); ?>">Pricing</a>
+    <a href="<?php echo esc_url( home_url( '/advertise' ) ); ?>">Advertise</a>
     <a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">Blog</a>
+    <a href="<?php echo esc_url( home_url( '/help' ) ); ?>">Help Center</a>
     <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>">Contact</a>
 </div>
 

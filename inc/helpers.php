@@ -365,3 +365,92 @@ function sdn_integration_bubbles( $platforms = array(), $variant = '' ) {
     }
     echo '</div>';
 }
+
+/* ---------- Render a brands logo marquee (reusable section) ---------- */
+/* Uses the logo'd brands from sdn_brand_directory() — same look as the
+ * homepage logo wall. Optional $limit caps how many logos appear. */
+function sdn_brands_marquee_section( $limit = 12 ) {
+    $all = array_filter( sdn_brand_directory(), function ( $b ) { return ! empty( $b['logo'] ); } );
+    if ( $limit ) $all = array_slice( $all, 0, $limit );
+    if ( empty( $all ) ) return;
+    $row_a = array_slice( $all, 0, ceil( count( $all ) / 2 ) );
+    $row_b = array_slice( $all, ceil( count( $all ) / 2 ) );
+    ?>
+    <section class="logo-wall-white reveal">
+      <div class="lw-wall">
+        <div class="lw-row">
+          <?php for ( $i = 0; $i < 3; $i++ ) : foreach ( $row_a as $b ) : ?>
+            <span class="lgo"><img class="lgo-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['logo'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy"></span>
+          <?php endforeach; endfor; ?>
+        </div>
+        <?php if ( ! empty( $row_b ) ) : ?>
+        <div class="lw-row rev" style="margin-top:40px;">
+          <?php for ( $i = 0; $i < 3; $i++ ) : foreach ( $row_b as $b ) : ?>
+            <span class="lgo"><img class="lgo-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['logo'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy"></span>
+          <?php endforeach; endfor; ?>
+        </div>
+        <?php endif; ?>
+      </div>
+    </section>
+    <?php
+}
+
+/* ---------- Render a products section with bubble category filters ---------- */
+/* Pulls real WooCommerce products (latest), grouped by category bubble. The
+ * bubbles are non-functional filter chips (visual) — clicking scrolls to the
+ * marketplace. $limit controls how many product cards show. */
+function sdn_products_section( $limit = 8, $heading = 'Featured products' ) {
+    if ( ! class_exists( 'WooCommerce' ) ) return;
+
+    $products = wc_get_products( array(
+        'status'  => 'publish',
+        'limit'   => $limit,
+        'orderby' => 'date',
+        'order'   => 'DESC',
+    ) );
+    if ( empty( $products ) ) return;
+
+    $shop_url = get_post_type_archive_link( 'product' ) ?: home_url( '/marketplace' );
+    $cats     = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => true, 'number' => 8 ) );
+    ?>
+    <section class="sec">
+      <div class="wrap">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;margin-bottom:36px;">
+          <div>
+            <p class="eyebrow reveal">From the marketplace</p>
+            <h2 class="h-sec reveal reveal-d1" style="margin-top:14px;"><?php echo esc_html( $heading ); ?></h2>
+          </div>
+          <a href="<?php echo esc_url( $shop_url ); ?>" class="link-arrow reveal reveal-d2">Browse all <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+
+        <?php if ( ! empty( $cats ) && ! is_wp_error( $cats ) ) : ?>
+          <div class="filter-bubbles reveal reveal-d1" style="margin-bottom:32px;">
+            <?php foreach ( $cats as $c ) : ?>
+              <a href="<?php echo esc_url( get_term_link( $c ) ); ?>" class="filter-bubble"><?php echo esc_html( $c->name ); ?> <span><?php echo (int) $c->count; ?></span></a>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
+
+        <div class="market">
+          <?php
+          $d = array( '', ' reveal-d1', ' reveal-d2', ' reveal-d3' );
+          foreach ( $products as $i => $prod ) :
+              $pid   = $prod->get_id();
+              $img   = wp_get_attachment_image_url( $prod->get_image_id(), 'woocommerce_thumbnail' ) ?: 'https://images.unsplash.com/photo-1604881991720-f91add269bed?w=400&q=80';
+              $bt    = get_the_terms( $pid, 'product_brand' );
+              $bname = ( $bt && ! is_wp_error( $bt ) ) ? $bt[0]->name : '';
+              ?>
+            <a href="<?php echo esc_url( $prod->get_permalink() ); ?>" class="market-card reveal<?php echo esc_attr( $d[ $i % 4 ] ); ?>" style="text-decoration:none;color:inherit;">
+              <div class="mimg"><img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $prod->get_name() ); ?>" loading="lazy"></div>
+              <div class="mbody">
+                <?php if ( $bname ) : ?><span class="mbrand"><?php echo esc_html( $bname ); ?></span><?php endif; ?>
+                <h4><?php echo esc_html( $prod->get_name() ); ?></h4>
+                <?php if ( $prod->get_price_html() ) : ?><span class="mprice-text"><?php echo $prod->get_price_html(); // phpcs:ignore ?></span><?php endif; ?>
+              </div>
+            </a>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </section>
+    <?php
+}

@@ -79,6 +79,7 @@ function sdn_flag_bespoke_template( $template ) {
         'page-brands.php', 'page-contact.php', 'page-about.php',
         'page-sitemap.php', 'page-help.php', 'page-testimonials.php',
         'page-wholesalers.php', 'page-integrations.php', 'page-integration-platform.php',
+        'page-advertise.php', 'page-search.php',
         'home.php', 'category.php', 'single.php',
         'archive-brand.php', 'single-brand.php',
         // WooCommerce overrides live in /woocommerce/ but resolve to these

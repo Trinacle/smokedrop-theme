@@ -27,7 +27,6 @@ function sdn_seed_pages_list() {
         'suppliers'      => array( 'For Suppliers',       'page-suppliers.php' ),
         'wholesalers'    => array( 'For Wholesalers',     'page-wholesalers.php' ),
         'platform'       => array( 'Platform Overview',   'page-platform.php' ),
-        'compare'        => array( 'Compare',             'page-compare.php' ),
         'industries'     => array( 'Industries',          'page-industries.php' ),
         'brands'         => array( 'Brands We Carry',     'page-brands.php' ),
         'contact'        => array( 'Contact',             'page-contact.php' ),
@@ -37,6 +36,8 @@ function sdn_seed_pages_list() {
         'help'           => array( 'Help Center',         'page-help.php' ),
         'testimonials'   => array( 'Testimonials',        'page-testimonials.php' ),
         'sitemap'        => array( 'Sitemap',             'page-sitemap.php' ),
+        'advertise'      => array( 'Advertise',           'page-advertise.php' ),
+        'search'         => array( 'Search',              'page-search.php' ),
         // Integrations hub
         'integrations'   => array( 'Integrations',        'page-integrations.php' ),
         // Integrations sub-pages (parent = integrations -> /integrations/{slug}/)
@@ -110,13 +111,19 @@ function sdn_seed_one_page( $slug, $title, $template, $parent_slug ) {
 /* ---------- Run the seed once (gated by an option) ---------- */
 add_action( 'init', 'sdn_seed_bespoke_pages', 40 );
 function sdn_seed_bespoke_pages() {
-    if ( get_option( 'sdn_pages_seeded' ) === '2' ) return;
+    if ( get_option( 'sdn_pages_seeded' ) === '3' ) return;
     if ( ! post_type_exists( 'page' ) ) return;
 
     foreach ( sdn_seed_pages_list() as $slug => $spec ) {
         list( $title, $template ) = $spec;
         $parent = isset( $spec[2] ) ? $spec[2] : '';
         sdn_seed_one_page( $slug, $title, $template, $parent );
+    }
+
+    // Trash the obsolete Compare page (replaced by /advertise/).
+    $compare = get_page_by_path( 'compare', OBJECT, 'page' );
+    if ( $compare && $compare->post_status !== 'trash' ) {
+        wp_trash_post( $compare->ID );
     }
 
     // Point the WooCommerce shop page at the Marketplace page.
@@ -132,6 +139,6 @@ function sdn_seed_bespoke_pages() {
         update_option( 'page_on_front', $front->ID );
     }
 
-    update_option( 'sdn_pages_seeded', '2' );
+    update_option( 'sdn_pages_seeded', '3' );
     flush_rewrite_rules();
 }
