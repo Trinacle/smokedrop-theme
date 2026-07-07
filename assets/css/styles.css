@@ -459,6 +459,20 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .brand-pill:hover span:not(.bp-mark){color:var(--ink)}
 @media(max-width:900px){.brand-directory{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.brand-directory{grid-template-columns:1fr}}
+
+/* Single brand page */
+.brand-hero{padding:140px 20px 60px;background:radial-gradient(ellipse 60% 50% at 30% 0%,rgba(19,194,123,.1),transparent 70%)}
+.brand-hero-inner{display:flex;align-items:center;gap:48px;max-width:1100px;margin:0 auto;flex-wrap:wrap}
+.brand-hero-logo{flex-shrink:0;width:180px;height:180px;background:#fff;border:1px solid var(--line);border-radius:var(--r-xl);display:flex;align-items:center;justify-content:center;padding:24px;overflow:hidden}
+.brand-hero-logo img{max-width:100%;max-height:100%;object-fit:contain}
+.brand-hero-mark{font-family:var(--display);font-weight:700;font-size:3rem;color:var(--green)}
+.brand-hero-text{flex:1;min-width:280px}
+.brand-hero-text h1{font-family:var(--display);font-size:clamp(2.2rem,5vw,3.6rem);font-weight:600;letter-spacing:-.03em;line-height:1.05;margin:12px 0 18px}
+.brand-hero-desc{color:var(--ink-dim);line-height:1.6;margin-bottom:24px;max-width:560px}
+.brand-hero-text .lede{max-width:560px}
+.brand-products-sec{padding-top:60px}
+.mprice-text{display:block;color:var(--green-xl);font-family:var(--display);font-weight:600;margin-top:6px;font-size:1.05rem}
+@media(max-width:760px){.brand-hero-inner{flex-direction:column;text-align:center}.brand-hero-text .hero-actions{justify-content:center}.brand-hero-logo{margin:0 auto}}
 .logo-wall-white .lw-foot{text-align:center;margin-top:56px}
 .logo-wall-white .lw-foot a{display:inline-flex;align-items:center;gap:8px;color:#0a6b3f;font-weight:600;font-size:1.1rem}
 .logo-wall-white .lw-stats{display:flex;justify-content:center;gap:48px;margin-top:48px;flex-wrap:wrap}

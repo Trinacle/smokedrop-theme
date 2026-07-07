@@ -60,3 +60,53 @@ function sdn_bind_brand_cpt_to_product_brand( $taxonomy, $object_type, $args ) {
         register_taxonomy_for_object_type( 'product_brand', 'brand' );
     }
 }
+
+/* ---------- Virtual brand pages (work before the CPT is populated) ----------
+ * Catches /brand/{slug}/ for brands that exist in sdn_brand_directory() but
+ * don't yet have a CPT post, routing them to single-brand.php so the page
+ * works immediately (e.g. the Vessel test). Real CPT posts take priority.
+ */
+add_action( 'init', 'sdn_register_virtual_brand_rewrite' );
+function sdn_register_virtual_brand_rewrite() {
+    add_rewrite_rule( '^brand/([a-z0-9-]+)/?$', 'index.php?sdn_brand_slug=$matches[1]', 'top' );
+    add_rewrite_tag( '%sdn_brand_slug%', '([^&]+)' );
+}
+
+/* ---------- Resolve a virtual brand into the main query ---------- */
+add_action( 'pre_get_posts', 'sdn_resolve_virtual_brand', 1 );
+function sdn_resolve_virtual_brand( $query ) {
+    if ( is_admin() || ! $query->is_main_query() ) return;
+    $slug = $query->get( 'sdn_brand_slug' );
+    if ( ! $slug ) return;
+
+    // If a real CPT brand post exists for this slug, defer to it (WP will
+    // route via the single-brand template naturally).
+    $existing = get_page_by_path( $slug, OBJECT, 'brand' );
+    if ( $existing ) return;
+
+    // Otherwise treat this as a virtual brand: flag it so template_include
+    // loads single-brand.php. We don't fake a post object — single-brand.php
+    // reads the slug from get_query_var('sdn_brand_slug') directly.
+    $query->set( 'sdn_virtual_brand', true );
+    $query->is_single = false;
+    $query->is_page = false;
+    $query->is_archive = false;
+    $query->is_home = false;
+}
+
+/* ---------- Load single-brand.php for virtual brand requests ---------- */
+add_filter( 'template_include', 'sdn_virtual_brand_template', 20 );
+function sdn_virtual_brand_template( $template ) {
+    if ( get_query_var( 'sdn_virtual_brand' ) ) {
+        $candidate = get_stylesheet_directory() . '/single-brand.php';
+        if ( file_exists( $candidate ) ) return $candidate;
+    }
+    return $template;
+}
+
+/* ---------- Ensure rewrite rules are flushed on theme activation ---------- */
+add_action( 'after_switch_theme', 'sdn_flush_brand_rewrites' );
+function sdn_flush_brand_rewrites() {
+    sdn_register_virtual_brand_rewrite();
+    flush_rewrite_rules();
+}
