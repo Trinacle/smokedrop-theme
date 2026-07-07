@@ -92,6 +92,34 @@ function sdn_resolve_virtual_brand( $query ) {
     $query->is_home = false;
 }
 
+/* ---------- URL-path fallback: catch /brand/{slug}/ even without a flush ----------
+ * The rewrite rule above requires a flush to take effect, which has been
+ * unreliable on this host. This `request` filter inspects the raw URL path
+ * BEFORE WP 404s, sets the query var, and forces single-brand.php — so brand
+ * pages resolve immediately on deploy with no permalink flush needed.
+ */
+add_filter( 'request', 'sdn_brand_request_fallback' );
+function sdn_brand_request_fallback( $qv ) {
+    if ( is_admin() ) return $qv;
+    $path = isset( $_SERVER['REQUEST_URI'] ) ? rawurldecode( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+    // Strip query string + leading slash.
+    $path = strtok( $path, '?' );
+    $path = ltrim( $path, '/' );
+
+    // Match brand/{slug} (with optional trailing slash), accounting for the
+    // staging subpath (/staging/5411/...).
+    $home_path = trim( wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+    if ( $home_path && strpos( $path, $home_path ) === 0 ) {
+        $path = ltrim( substr( $path, strlen( $home_path ) ), '/' );
+    }
+
+    if ( preg_match( '#^brand/([a-z0-9-]+)/?$#i', $path, $m ) ) {
+        $qv['sdn_brand_slug']   = $m[1];
+        $qv['sdn_virtual_brand'] = 1;
+    }
+    return $qv;
+}
+
 /* ---------- Load single-brand.php for virtual brand fallbacks ---------- */
 add_filter( 'template_include', 'sdn_virtual_brand_template', 20 );
 function sdn_virtual_brand_template( $template ) {
@@ -168,7 +196,7 @@ function sdn_seed_real_brands() {
  */
 add_action( 'init', 'sdn_flush_brand_rewrites_once', 30 );
 function sdn_flush_brand_rewrites_once() {
-    if ( get_option( 'sdn_brand_rewrite_version' ) === '4' ) return;
+    if ( get_option( 'sdn_brand_rewrite_version' ) === '5' ) return;
     sdn_register_virtual_brand_rewrite();
 
     // Hard rebuild: delete the persisted rules so WP regenerates from scratch.
@@ -183,5 +211,5 @@ function sdn_flush_brand_rewrites_once() {
     if ( function_exists( 'run_litespeed_esi' ) ) { /* no-op guard */ }
     do_action( 'litespeed_purge_all' );
 
-    update_option( 'sdn_brand_rewrite_version', '4' );
+    update_option( 'sdn_brand_rewrite_version', '5' );
 }
