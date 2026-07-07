@@ -19,15 +19,25 @@ get_header();
 $sdn_query = isset( $_GET['q'] ) ? sanitize_text_field( wp_unslash( $_GET['q'] ) ) : '';
 $sdn_q     = trim( $sdn_query );
 
-// Product results (WooCommerce).
+// Product results (WooCommerce) — direct SQL LIKE for reliability across
+// WC versions (wc_get_products(['s'=>...]) is unreliable).
 $sdn_products = array();
 if ( $sdn_q && class_exists( 'WooCommerce' ) ) {
-    $sdn_products = wc_get_products( array(
-        'status'  => 'publish',
-        'limit'   => 24,
-        's'       => $sdn_q,
-        'orderby' => 'relevance',
+    global $wpdb;
+    $like   = '%' . $wpdb->esc_like( $sdn_q ) . '%';
+    $ids    = $wpdb->get_col( $wpdb->prepare(
+        "SELECT ID FROM {$wpdb->posts}
+         WHERE post_type = 'product' AND post_status = 'publish'
+           AND (post_title LIKE %s OR post_content LIKE %s OR post_excerpt LIKE %s)
+         ORDER BY post_date DESC LIMIT 24",
+        $like, $like, $like
     ) );
+    if ( ! empty( $ids ) ) {
+        foreach ( $ids as $pid ) {
+            $p = wc_get_product( $pid );
+            if ( $p ) $sdn_products[] = $p;
+        }
+    }
 }
 
 // Brand results (brand CPT + directory array).

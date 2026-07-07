@@ -48,12 +48,17 @@
     clearClose();
     document.body.classList.add('menu-open');
     triggers.forEach(function (t) { t.classList.toggle('is-open', t.getAttribute('data-menu') === menuId); });
-    panels.forEach(function (p) { p.style.display = (p.getAttribute('data-panel') === menuId) ? '' : 'none'; });
+    panels.forEach(function (p) {
+      var match = (p.getAttribute('data-panel') === menuId);
+      p.classList.toggle('active', match);
+      p.style.display = match ? 'block' : 'none';
+    });
   }
   function closeMenu() {
     clearClose();
     document.body.classList.remove('menu-open');
     triggers.forEach(function (t) { t.classList.remove('is-open'); });
+    panels.forEach(function (p) { p.classList.remove('active'); });
   }
 
   // The trick: treat header + mega + backdrop as ONE hover zone.

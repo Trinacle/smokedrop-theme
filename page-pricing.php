@@ -24,7 +24,7 @@ $check_svg   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
     <section class="pricing-hero">
       <div class="pricing-hero-inner wrap">
         <p class="eyebrow reveal" style="justify-content:center;">Pricing</p>
-        <h1 class="pricing-h1 reveal reveal-d1">Two plans.<br><span class="italic gradient-text">No nickel-and-diming.</span></h1>
+        <h1 class="pricing-h1 reveal reveal-d1">Two plans.<br><span class="italic gradient-text">Simple, transparent pricing.</span></h1>
         <p class="pricing-sub reveal reveal-d2">One flat fee. <strong style="color:var(--ink);">No transaction fees, no commissions, ever.</strong> Switch billing anytime.</p>
 
         <div class="pricing-toggle reveal reveal-d3">

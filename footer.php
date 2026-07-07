@@ -23,10 +23,16 @@
             <div class="foot-brand">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brand"><?php echo sdn_logo( 42 ); // phpcs:ignore ?></a>
                 <p>The wholesale and dropshipping platform for the smoke, vape, and hemp industry. Sync 20,000+ products in one click.</p>
-                <a href="https://apps.shopify.com/smoke-drop" class="shopify-cta" style="margin-top:20px;">
-                    <svg viewBox="0 0 24 24" fill="#95bf47" width="24" height="24"><path d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/></svg>
-                    <div><strong>Install on Shopify</strong><small>One-click from the App Store</small></div>
-                </a>
+                <div class="foot-cta-stack">
+                    <a href="https://apps.shopify.com/smoke-drop" class="foot-mini-cta">
+                        <svg viewBox="0 0 24 24" fill="#95bf47" width="20" height="20"><path d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/></svg>
+                        <span>Install on Shopify</span>
+                    </a>
+                    <a href="<?php echo esc_url( home_url( '/download-smokedrop-plugin' ) ); ?>" class="foot-mini-cta">
+                        <svg viewBox="0 0 24 24" fill="#7f54b3" width="20" height="20"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 8h4a3 3 0 0 1 0 6h-1l3 4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <span>Download WooCommerce Plugin</span>
+                    </a>
+                </div>
                 <div class="foot-social">
                     <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
                     <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2H21.5l-7.5 8.57L22.5 22h-6.844l-5.36-7.01L4.16 22H.9l8.02-9.17L1.5 2h6.99l4.84 6.4L18.244 2z"/></svg></a>
@@ -72,7 +78,7 @@
         </div>
 
         <div class="foot-bottom">
-            <div>&copy; <span data-year><?php echo esc_html( date( 'Y' ) ); ?></span> SmokeDrop. For retailers, suppliers, and brands. &nbsp;
+            <div>&copy; <span data-year><?php echo esc_html( date( 'Y' ) ); ?></span> SmokeDrop. &nbsp;
                 <a href="<?php echo esc_url( home_url( '/privacy-policy' ) ); ?>" style="color:var(--ink-mute);">Privacy</a> &middot;
                 <a href="<?php echo esc_url( home_url( '/terms-of-use' ) ); ?>" style="color:var(--ink-mute);">Terms</a> &middot;
                 <a href="<?php echo esc_url( home_url( '/retailer-terms-of-use-agreement' ) ); ?>" style="color:var(--ink-mute);">Retailer Agreement</a> &middot;
