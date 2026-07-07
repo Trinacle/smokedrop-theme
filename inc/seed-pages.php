@@ -37,7 +37,7 @@ function sdn_seed_pages_list() {
         'testimonials'   => array( 'Testimonials',        'page-testimonials.php' ),
         'sitemap'        => array( 'Sitemap',             'page-sitemap.php' ),
         'advertise'      => array( 'Advertise',           'page-advertise.php' ),
-        'search'         => array( 'Search',              'page-search.php' ),
+        'marketplace-search' => array( 'Marketplace Search', 'page-search.php' ),
         // Integrations hub
         'integrations'   => array( 'Integrations',        'page-integrations.php' ),
         // Integrations sub-pages (parent = integrations -> /integrations/{slug}/)
@@ -111,7 +111,7 @@ function sdn_seed_one_page( $slug, $title, $template, $parent_slug ) {
 /* ---------- Run the seed once (gated by an option) ---------- */
 add_action( 'init', 'sdn_seed_bespoke_pages', 40 );
 function sdn_seed_bespoke_pages() {
-    if ( get_option( 'sdn_pages_seeded' ) === '3' ) return;
+    if ( get_option( 'sdn_pages_seeded' ) === '4' ) return;
     if ( ! post_type_exists( 'page' ) ) return;
 
     foreach ( sdn_seed_pages_list() as $slug => $spec ) {
@@ -124,6 +124,13 @@ function sdn_seed_bespoke_pages() {
     $compare = get_page_by_path( 'compare', OBJECT, 'page' );
     if ( $compare && $compare->post_status !== 'trash' ) {
         wp_trash_post( $compare->ID );
+    }
+
+    // Trash the old /search/ page (WP reserves 'search' for native search;
+    // the marketplace search now lives at /marketplace-search/).
+    $old_search = get_page_by_path( 'search', OBJECT, 'page' );
+    if ( $old_search && $old_search->post_status !== 'trash' ) {
+        wp_trash_post( $old_search->ID );
     }
 
     // Point the WooCommerce shop page at the Marketplace page.
@@ -139,6 +146,6 @@ function sdn_seed_bespoke_pages() {
         update_option( 'page_on_front', $front->ID );
     }
 
-    update_option( 'sdn_pages_seeded', '3' );
+    update_option( 'sdn_pages_seeded', '4' );
     flush_rewrite_rules();
 }

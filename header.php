@@ -70,7 +70,7 @@
 
 <!-- HEADER SEARCH OVERLAY -->
 <div class="header-search-overlay" id="header-search-overlay" hidden>
-    <form role="search" method="get" action="<?php echo esc_url( home_url( '/search' ) ); ?>" class="header-search-form">
+    <form role="search" method="get" action="<?php echo esc_url( home_url( '/marketplace-search' ) ); ?>" class="header-search-form">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="search" name="s" placeholder="Search 20,000+ products and brands…" autocomplete="off" autofocus>
         <button type="button" class="header-search-close" aria-label="Close search">&times;</button>
