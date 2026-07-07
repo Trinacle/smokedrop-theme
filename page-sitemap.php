@@ -26,6 +26,21 @@ foreach ( $sdn_sm_brands as $b ) {
     $sdn_sm_grouped[ $letter ][] = $b;
 }
 ksort( $sdn_sm_grouped );
+
+// Recent blog posts for the sitemap.
+$sdn_sm_posts = get_posts( array(
+    'post_type'           => 'post',
+    'posts_per_page'      => 12,
+    'post_status'         => 'publish',
+    'ignore_sticky_posts' => true,
+    'orderby'             => 'date',
+    'order'               => 'DESC',
+) );
+$sdn_sm_cats = get_categories( array(
+    'taxonomy'   => 'category',
+    'hide_empty' => true,
+    'number'     => 10,
+) );
 ?>
 
 <main>
@@ -100,7 +115,7 @@ ksort( $sdn_sm_grouped );
         </div>
 
         <!-- A-Z BRAND INDEX -->
-        <div class="sitemap-brands reveal" style="margin-top:64px;">
+        <div class="sitemap-brands reveal" style="margin-top:72px;padding-top:48px;border-top:1px solid var(--line);">
           <h3 style="font-family:var(--display);font-size:1.6rem;font-weight:600;letter-spacing:-.02em;margin-bottom:24px;">Brands A&ndash;Z <span style="color:var(--ink-mute);font-size:.9rem;font-weight:400;">(<?php echo count( $sdn_sm_brands ); ?>+)</span></h3>
           <div class="alpha-nav" style="margin-bottom:32px;">
             <?php foreach ( array_keys( $sdn_sm_grouped ) as $l ) : ?>
@@ -109,6 +124,35 @@ ksort( $sdn_sm_grouped );
           </div>
           <p style="color:var(--ink-mute);">Browse the complete directory on the <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>" style="color:var(--green-xl);">Brands We Carry</a> page.</p>
         </div>
+
+        <!-- BLOG POSTS -->
+        <?php if ( ! empty( $sdn_sm_posts ) ) : ?>
+        <div class="sitemap-brands reveal" style="margin-top:72px;padding-top:48px;border-top:1px solid var(--line);">
+          <h3 style="font-family:var(--display);font-size:1.6rem;font-weight:600;letter-spacing:-.02em;margin-bottom:24px;">From the blog <span style="color:var(--ink-mute);font-size:.9rem;font-weight:400;">(guides &amp; insights)</span></h3>
+
+          <?php if ( ! empty( $sdn_sm_cats ) ) : ?>
+            <div class="sitemap-cats" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;">
+              <?php foreach ( $sdn_sm_cats as $c ) : ?>
+                <a href="<?php echo esc_url( get_category_link( $c ) ); ?>" style="font-size:.82rem;padding:6px 14px;border-radius:var(--r-pill);background:var(--bg-2);border:1px solid var(--line);color:var(--ink-dim);text-decoration:none;"><?php echo esc_html( $c->name ); ?> <span style="color:var(--ink-mute);"><?php echo (int) $c->count; ?></span></a>
+              <?php endforeach; ?>
+            </div>
+          <?php endif; ?>
+
+          <div class="sitemap-postlist">
+            <?php foreach ( $sdn_sm_posts as $p ) :
+                $sdn_pcat = get_the_category( $p->ID );
+                $sdn_pcat_name = ! empty( $sdn_pcat ) ? $sdn_pcat[0]->name : '';
+                ?>
+              <a href="<?php echo esc_url( get_permalink( $p ) ); ?>" class="sitemap-post">
+                <span class="sp-title"><?php echo esc_html( get_the_title( $p ) ); ?></span>
+                <?php if ( $sdn_pcat_name ) : ?><span class="sp-cat"><?php echo esc_html( $sdn_pcat_name ); ?></span><?php endif; ?>
+                <span class="sp-date"><?php echo esc_html( get_the_date( 'M j, Y', $p ) ); ?></span>
+              </a>
+            <?php endforeach; ?>
+          </div>
+          <p style="color:var(--ink-mute);margin-top:24px;"><a href="<?php echo esc_url( $sdn_blog_url ); ?>" style="color:var(--green-xl);">Read all posts &rarr;</a></p>
+        </div>
+        <?php endif; ?>
 
       </div>
     </section>

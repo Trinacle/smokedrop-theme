@@ -81,6 +81,15 @@ if ( empty( $sdn_products ) ) {
     $sdn_products = sdn_get_brand_products_by_title( $sdn_name, 12 );
 }
 
+// Generate unique descriptive copy for the brand (the CPT seed content is
+// generic; the generator produces niche-aware, name-stable unique text).
+$sdn_desc = sdn_brand_description( $sdn_name );
+$sdn_niche = sdn_brand_niche( $sdn_name );
+
+// Pull 3 product photos for the brand gallery (from real Woo products,
+// falling back to curated images when the brand has no products yet).
+$sdn_gallery = sdn_brand_gallery_images( $sdn_name, 3 );
+
 get_header();
 ?>
 
@@ -96,17 +105,28 @@ get_header();
         <?php endif; ?>
       </div>
       <div class="brand-hero-text reveal reveal-d1">
-        <p class="eyebrow">Brand on the SmokeDrop marketplace</p>
+        <p class="eyebrow">Brand on the SmokeDrop marketplace &middot; <?php echo esc_html( ucfirst( $sdn_niche ) ); ?></p>
         <h1 class="display"><?php echo esc_html( $sdn_name ); ?></h1>
-        <?php if ( $sdn_desc ) : ?>
-          <div class="brand-hero-desc"><?php echo $sdn_desc; // phpcs:ignore ?></div>
-        <?php else : ?>
-          <p class="lede"><?php echo esc_html( $sdn_name ); ?> products are available for dropship and wholesale on SmokeDrop. Import to your store in a few clicks, with automatic inventory sync and blind dropshipping.</p>
-        <?php endif; ?>
+        <div class="brand-hero-desc"><?php echo wp_kses_post( wpautop( $sdn_desc ) ); ?></div>
         <div class="hero-actions">
           <a href="<?php echo esc_url( $sdn_register ); ?>" class="btn btn-lime btn-lg">Dropship <?php echo esc_html( $sdn_name ); ?> products</a>
           <a href="<?php echo esc_url( $sdn_brands_pg ); ?>" class="btn btn-outline btn-lg">All brands</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND GALLERY (3 product photos) -->
+  <section class="sec brand-gallery-sec">
+    <div class="wrap">
+      <p class="eyebrow reveal">From the catalog</p>
+      <h2 class="h-sec reveal reveal-d1" style="margin-top:14px;margin-bottom:32px;">Featured <?php echo esc_html( $sdn_name ); ?> products</h2>
+      <div class="brand-gallery reveal reveal-d2">
+        <?php foreach ( $sdn_gallery as $i => $img ) : ?>
+          <div class="brand-gallery-cell<?php echo $i === 1 ? ' brand-gallery-cell--wide' : ''; ?>">
+            <img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?> product" loading="lazy">
+          </div>
+        <?php endforeach; ?>
       </div>
     </div>
   </section>

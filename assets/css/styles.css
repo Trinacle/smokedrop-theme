@@ -470,8 +470,11 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .brand-pill{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:var(--r-md);background:var(--bg-2);border:1px solid var(--line);transition:all .3s var(--ease);text-decoration:none}
 .brand-pill:hover{border-color:var(--green-l);transform:translateX(4px);background:var(--bg-3)}
 .brand-pill .bp-mark{width:32px;height:32px;border-radius:8px;background:linear-gradient(145deg,var(--green),var(--green-l));display:grid;place-items:center;color:#fff;font-family:var(--display);font-weight:600;font-size:.85rem;flex-shrink:0}
-.brand-pill span:not(.bp-mark){font-size:.92rem;color:var(--ink-dim);font-weight:500}
-.brand-pill:hover span:not(.bp-mark){color:var(--ink)}
+.brand-pill--logo{padding:10px 14px}
+.brand-pill--logo .bp-logo{width:44px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.brand-pill--logo .bp-logo img{max-width:100%;max-height:32px;width:auto;object-fit:contain}
+.brand-pill span:not(.bp-mark):not(.bp-logo){font-size:.92rem;color:var(--ink-dim);font-weight:500}
+.brand-pill:hover span:not(.bp-mark):not(.bp-logo){color:var(--ink)}
 @media(max-width:900px){.brand-directory{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.brand-directory{grid-template-columns:1fr}}
 
@@ -486,6 +489,15 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .brand-hero-desc{color:var(--ink-dim);line-height:1.6;margin-bottom:24px;max-width:560px}
 .brand-hero-text .lede{max-width:560px}
 .brand-products-sec{padding-top:60px}
+
+/* Brand gallery (3 product photos) */
+.brand-gallery-sec{padding-top:48px;padding-bottom:24px}
+.brand-gallery{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.brand-gallery-cell{aspect-ratio:1;border-radius:var(--r-lg);overflow:hidden;background:var(--bg-2);border:1px solid var(--line)}
+.brand-gallery-cell--wide{grid-column:span 2;aspect-ratio:2.1/1}
+.brand-gallery-cell img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.brand-gallery-cell:hover img{transform:scale(1.04)}
+@media(max-width:760px){.brand-gallery{grid-template-columns:1fr}.brand-gallery-cell--wide{grid-column:span 1;aspect-ratio:1}}
 .mprice-text{display:block;color:var(--green-xl);font-family:var(--display);font-weight:600;margin-top:6px;font-size:1.05rem}
 @media(max-width:760px){.brand-hero-inner{flex-direction:column;text-align:center}.brand-hero-text .hero-actions{justify-content:center}.brand-hero-logo{margin:0 auto}}
 .logo-wall-white .lw-foot{text-align:center;margin-top:56px}

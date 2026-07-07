@@ -17,6 +17,7 @@ require_once SDN_DIR . '/inc/cpt-brands.php';
 require_once SDN_DIR . '/inc/acf-fields.php';
 require_once SDN_DIR . '/inc/helpers.php';
 require_once SDN_DIR . '/inc/brand-directory.php';
+require_once SDN_DIR . '/inc/brand-content.php';
 require_once SDN_DIR . '/inc/seed-pages.php';
 
 /* ---------- Theme setup ---------- */

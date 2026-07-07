@@ -164,9 +164,15 @@ $sdn_letters = array_keys( $sdn_grouped );
                   $name     = $b['name'];
                   $initials = isset( $b['initials'] ) ? $b['initials'] : strtoupper( substr( $name, 0, 2 ) );
                   $slug     = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $name );
+                  $has_logo = ! empty( $b['logo'] );
+                  $cls      = $has_logo ? 'brand-pill brand-pill--logo' : 'brand-pill';
                   ?>
-                  <a href="<?php echo esc_url( home_url( '/brand/' . $slug . '/' ) ); ?>" class="brand-pill">
-                    <span class="bp-mark"><?php echo esc_html( $initials ); ?></span>
+                  <a href="<?php echo esc_url( home_url( '/brand/' . $slug . '/' ) ); ?>" class="<?php echo esc_attr( $cls ); ?>">
+                    <?php if ( $has_logo ) : ?>
+                      <span class="bp-logo"><img src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['logo'] ) ); ?>" alt="<?php echo esc_attr( $name ); ?>" loading="lazy"></span>
+                    <?php else : ?>
+                      <span class="bp-mark"><?php echo esc_html( $initials ); ?></span>
+                    <?php endif; ?>
                     <span><?php echo esc_html( $name ); ?></span>
                   </a>
               <?php endforeach; ?>

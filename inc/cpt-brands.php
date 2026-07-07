@@ -172,11 +172,30 @@ function sdn_seed_real_brands() {
  * The seed above only flushes on first run. This bumps a separate version flag
  * so the permalink rules get re-flushed whenever this code ships, ensuring the
  * /brand/{slug}/ CPT permalinks resolve without a manual flush in wp-admin.
+ *
+ * IMPORTANT: flush_rewrite_rules() has been unreliable under LiteSpeed's
+ * object cache on this host (the option is written but a stale cached copy
+ * persists, so /brand/{slug}/ keeps 404ing). The definitive fix is to DELETE
+ * the rewrite_rules option entirely — WP then has no rules to read and is
+ * forced to rebuild every rule (including the brand CPT's) on the next hit.
+ * We also flush LiteSpeed cache + the object cache group as belt-and-suspenders.
  */
 add_action( 'init', 'sdn_flush_brand_rewrites_once', 30 );
 function sdn_flush_brand_rewrites_once() {
-    if ( get_option( 'sdn_brand_rewrite_version' ) === '3' ) return;
+    if ( get_option( 'sdn_brand_rewrite_version' ) === '4' ) return;
     sdn_register_virtual_brand_rewrite();
-    flush_rewrite_rules();
-    update_option( 'sdn_brand_rewrite_version', '3' );
+
+    // Hard rebuild: delete the persisted rules so WP regenerates from scratch.
+    delete_option( 'rewrite_rules' );
+
+    // Belt-and-suspenders: also call the standard flush + clear object cache.
+    flush_rewrite_rules( true );
+    if ( function_exists( 'wp_cache_flush_group' ) ) {
+        wp_cache_flush_group( 'options' );
+    }
+    // Clear any LiteSpeed page cache so the next request hits fresh rules.
+    if ( function_exists( 'run_litespeed_esi' ) ) { /* no-op guard */ }
+    do_action( 'litespeed_purge_all' );
+
+    update_option( 'sdn_brand_rewrite_version', '4' );
 }
