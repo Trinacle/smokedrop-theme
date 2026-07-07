@@ -61,40 +61,52 @@ function sdn_bind_brand_cpt_to_product_brand( $taxonomy, $object_type, $args ) {
     }
 }
 
-/* ---------- Virtual brand pages (work before the CPT is populated) ----------
- * Catches /brand/{slug}/ for brands that exist in sdn_brand_directory() but
- * don't yet have a CPT post, routing them to single-brand.php so the page
- * works immediately (e.g. the Vessel test). Real CPT posts take priority.
+/* ---------- Virtual brand fallback (for brands not yet in the CPT) ----------
+ * Now that the 16 real brands are seeded as CPT posts, WP's native permalink
+ * rules handle /brand/{slug}/ and load single-brand.php automatically.
+ * This rewrite is a LOW-priority fallback: it only catches brands that exist
+ * in sdn_brand_directory() but have no CPT post, so newly-added brands work
+ * immediately without a manual wp-admin entry.
  */
 add_action( 'init', 'sdn_register_virtual_brand_rewrite' );
 function sdn_register_virtual_brand_rewrite() {
-    add_rewrite_rule( '^brand/([a-z0-9-]+)/?$', 'index.php?sdn_brand_slug=$matches[1]', 'top' );
+    // 'bottom' priority = only used if WP's native CPT permalink doesn't match.
+    add_rewrite_rule( '^brand/([a-z0-9-]+)/?$', 'index.php?sdn_brand_slug=$matches[1]', 'bottom' );
     add_rewrite_tag( '%sdn_brand_slug%', '([^&]+)' );
+    add_rewrite_tag( '%sdn_virtual_brand%', '([01])' );
 }
 
-/* ---------- Resolve a virtual brand into the main query ---------- */
+/* ---------- Resolve a virtual brand fallback into the main query ---------- */
 add_action( 'pre_get_posts', 'sdn_resolve_virtual_brand', 1 );
 function sdn_resolve_virtual_brand( $query ) {
     if ( is_admin() || ! $query->is_main_query() ) return;
     $slug = $query->get( 'sdn_brand_slug' );
     if ( ! $slug ) return;
 
-    // If a real CPT brand post exists for this slug, defer to it (WP will
-    // route via the single-brand template naturally).
+    // Safety: if a real CPT brand post exists for this slug, don't intercept —
+    // WP's native single-brand.php template will handle it.
     $existing = get_page_by_path( $slug, OBJECT, 'brand' );
-    if ( $existing ) return;
+    if ( $existing ) {
+        $query->set( 'sdn_brand_slug', '' ); // clear so native handling proceeds
+        return;
+    }
 
-    // Otherwise treat this as a virtual brand: flag it so template_include
-    // loads single-brand.php. We don't fake a post object — single-brand.php
-    // reads the slug from get_query_var('sdn_brand_slug') directly.
-    $query->set( 'sdn_virtual_brand', true );
+    // Verify the slug is a known brand in the directory; otherwise let it 404.
+    $known = false;
+    foreach ( sdn_brand_directory() as $b ) {
+        $bslug = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $b['name'] );
+        if ( $bslug === $slug ) { $known = true; break; }
+    }
+    if ( ! $known ) return;
+
+    $query->set( 'sdn_virtual_brand', 1 );
     $query->is_single = false;
     $query->is_page = false;
     $query->is_archive = false;
     $query->is_home = false;
 }
 
-/* ---------- Load single-brand.php for virtual brand requests ---------- */
+/* ---------- Load single-brand.php for virtual brand fallbacks ---------- */
 add_filter( 'template_include', 'sdn_virtual_brand_template', 20 );
 function sdn_virtual_brand_template( $template ) {
     if ( get_query_var( 'sdn_virtual_brand' ) ) {
@@ -142,4 +154,20 @@ function sdn_seed_real_brands() {
     }
 
     update_option( 'sdn_brands_seeded', 1 );
+
+    // Flush rewrite rules so the newly-created brand CPT permalinks resolve.
+    flush_rewrite_rules();
+}
+
+/* ---------- One-time flush after the virtual-brand rewrite was fixed ----------
+ * The seed above only flushes on first run. This bumps a separate version flag
+ * so the permalink rules get re-flushed whenever this code ships, ensuring the
+ * /brand/{slug}/ CPT permalinks resolve without a manual flush in wp-admin.
+ */
+add_action( 'init', 'sdn_flush_brand_rewrites_once', 30 );
+function sdn_flush_brand_rewrites_once() {
+    if ( get_option( 'sdn_brand_rewrite_version' ) === '2' ) return;
+    sdn_register_virtual_brand_rewrite();
+    flush_rewrite_rules();
+    update_option( 'sdn_brand_rewrite_version', '2' );
 }
