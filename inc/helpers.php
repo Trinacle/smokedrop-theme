@@ -29,6 +29,65 @@ function sdn_real_brand_logos() {
     );
 }
 
+/* ---------- Master brand directory (extended list w/ initials) ---------- */
+function sdn_brand_directory() {
+    // Extended marketplace list — names + initials for the directory pills.
+    // 'logo' (if present) links to the real uploaded file; otherwise the pill
+    // falls back to the initials mark.
+    return array(
+        array( 'name' => 'Afghan Hemp',     'initials' => 'AH' ),
+        array( 'name' => 'AFG Distribution', 'initials' => 'AF', 'logo' => '2024/08/afg-logo-hd-300x162.png', 'slug' => 'afg-distribution' ),
+        array( 'name' => 'AFM Glass',        'initials' => 'AF' ),
+        array( 'name' => 'AirVape',          'initials' => 'AV' ),
+        array( 'name' => 'aLeaf',            'initials' => 'aL' ),
+        array( 'name' => 'Alchemy Naturals', 'initials' => 'AL', 'logo' => '2024/08/alchemy-naturals-300x162.jpg', 'slug' => 'alchemy-naturals' ),
+        array( 'name' => 'Arizer',           'initials' => 'AZ' ),
+        array( 'name' => 'Atmos',            'initials' => 'AT' ),
+        array( 'name' => '3CHI',             'initials' => '3C' ),
+        array( 'name' => 'Cali Crusher',     'initials' => 'CC' ),
+        array( 'name' => 'Cheech Glass',     'initials' => 'CC' ),
+        array( 'name' => 'CCell',            'initials' => 'CS' ),
+        array( 'name' => 'Cloudious',        'initials' => 'CL' ),
+        array( 'name' => 'Cookies',          'initials' => 'CO', 'logo' => '2023/07/brand-cookies-2-300x162.png', 'slug' => 'cookies' ),
+        array( 'name' => 'DaVinci',          'initials' => 'DV' ),
+        array( 'name' => 'Daze Glass',       'initials' => 'DG' ),
+        array( 'name' => 'Delta Munchies',   'initials' => 'DM' ),
+        array( 'name' => 'Dopezilla',        'initials' => 'DZ' ),
+        array( 'name' => 'Dr. Dabber',       'initials' => 'DD', 'logo' => '2023/07/drdabber-300x162.png', 'slug' => 'dr-dabber' ),
+        array( 'name' => 'DynaVap',          'initials' => 'DV' ),
+        array( 'name' => 'Elements Rolling', 'initials' => 'EL' ),
+        array( 'name' => 'ELFTHC',           'initials' => 'EH' ),
+        array( 'name' => 'Empire Glass',     'initials' => 'EG' ),
+        array( 'name' => 'Exodus',           'initials' => 'EX' ),
+        array( 'name' => 'Eyce',             'initials' => 'EY', 'logo' => '2023/07/eyce-300x162.png', 'slug' => 'eyce' ),
+        array( 'name' => 'Firefly',          'initials' => 'FI', 'logo' => '2024/08/firefly-300x162.jpg', 'slug' => 'firefly' ),
+        array( 'name' => 'G Pen',            'initials' => 'GP' ),
+        array( 'name' => 'G-Rollz',          'initials' => 'GR' ),
+        array( 'name' => 'GOO\u2019D',       'initials' => 'GO' ),
+        array( 'name' => 'GRAV',             'initials' => 'GR', 'logo' => '2023/07/gravb-300x162.png', 'slug' => 'grav' ),
+        array( 'name' => 'Grateful Dead',    'initials' => 'GD' ),
+        array( 'name' => 'Green Roads',      'initials' => 'GG' ),
+        array( 'name' => 'Half Baked',       'initials' => 'HB' ),
+        array( 'name' => 'Hamilton Devices', 'initials' => 'HD' ),
+        array( 'name' => 'Hemper',           'initials' => 'HE', 'logo' => '2023/07/hemper-300x162.png', 'slug' => 'hemper' ),
+        array( 'name' => 'High Hemp',        'initials' => 'HH' ),
+        array( 'name' => 'Hitoki',           'initials' => 'HK' ),
+        array( 'name' => 'Honeybee Herb',    'initials' => 'HL' ),
+        array( 'name' => 'Marley Natural',   'initials' => 'MA', 'logo' => '2023/07/marley-300x162.png', 'slug' => 'marley-natural' ),
+        array( 'name' => 'O.pen',            'initials' => 'OP', 'logo' => '2024/08/o.pen_-300x162.jpg', 'slug' => 'o-pen' ),
+        array( 'name' => 'PAX',              'initials' => 'PX', 'logo' => '2023/07/pax-1-300x162.png', 'slug' => 'pax' ),
+        array( 'name' => 'Packwoods',        'initials' => 'PW' ),
+        array( 'name' => 'Piranha',          'initials' => 'PL' ),
+        array( 'name' => 'Playboy',          'initials' => 'PB' ),
+        array( 'name' => 'Puffco',           'initials' => 'PC', 'logo' => '2023/07/puffco-300x162.png', 'slug' => 'puffco' ),
+        array( 'name' => 'Pulsar',           'initials' => 'PU', 'logo' => '2023/07/pulsar-300x162.png', 'slug' => 'pulsar' ),
+        array( 'name' => 'RAW',              'initials' => 'RW', 'logo' => '2023/07/raw-300x162.png', 'slug' => 'raw' ),
+        array( 'name' => 'Revelry',          'initials' => 'RV' ),
+        array( 'name' => 'Vessel',           'initials' => 'VE', 'logo' => '2024/08/vessel0-300x162.jpg', 'slug' => 'vessel' ),
+        array( 'name' => 'Wax Maid',         'initials' => 'WM', 'logo' => '2023/07/wax-maid-300x162.png', 'slug' => 'wax-maid' ),
+    );
+}
+
 /* ---------- Get a brand field with fallback (works even without ACF) ---------- */
 function sdn_get_brand_field( $field, $post_id = null ) {
     $post_id = $post_id ?: get_the_ID();
@@ -132,6 +191,34 @@ function sdn_get_brand_products( $brand_slug, $limit = 4 ) {
         }
     }
     return $products;
+}
+
+/* ---------- Get products by brand NAME in the title (fallback when no taxonomy) ----------
+ * The user's spec: brand products have the brand name in the WooCommerce
+ * product title. This matches products whose title contains the brand name,
+ * used on single-brand pages and for the "test with Vessel" case.
+ */
+function sdn_get_brand_products_by_title( $brand_name, $limit = 4 ) {
+    if ( ! class_exists( 'WooCommerce' ) || ! $brand_name ) return array();
+
+    global $wpdb;
+    $like  = '%' . $wpdb->esc_like( $brand_name ) . '%';
+    $sql   = $wpdb->prepare(
+        "SELECT ID FROM $wpdb->posts
+         WHERE post_type = 'product'
+           AND post_status = 'publish'
+           AND post_title LIKE %s
+         ORDER BY post_date DESC
+         LIMIT %d",
+        $like, $limit
+    );
+    $ids   = $wpdb->get_col( $sql );
+    if ( empty( $ids ) ) return array();
+
+    return array_filter( array_map( function ( $id ) {
+        $p = wc_get_product( $id );
+        return $p ?: null;
+    }, $ids ) );
 }
 
 /* ---------- Format a brand directory A-Z ---------- */

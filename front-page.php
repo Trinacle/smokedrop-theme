@@ -60,6 +60,10 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
             <img src="<?php echo esc_url( $sdu( '5f1a5a542662b9b5006821de_bigcommerce-logo.svg' ) ); ?>" alt="BigCommerce" onerror="this.style.display='none'">
             <span>BigCommerce</span>
           </a>
+          <a href="<?php echo esc_url( $brands_url ); ?>#integrations" class="hi-chip hi-chip-api">
+            <span class="hi-api-mark">&lt;/&gt;</span>
+            <span>Custom API</span>
+          </a>
         </div>
       </div>
     </section>
@@ -73,8 +77,8 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
         <div class="lw-stats">
           <div class="lw-stat"><div class="n">300+</div><div class="l">Brands</div></div>
           <div class="lw-stat"><div class="n">20,000+</div><div class="l">Products</div></div>
-          <div class="lw-stat"><div class="n">100+</div><div class="l">Categories</div></div>
-          <div class="lw-stat"><div class="n">1,000+</div><div class="l">Retailers</div></div>
+          <div class="lw-stat"><div class="n">400+</div><div class="l">Collections</div></div>
+          <div class="lw-stat"><div class="n">1,000+</div><div class="l">New SKUs/month</div></div>
         </div>
       </div>
       <?php
