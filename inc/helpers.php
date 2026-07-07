@@ -246,3 +246,122 @@ function sdn_cta( $title = 'Ready to take your drop shipping to the next level?'
     </section>
     <?php
 }
+
+/* ---------- Platform integration data (Shopify/Woo/BigComm/API) ----------
+ * Single source of truth for the integration bubbles AND the per-platform
+ * detail pages. Logo paths are the verified Webflow-uploaded SVGs.
+ */
+function sdn_platforms() {
+    $uploads = home_url( '/wp-content/uploads/2024/01/' );
+    return array(
+        'shopify' => array(
+            'slug'      => 'shopify',
+            'name'      => 'Shopify',
+            'logo'      => $uploads . '5f1a58272cd5b8c219db0ba4_shopify-logo.svg',
+            'color'     => '#95bf47',
+            'tagline'   => 'One-click install from the Shopify App Store',
+            'install_url'   => 'https://apps.shopify.com/smoke-drop',
+            'install_label' => 'Install on Shopify',
+            'desc'      => 'The SmokeDrop Shopify app gives you everything you need to run a smoke shop dropshipping business. Import 20,000+ products in a few clicks, with automatic inventory sync, blind dropshipping, and order routing to suppliers.',
+            'features'  => array(
+                array( 'Import in a few clicks', 'Add curated collections or individual products to your Shopify store instantly.' ),
+                array( 'Real-time inventory sync', 'Stock and price updates flow from suppliers into Shopify in under a minute.' ),
+                array( 'Automatic order fulfillment', 'Customer orders route to the nearest supplier and ship blind within 24 hours.' ),
+                array( 'Tracking sync', 'Tracking numbers update across suppliers, your store, and your customer automatically.' ),
+            ),
+            'steps' => array(
+                array( 'Install the app', 'Add SmokeDrop from the Shopify App Store.' ),
+                array( 'Import products', 'Browse 20,000+ SKUs and import what you want to sell.' ),
+                array( 'Set prices & sell', 'Orders sync automatically — suppliers ship under your brand.' ),
+            ),
+        ),
+        'woocommerce' => array(
+            'slug'      => 'woocommerce',
+            'name'      => 'WooCommerce',
+            'logo'      => $uploads . '5f1a59d6f884854a22b65124_woocommerce-logo.svg',
+            'color'     => '#7f54b3',
+            'tagline'   => 'Self-hosted WordPress stores',
+            'install_url'   => home_url( '/download-smokedrop-plugin' ),
+            'install_label' => 'Download the plugin',
+            'desc'      => 'The SmokeDrop WooCommerce plugin brings dropshipping to self-hosted WordPress stores. Designed to make dropshipping easy and hassle-free — sell more, work less, with no warehouse required.',
+            'features'  => array(
+                array( 'WordPress native', 'Install as a plugin on your existing WooCommerce store.' ),
+                array( 'Full catalog access', 'Import any of 20,000+ products from 300+ brands.' ),
+                array( 'Automatic order sync', 'Orders sync with suppliers; tracking updates flow back to WooCommerce.' ),
+                array( 'No transaction fees', 'One flat plan fee. Keep your full margin.' ),
+            ),
+            'steps' => array(
+                array( 'Download the plugin', 'Get the SmokeDrop WooCommerce plugin.' ),
+                array( 'Connect your store', 'Install and link your WooCommerce account.' ),
+                array( 'Import and sell', 'Add products, set prices, and start dropshipping.' ),
+            ),
+        ),
+        'bigcommerce' => array(
+            'slug'      => 'bigcommerce',
+            'name'      => 'BigCommerce',
+            'logo'      => $uploads . '5f1a5a542662b9b5006821de_bigcommerce-logo.svg',
+            'color'     => '#0d7377',
+            'tagline'   => 'Native BigCommerce marketplace integration',
+            'install_url'   => 'https://www.bigcommerce.com/apps/smokedrop',
+            'install_label' => 'Install on BigCommerce',
+            'desc'      => 'Our industry-leading dropshipping app lets you list products from the SmokeDrop marketplace directly from the BigCommerce control panel. Sync inventory, automate orders, and ship blind under your brand.',
+            'features'  => array(
+                array( 'Native BigCommerce app', 'Install from the BigCommerce marketplace.' ),
+                array( 'Direct catalog import', 'List SmokeDrop products from your control panel.' ),
+                array( 'Inventory automation', 'Real-time stock and price sync across every channel.' ),
+                array( 'Blind dropshipping', 'Ships under your brand within 24 hours.' ),
+            ),
+            'steps' => array(
+                array( 'Install the app', 'Add SmokeDrop from the BigCommerce marketplace.' ),
+                array( 'Import products', 'Browse and list from 20,000+ SKUs.' ),
+                array( 'Automate & sell', 'Orders route to suppliers automatically.' ),
+            ),
+        ),
+        'api' => array(
+            'slug'      => 'api',
+            'name'      => 'Custom API',
+            'logo'      => '',
+            'color'     => '#13c27b',
+            'tagline'   => 'REST API, CSV/FTP, and EDI for custom stacks',
+            'install_url'   => home_url( '/contact' ),
+            'install_label' => 'Talk to our team',
+            'desc'      => 'Running a custom storefront or a bespoke fulfillment stack? SmokeDrop exposes a full REST API plus CSV/FTP and EDI-X12 options so you can integrate dropshipping into any architecture.',
+            'features'  => array(
+                array( 'REST API', 'Full programmatic access to catalog, orders, inventory, and tracking.' ),
+                array( 'CSV / FTP', 'Bulk product and order feeds for legacy or scheduled workflows.' ),
+                array( 'EDI-X12', 'Enterprise electronic data interchange for large operations.' ),
+                array( 'Webhooks', 'Real-time event hooks for order status, stock changes, and shipments.' ),
+            ),
+            'steps' => array(
+                array( 'Get API credentials', 'Request access from our team.' ),
+                array( 'Read the docs', 'Explore catalog, order, and inventory endpoints.' ),
+                array( 'Build & launch', 'Integrate dropshipping into your custom stack.' ),
+            ),
+        ),
+    );
+}
+
+/* ---------- Render a row of integration bubbles ---------- */
+/* $platforms: array of platform keys (shopify/woocommerce/bigcommerce/api)
+ * $variant: '' for default (88px tile) or 'sm' for the compact hero row (56px) */
+function sdn_integration_bubbles( $platforms = array(), $variant = '' ) {
+    $all    = sdn_platforms();
+    $list   = empty( $platforms ) ? array_keys( $all ) : $platforms;
+    $base   = home_url( '/integrations/' );
+    $class  = 'int-bubble' . ( $variant === 'sm' ? ' int-bubble--sm' : '' );
+    echo '<div class="int-bubbles">';
+    foreach ( $list as $key ) {
+        if ( ! isset( $all[ $key ] ) ) continue;
+        $p = $all[ $key ];
+        $href = $base . $key . '/';
+        echo '<a href="' . esc_url( $href ) . '" class="' . esc_attr( $class ) . '">';
+        if ( ! empty( $p['logo'] ) ) {
+            echo '<span class="ib-mark"><img src="' . esc_url( $p['logo'] ) . '" alt="' . esc_attr( $p['name'] ) . '" onerror="this.style.display=\'none\'"></span>';
+        } else {
+            echo '<span class="ib-mark api">&lt;/&gt;</span>';
+        }
+        echo '<span>' . esc_html( $p['name'] ) . '</span>';
+        echo '</a>';
+    }
+    echo '</div>';
+}

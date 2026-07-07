@@ -48,22 +48,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
           <a href="#how" class="btn btn-outline btn-lg" data-magnetic>See how it works</a>
         </div>
         <div class="hero-integrations reveal reveal-d5">
-          <a href="https://apps.shopify.com/smoke-drop" class="hi-chip">
-            <img src="<?php echo esc_url( $sdu( '5f1a58272cd5b8c219db0ba4_shopify-logo.svg' ) ); ?>" alt="Shopify" onerror="this.style.display='none'">
-            <span>Shopify</span>
-          </a>
-          <a href="<?php echo esc_url( $brands_url ); ?>#integrations" class="hi-chip">
-            <img src="<?php echo esc_url( $sdu( '5f1a59d6f884854a22b65124_woocommerce-logo.svg' ) ); ?>" alt="WooCommerce" onerror="this.style.display='none'">
-            <span>WooCommerce</span>
-          </a>
-          <a href="<?php echo esc_url( $brands_url ); ?>#integrations" class="hi-chip">
-            <img src="<?php echo esc_url( $sdu( '5f1a5a542662b9b5006821de_bigcommerce-logo.svg' ) ); ?>" alt="BigCommerce" onerror="this.style.display='none'">
-            <span>BigCommerce</span>
-          </a>
-          <a href="<?php echo esc_url( $brands_url ); ?>#integrations" class="hi-chip hi-chip-api">
-            <span class="hi-api-mark">&lt;/&gt;</span>
-            <span>Custom API</span>
-          </a>
+          <?php sdn_integration_bubbles( array( 'shopify', 'woocommerce', 'bigcommerce', 'api' ), 'sm' ); ?>
         </div>
       </div>
     </section>
@@ -592,22 +577,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
         <p class="eyebrow reveal" style="justify-content:center;">Shopping Cart Integrations</p>
         <h2 class="display reveal reveal-d1" style="margin-top:20px;">Import over 20,000 smoke shop<br>products to <span class="italic gradient-text">your online store.</span></h2>
         <div class="integrations-row reveal reveal-d2" style="margin-top:56px;">
-          <a href="https://apps.shopify.com/smoke-drop" class="int-logo">
-            <img src="<?php echo esc_url( $sdu( '5f1a58272cd5b8c219db0ba4_shopify-logo.svg' ) ); ?>" alt="Shopify" style="height:38px;width:auto;opacity:.9;" onerror="this.style.display='none'">
-            <span>Shopify</span>
-          </a>
-          <a href="#integrations" class="int-logo">
-            <img src="<?php echo esc_url( $sdu( '5f1a59d6f884854a22b65124_woocommerce-logo.svg' ) ); ?>" alt="WooCommerce" style="height:38px;width:auto;opacity:.9;" onerror="this.style.display='none'">
-            <span>WooCommerce</span>
-          </a>
-          <a href="#integrations" class="int-logo">
-            <img src="<?php echo esc_url( $sdu( '5f1a5a542662b9b5006821de_bigcommerce-logo.svg' ) ); ?>" alt="BigCommerce" style="height:38px;width:auto;opacity:.9;" onerror="this.style.display='none'">
-            <span>BigCommerce</span>
-          </a>
-          <a href="#integrations" class="int-logo">
-            <span class="int-mark api">&lt;/&gt;</span>
-            <span>Custom API</span>
-          </a>
+          <?php sdn_integration_bubbles(); ?>
         </div>
         <div class="feat-grid reveal reveal-d3" style="margin-top:56px;text-align:left;">
           <div class="feat-card"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="#95bf47"><path d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/></svg></div><h4>SmokeDrop Shopify App</h4><p>Provides everything you need to start a successful dropshipping business. Add our app to your store and get started today.</p></div>
@@ -615,10 +585,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
           <div class="feat-card"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="#0d7377"><rect x="3" y="3" width="18" height="18" rx="3"/><text x="12" y="16" font-size="10" fill="#fff" text-anchor="middle" font-family="sans-serif">B</text></svg></div><h4>BigCommerce</h4><p>Our industry-leading dropshipping app lets you list products from our marketplace directly from the BigCommerce control panel.</p></div>
         </div>
         <div class="hero-actions reveal reveal-d4" style="justify-content:center;margin-top:48px;">
-          <a href="https://apps.shopify.com/smoke-drop" class="shopify-cta">
-            <svg viewBox="0 0 24 24" fill="#95bf47"><path d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/></svg>
-            <div><strong>Install on Shopify</strong><small>One-click from the App Store</small></div>
-          </a>
+          <a href="<?php echo esc_url( home_url( '/integrations' ) ); ?>" class="btn btn-outline btn-lg">Compare all integrations</a>
           <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg">Start Free Trial</a>
         </div>
       </div>

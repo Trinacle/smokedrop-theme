@@ -41,7 +41,7 @@
                 <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Suppliers</a>
                 <a href="<?php echo esc_url( home_url( '/wholesalers' ) ); ?>">For Wholesalers</a>
                 <a href="<?php echo esc_url( home_url( '/pricing' ) ); ?>">Pricing</a>
-                <a href="<?php echo esc_url( home_url( '/platform' ) ); ?>">Integrations</a>
+                <a href="<?php echo esc_url( home_url( '/integrations' ) ); ?>">Integrations</a>
             </div>
             <div class="foot-col">
                 <h5>Solutions</h5>

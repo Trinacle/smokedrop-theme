@@ -87,18 +87,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
         <p class="eyebrow reveal" style="justify-content:center;color:#0a6b3f;">Shopping Cart Integrations</p>
         <h2 class="display reveal reveal-d1" style="margin-top:20px;color:#1d1d1f;">Import over 20,000 smoke shop<br>products to <span style="color:#0a6b3f;">your online store.</span></h2>
         <div class="integrations-row reveal reveal-d2" style="margin-top:56px;">
-          <a href="https://apps.shopify.com/smoke-drop" class="int-logo" style="background:#f5f5f7;border-color:#e8e8ed;">
-            <img src="<?php echo esc_url( $sdu( '5f1a58272cd5b8c219db0ba4_shopify-logo.svg' ) ); ?>" alt="Shopify" style="height:42px;width:auto;opacity:.85;" onerror="this.style.display='none'">
-            <span style="color:#1d1d1f;">Shopify</span>
-          </a>
-          <a href="#" class="int-logo" style="background:#f5f5f7;border-color:#e8e8ed;">
-            <img src="<?php echo esc_url( $sdu( '5f1a59d6f884854a22b65124_woocommerce-logo.svg' ) ); ?>" alt="WooCommerce" style="height:42px;width:auto;opacity:.85;" onerror="this.style.display='none'">
-            <span style="color:#1d1d1f;">WooCommerce</span>
-          </a>
-          <a href="#" class="int-logo" style="background:#f5f5f7;border-color:#e8e8ed;">
-            <img src="<?php echo esc_url( $sdu( '5f1a5a542662b9b5006821de_bigcommerce-logo.svg' ) ); ?>" alt="BigCommerce" style="height:42px;width:auto;opacity:.85;" onerror="this.style.display='none'">
-            <span style="color:#1d1d1f;">BigCommerce</span>
-          </a>
+          <?php sdn_integration_bubbles(); ?>
         </div>
       </div>
     </section>

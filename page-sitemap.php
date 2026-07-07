@@ -65,8 +65,11 @@ ksort( $sdn_sm_grouped );
             <a href="<?php echo esc_url( $sdn_shop_url ); ?>">Shop all products</a>
             <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">All brands</a>
             <a href="<?php echo esc_url( home_url( '/new-dropshipping-products' ) ); ?>">New products</a>
-            <a href="https://apps.shopify.com/smoke-drop">Shopify App</a>
-            <a href="<?php echo esc_url( home_url( '/download-smokedrop-plugin' ) ); ?>">WooCommerce Plugin</a>
+            <a href="<?php echo esc_url( home_url( '/integrations' ) ); ?>">Integrations</a>
+            <a href="<?php echo esc_url( home_url( '/integrations/shopify' ) ); ?>">Shopify App</a>
+            <a href="<?php echo esc_url( home_url( '/integrations/woocommerce' ) ); ?>">WooCommerce Plugin</a>
+            <a href="<?php echo esc_url( home_url( '/integrations/bigcommerce' ) ); ?>">BigCommerce App</a>
+            <a href="<?php echo esc_url( home_url( '/integrations/api' ) ); ?>">Custom API</a>
           </div>
 
           <div class="foot-col">
