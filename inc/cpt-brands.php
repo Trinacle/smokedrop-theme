@@ -123,37 +123,46 @@ function sdn_flush_brand_rewrites() {
     flush_rewrite_rules();
 }
 
-/* ---------- Seed the Brands CPT with the 16 real marketplace brands ----------
- * Runs once on init (guarded by the sdn_brands_seeded option), so the brands
- * appear in wp-admin → Brands without needing WP-CLI or manual entry. Idempotent:
- * skips any slug that already exists. Trigger again by deleting the option.
+/* ---------- Seed the Brands CPT with the full marketplace directory ----------
+ * Runs once on init (guarded by the sdn_brands_seeded option), creating all
+ * ~380 brands from sdn_brand_directory() + sdn_new_brands() as editable CPT
+ * posts. Idempotent: skips any slug that already exists. Bump the option value
+ * to re-run (e.g. after the spreadsheet is updated).
  */
 add_action( 'init', 'sdn_seed_real_brands', 20 );
 function sdn_seed_real_brands() {
-    if ( get_option( 'sdn_brands_seeded' ) ) return;
+    if ( get_option( 'sdn_brands_seeded' ) === '2' ) return;
     if ( ! post_type_exists( 'brand' ) ) return;
 
-    foreach ( sdn_real_brand_logos() as $b ) {
+    $all = array_merge( sdn_brand_directory(), sdn_new_brands() );
+    $created = 0;
+    foreach ( $all as $b ) {
+        $slug = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $b['name'] );
         // Skip if a brand post already exists for this slug.
-        if ( get_page_by_path( $b['slug'], OBJECT, 'brand' ) ) continue;
+        if ( get_page_by_path( $slug, OBJECT, 'brand' ) ) continue;
 
         $post_id = wp_insert_post( array(
             'post_type'    => 'brand',
             'post_status'  => 'publish',
             'post_title'   => $b['name'],
-            'post_name'    => $b['slug'],
+            'post_name'    => $slug,
             'post_content' => $b['name'] . ' products are available for dropship and wholesale on SmokeDrop. Import to your store in a few clicks, with automatic inventory sync and blind dropshipping.',
         ) );
 
         if ( $post_id && ! is_wp_error( $post_id ) ) {
-            // Attach the logo URL as the brand_logo post meta (used by
-            // sdn_brand_logo_url() when rendering single-brand.php).
-            $logo_url = home_url( '/wp-content/uploads/' . $b['file'] );
-            update_post_meta( $post_id, 'brand_logo', $logo_url );
+            // Logo URL (where known) for single-brand.php hero.
+            if ( ! empty( $b['logo'] ) ) {
+                update_post_meta( $post_id, 'brand_logo', home_url( '/wp-content/uploads/' . $b['logo'] ) );
+            }
+            // Store the ranking value for sorting/featured logic.
+            if ( isset( $b['value'] ) ) {
+                update_post_meta( $post_id, 'brand_value', intval( $b['value'] ) );
+            }
+            $created++;
         }
     }
 
-    update_option( 'sdn_brands_seeded', 1 );
+    update_option( 'sdn_brands_seeded', '2' );
 
     // Flush rewrite rules so the newly-created brand CPT permalinks resolve.
     flush_rewrite_rules();

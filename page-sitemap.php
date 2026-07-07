@@ -3,8 +3,8 @@
  * Template Name: Sitemap
  * Template Post Type: page
  *
- * Human-readable HTML sitemap. Assign this template to the WordPress
- * Page mapped to /sitemap/.
+ * Human-readable HTML sitemap covering every section of the site: solutions,
+ * marketplace, brands, resources, company, and legal. Assign to /sitemap/.
  *
  * @package SmokeDropNoir
  */
@@ -13,32 +13,19 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 get_header();
 
-$sdn_sitemap = array(
-    'Platform' => array(
-        'Home'          => home_url( '/' ),
-        'Pricing'       => home_url( '/pricing' ),
-        'For Retailers' => home_url( '/retailers' ),
-        'For Suppliers' => home_url( '/suppliers' ),
-        'For Wholesalers' => home_url( '/wholesalers' ),
-        'Brands We Carry' => home_url( '/brands' ),
-        'Marketplace'   => get_post_type_archive_link( 'product' ) ?: home_url( '/shop' ),
-    ),
-    'Resources' => array(
-        'Blog'          => get_permalink( get_option( 'page_for_posts' ) ) ?: home_url( '/dropshipping-blog' ),
-        'Testimonials'  => home_url( '/testimonials' ),
-        'Help Center'   => home_url( '/help' ),
-        'Get a Demo'    => home_url( '/demo' ),
-        'Schedule Call' => home_url( '/call' ),
-        'Contact'       => home_url( '/contact' ),
-        'About'         => home_url( '/about' ),
-    ),
-    'Legal' => array(
-        'Privacy Policy'            => home_url( '/privacy-policy' ),
-        'Terms of Use'              => home_url( '/terms-of-use' ),
-        'Retailer Agreement'        => home_url( '/retailer-terms-of-use-agreement' ),
-        'Supplier Agreement'        => home_url( '/terms-of-use-for-suppliers' ),
-    ),
-);
+$sdn_shop_url = get_post_type_archive_link( 'product' ) ?: home_url( '/shop' );
+$sdn_blog_url = get_permalink( get_option( 'page_for_posts' ) ) ?: home_url( '/dropshipping-blog' );
+
+// Build an A-Z brand index from the directory for the Brands section.
+$sdn_sm_brands = sdn_brand_directory();
+$sdn_sm_grouped = array();
+foreach ( $sdn_sm_brands as $b ) {
+    $clean  = preg_replace( '/^[^a-zA-Z0-9]+/', '', $b['name'] );
+    $letter = function_exists( 'mb_strtoupper' ) ? mb_strtoupper( mb_substr( $clean, 0, 1 ) ) : strtoupper( substr( $clean, 0, 1 ) );
+    if ( ! ctype_alnum( $letter ) ) $letter = '#';
+    $sdn_sm_grouped[ $letter ][] = $b;
+}
+ksort( $sdn_sm_grouped );
 ?>
 
 <main>
@@ -47,21 +34,79 @@ $sdn_sitemap = array(
       <div class="ph-inner center">
         <p class="eyebrow reveal" style="justify-content:center;">Sitemap</p>
         <h1 class="display reveal reveal-d1" style="margin:24px 0;">Find your way<br><span class="italic gradient-text">around SmokeDrop.</span></h1>
+        <p class="lede reveal reveal-d2" style="max-width:620px;margin:0 auto;">Every page, every section, every brand &mdash; all in one place.</p>
       </div>
     </section>
 
     <section class="sec" style="padding-top:0;">
-      <div class="wrap wrap-tight">
-        <div class="sitemap-grid reveal">
-          <?php foreach ( $sdn_sitemap as $sdn_group => $sdn_links ) : ?>
-            <div class="foot-col">
-              <h5><?php echo esc_html( $sdn_group ); ?></h5>
-              <?php foreach ( $sdn_links as $sdn_label => $sdn_url ) : ?>
-                <a href="<?php echo esc_url( $sdn_url ); ?>"><?php echo esc_html( $sdn_label ); ?></a>
-              <?php endforeach; ?>
-            </div>
-          <?php endforeach; ?>
+      <div class="wrap">
+        <div class="sitemap-grid-full reveal">
+
+          <div class="foot-col">
+            <h5>Solutions</h5>
+            <a href="<?php echo esc_url( home_url( '/retailers' ) ); ?>">For Retailers</a>
+            <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Suppliers</a>
+            <a href="<?php echo esc_url( home_url( '/wholesalers' ) ); ?>">For Wholesalers</a>
+            <a href="<?php echo esc_url( home_url( '/industries' ) ); ?>">By Industry</a>
+            <a href="<?php echo esc_url( home_url( '/compare' ) ); ?>">Compare</a>
+          </div>
+
+          <div class="foot-col">
+            <h5>Platform</h5>
+            <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Overview</a>
+            <a href="<?php echo esc_url( home_url( '/platform' ) ); ?>">Integrations</a>
+            <a href="<?php echo esc_url( home_url( '/pricing' ) ); ?>">Pricing</a>
+            <a href="<?php echo esc_url( home_url( '/demo' ) ); ?>">Get a Demo</a>
+            <a href="<?php echo esc_url( home_url( '/call' ) ); ?>">Schedule a Call</a>
+          </div>
+
+          <div class="foot-col">
+            <h5>Marketplace</h5>
+            <a href="<?php echo esc_url( $sdn_shop_url ); ?>">Shop all products</a>
+            <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">All brands</a>
+            <a href="<?php echo esc_url( home_url( '/new-dropshipping-products' ) ); ?>">New products</a>
+            <a href="https://apps.shopify.com/smoke-drop">Shopify App</a>
+            <a href="<?php echo esc_url( home_url( '/download-smokedrop-plugin' ) ); ?>">WooCommerce Plugin</a>
+          </div>
+
+          <div class="foot-col">
+            <h5>Resources</h5>
+            <a href="<?php echo esc_url( $sdn_blog_url ); ?>">Blog &amp; Guides</a>
+            <a href="<?php echo esc_url( home_url( '/help' ) ); ?>">Help Center</a>
+            <a href="<?php echo esc_url( home_url( '/testimonials' ) ); ?>">Testimonials</a>
+            <a href="<?php echo esc_url( home_url( '/quick-start-guide' ) ); ?>">Quick Start Guide</a>
+            <a href="<?php echo esc_url( home_url( '/optimize-your-smokedrop-program' ) ); ?>">Optimize Your Program</a>
+          </div>
+
+          <div class="foot-col">
+            <h5>Company</h5>
+            <a href="<?php echo esc_url( home_url( '/about' ) ); ?>">About</a>
+            <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>">Contact</a>
+            <a href="<?php echo esc_url( home_url( '/advertise' ) ); ?>">Advertise</a>
+            <a href="<?php echo esc_url( home_url( '/whats-new' ) ); ?>">What's New</a>
+          </div>
+
+          <div class="foot-col">
+            <h5>Legal</h5>
+            <a href="<?php echo esc_url( home_url( '/privacy-policy' ) ); ?>">Privacy Policy</a>
+            <a href="<?php echo esc_url( home_url( '/terms-of-use' ) ); ?>">Terms of Use</a>
+            <a href="<?php echo esc_url( home_url( '/retailer-terms-of-use-agreement' ) ); ?>">Retailer Agreement</a>
+            <a href="<?php echo esc_url( home_url( '/terms-of-use-for-suppliers' ) ); ?>">Supplier Agreement</a>
+          </div>
+
         </div>
+
+        <!-- A-Z BRAND INDEX -->
+        <div class="sitemap-brands reveal" style="margin-top:64px;">
+          <h3 style="font-family:var(--display);font-size:1.6rem;font-weight:600;letter-spacing:-.02em;margin-bottom:24px;">Brands A&ndash;Z <span style="color:var(--ink-mute);font-size:.9rem;font-weight:400;">(<?php echo count( $sdn_sm_brands ); ?>+)</span></h3>
+          <div class="alpha-nav" style="margin-bottom:32px;">
+            <?php foreach ( array_keys( $sdn_sm_grouped ) as $l ) : ?>
+              <a href="<?php echo esc_url( home_url( '/brands/#dir-' . strtolower( $l ) ) ); ?>"><?php echo esc_html( $l ); ?></a>
+            <?php endforeach; ?>
+          </div>
+          <p style="color:var(--ink-mute);">Browse the complete directory on the <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>" style="color:var(--green-xl);">Brands We Carry</a> page.</p>
+        </div>
+
       </div>
     </section>
 </main>

@@ -16,6 +16,7 @@ require_once SDN_DIR . '/inc/enqueue.php';
 require_once SDN_DIR . '/inc/cpt-brands.php';
 require_once SDN_DIR . '/inc/acf-fields.php';
 require_once SDN_DIR . '/inc/helpers.php';
+require_once SDN_DIR . '/inc/brand-directory.php';
 
 /* ---------- Theme setup ---------- */
 add_action( 'after_setup_theme', 'sdn_theme_setup' );
