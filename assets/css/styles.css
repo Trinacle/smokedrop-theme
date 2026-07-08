@@ -439,10 +439,6 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .logo-wall-white .lgo:hover{color:#004122;opacity:1;transform:scale(1.05)}
 .lgo-img{height:88px;width:auto;max-width:240px;object-fit:contain;filter:grayscale(1);opacity:.6;transition:filter .35s var(--ease),opacity .35s var(--ease),transform .35s var(--ease)}
 .lgo:hover .lgo-img{filter:grayscale(0);opacity:1;transform:scale(1.1)}
-.brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px}
-.brand-card{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:var(--r-lg);padding:24px;display:flex;align-items:center;justify-content:center;min-height:110px;scroll-margin-top:120px;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
-.brand-card:hover{transform:translateY(-6px) scale(1.03) rotate(-1deg);box-shadow:0 20px 40px -16px rgba(0,0,0,.25)}
-.brand-card img{max-width:100%;max-height:56px;object-fit:contain}
 
 /* Search results page */
 .search-head{text-align:center;max-width:680px;margin:0 auto 56px}
@@ -485,11 +481,12 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 @media(max-width:560px){.ad-package-grid{grid-template-columns:1fr}.holiday-grid{grid-template-columns:1fr}}
 
 /* Featured brand grid: logo + name card (top-ranked brands) */
-.brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:18px}
-.brand-card{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:var(--r-lg);padding:28px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:140px;scroll-margin-top:120px;transition:transform .35s var(--ease),box-shadow .35s var(--ease);text-decoration:none}
+.brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px}
+.brand-card{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:var(--r-lg);padding:32px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:160px;scroll-margin-top:120px;transition:transform .35s var(--ease),box-shadow .35s var(--ease);text-decoration:none}
 .brand-card:hover{transform:translateY(-6px) scale(1.03);box-shadow:0 20px 40px -16px rgba(0,0,0,.25)}
-.brand-card-fallback{font-family:var(--display);font-weight:700;font-size:1.8rem;color:var(--green)}
-.brand-card-name{font-size:.82rem;color:#515154;font-weight:600;text-align:center;letter-spacing:-.01em}
+.brand-card img{max-width:100%;max-height:72px;object-fit:contain}
+.brand-card-fallback{font-family:var(--display);font-weight:700;font-size:2.2rem;color:var(--green)}
+.brand-card-name{font-size:.88rem;color:#515154;font-weight:600;text-align:center;letter-spacing:-.01em}
 
 /* Recently Joined brands */
 .brand-grid-new{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
@@ -503,20 +500,22 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .alpha-nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:48px}
 .alpha-nav a{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-weight:700;font-size:.95rem;color:var(--ink-mute);background:var(--bg-2);border:1px solid var(--line);transition:all .25s var(--ease);text-decoration:none;scroll-margin-top:120px}
 .alpha-nav a:hover{background:var(--green);color:#fff;border-color:var(--green)}
-.brand-directory-wrap{max-width:1200px;margin:0 auto}
+.brand-directory-wrap{width:100%}
 .alpha-head{font-family:var(--display);font-size:2rem;font-weight:600;color:var(--green-xl);margin:48px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line);letter-spacing:-.02em;scroll-margin-top:120px}
 .alpha-head:first-child{margin-top:0}
-.brand-directory{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.brand-pill{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:var(--r-md);background:var(--bg-2);border:1px solid var(--line);transition:all .3s var(--ease);text-decoration:none}
+/* Wider grid: ~5 cols at desktop within the 1400px wrap, scaling down on
+   smaller screens. Bigger logo tiles + initials so logos are legible. */
+.brand-directory{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.brand-pill{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:var(--r-md);background:var(--bg-2);border:1px solid var(--line);transition:all .3s var(--ease);text-decoration:none}
 .brand-pill:hover{border-color:var(--green-l);transform:translateX(4px);background:var(--bg-3)}
-.brand-pill .bp-mark{width:32px;height:32px;border-radius:8px;background:linear-gradient(145deg,var(--green),var(--green-l));display:grid;place-items:center;color:#fff;font-family:var(--display);font-weight:600;font-size:.85rem;flex-shrink:0}
+.brand-pill .bp-mark{width:44px;height:44px;border-radius:10px;background:linear-gradient(145deg,var(--green),var(--green-l));display:grid;place-items:center;color:#fff;font-family:var(--display);font-weight:700;font-size:1.05rem;flex-shrink:0}
 .brand-pill--logo{padding:10px 14px}
-.brand-pill--logo .bp-logo{width:44px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.brand-pill--logo .bp-logo img{max-width:100%;max-height:32px;width:auto;object-fit:contain}
-.brand-pill span:not(.bp-mark):not(.bp-logo){font-size:.92rem;color:var(--ink-dim);font-weight:500}
+.brand-pill--logo .bp-logo{width:60px;height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.brand-pill--logo .bp-logo img{max-width:100%;max-height:44px;width:auto;object-fit:contain}
+.brand-pill span:not(.bp-mark):not(.bp-logo){font-size:.98rem;color:var(--ink-dim);font-weight:500}
 .brand-pill:hover span:not(.bp-mark):not(.bp-logo){color:var(--ink)}
-@media(max-width:900px){.brand-directory{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.brand-directory{grid-template-columns:1fr}}
+@media(max-width:900px){.brand-directory{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}}
+@media(max-width:560px){.brand-directory{grid-template-columns:repeat(2,1fr)}}
 
 /* Single brand page */
 .brand-hero{padding:140px 20px 60px;background:radial-gradient(ellipse 60% 50% at 30% 0%,rgba(19,194,123,.1),transparent 70%)}

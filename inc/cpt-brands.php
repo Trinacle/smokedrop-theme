@@ -53,6 +53,29 @@ function sdn_register_brand_cpt() {
     register_post_type( 'brand', $args );
 }
 
+/* ---------- Brand slug aliases ----------
+ * Some brands' canonical CPT slugs don't match the URLs visitors expect (or
+ * that already exist on production and are indexed by Google). Most notably,
+ * Storz & Bickel lives at /brand/storz-and-bickel/ here, but production has
+ * always served /storz-bickel/. This map redirects/normalizes the incoming
+ * slug to the canonical CPT slug.
+ *
+ * To add another: add `'requested-slug' => 'canonical-slug'`. That's it — the
+ * request filter, single-brand.php, and the legacy redirect all read from here.
+ */
+function sdn_brand_slug_aliases() {
+    return array(
+        'storz-bickel'       => 'storz-and-bickel',
+    );
+}
+
+/* Resolve any slug (incoming URL or otherwise) to its canonical CPT slug. */
+function sdn_resolve_brand_slug( $slug ) {
+    $slug = sanitize_title( $slug );
+    $map  = sdn_brand_slug_aliases();
+    return isset( $map[ $slug ] ) ? $map[ $slug ] : $slug;
+}
+
 /* ---------- Connect brand CPT to WooCommerce product_brand taxonomy ---------- */
 add_action( 'registered_taxonomy', 'sdn_bind_brand_cpt_to_product_brand', 10, 3 );
 function sdn_bind_brand_cpt_to_product_brand( $taxonomy, $object_type, $args ) {
@@ -114,7 +137,9 @@ function sdn_brand_request_fallback( $qv ) {
     }
 
     if ( preg_match( '#^brand/([a-z0-9-]+)/?$#i', $path, $m ) ) {
-        $qv['sdn_brand_slug']   = $m[1];
+        // Normalize legacy/alternate slugs (e.g. storz-bickel -> storz-and-bickel)
+        // so the canonical CPT post resolves instead of 404ing.
+        $qv['sdn_brand_slug']    = sdn_resolve_brand_slug( $m[1] );
         $qv['sdn_virtual_brand'] = 1;
     }
     return $qv;
@@ -135,6 +160,42 @@ add_action( 'after_switch_theme', 'sdn_flush_brand_rewrites' );
 function sdn_flush_brand_rewrites() {
     sdn_register_virtual_brand_rewrite();
     flush_rewrite_rules();
+}
+
+/* ---------- 301 legacy brand URLs to their canonical /brand/{slug}/ home ----------
+ * Production has historically served some brand pages at the site root
+ * (e.g. https://thesmokedrop.com/storz-bickel/). Those URLs are indexed and
+ * linked, so after cutover we redirect them — permanently — to the canonical
+ * /brand/{slug}/ page rather than letting them 404. Sourced from the alias map
+ * so every aliased slug is covered. Runs on template_redirect (after WP has
+ * decided what to load) so it never fights the request filter.
+ */
+add_action( 'template_redirect', 'sdn_redirect_legacy_brand_urls' );
+function sdn_redirect_legacy_brand_urls() {
+    if ( is_admin() ) return;
+    $path = isset( $_SERVER['REQUEST_URI'] ) ? rawurldecode( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+    if ( ! $path ) return;
+
+    // Strip query string + leading slash, then remove the home path (staging
+    // subpath like /staging/5411/) so we compare against the bare route.
+    $path = ltrim( strtok( $path, '?' ), '/' );
+    $home_path = trim( wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+    if ( $home_path && strpos( $path, $home_path ) === 0 ) {
+        $path = ltrim( substr( $path, strlen( $home_path ) ), '/' );
+    }
+
+    // Only bare top-level {slug}/ requests — never touch /brand/{slug}/ (already
+    // handled by the request filter above).
+    $segments = explode( '/', $path );
+    if ( count( $segments ) !== 1 ) return;
+
+    $slug = $segments[0];
+    $map  = sdn_brand_slug_aliases();
+    if ( ! isset( $map[ $slug ] ) ) return;
+
+    $dest = home_url( '/brand/' . $map[ $slug ] . '/' );
+    wp_safe_redirect( $dest, 301 );
+    exit;
 }
 
 /* ---------- Seed the Brands CPT with the full marketplace directory ----------

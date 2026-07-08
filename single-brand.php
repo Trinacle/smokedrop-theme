@@ -41,6 +41,12 @@ if ( get_query_var( 'sdn_brand_slug' ) ) {
     $sdn_requested = $GLOBALS['wp']->query_vars['brand'];
 }
 
+// Normalize legacy/alternate slugs (e.g. storz-bickel -> storz-and-bickel)
+// so the canonical CPT post + directory entry resolve instead of 404ing.
+if ( $sdn_requested ) {
+    $sdn_requested = sdn_resolve_brand_slug( $sdn_requested );
+}
+
 // Try a real CPT brand post by slug FIRST (the migration writes content here).
 if ( $sdn_requested ) {
     $cpt_post = get_page_by_path( $sdn_requested, OBJECT, 'brand' );
