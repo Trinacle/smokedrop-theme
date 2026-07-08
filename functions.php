@@ -114,11 +114,10 @@ function sdn_strip_builder_assets() {
     // scoped .contact-form-card overrides win. (Grid + icons stay — needed for
     // layout. Only the color/material theme sheets are removed.)
     if ( is_page( 'contact' ) ) {
-        $kill[] = 'forminator-form-material';
-        $kill[] = 'forminator-form-flat';
-        $kill[] = 'forminator-form-bold';
-        $kill[] = 'forminator-form-accent';
-        $kill[] = 'forminator-module-css'; // the per-form generated stylesheet (blue/white colors)
+        $kill[] = 'forminator-forms-material'; // material design theme (handles: forminator-forms-material-base, -accent, etc.)
+        $kill[] = 'forminator-forms-flat';
+        $kill[] = 'forminator-forms-bold';
+        $kill[] = 'forminator-module-css'; // per-form generated stylesheet (blue/white colors)
     }
 
     // Never touch our own assets, the admin bar, or core icon fonts.
