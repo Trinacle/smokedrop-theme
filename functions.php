@@ -163,7 +163,7 @@ add_filter( 'body_class', 'sdn_clean_body_classes', 20 );
  * (priority 99, after all enqueued stylesheets) so the noir form styling
  * ALWAYS wins over Forminator's blue/white material theme.
  */
-add_action( 'wp_head', 'sdn_contact_forminator_overrides', 99 );
+add_action( 'wp_footer', 'sdn_contact_forminator_overrides', 99 );
 function sdn_contact_forminator_overrides() {
     if ( ! is_page( 'contact' ) ) return;
     ?>
