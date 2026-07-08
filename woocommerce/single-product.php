@@ -221,17 +221,8 @@ while ( have_posts() ) :
     </main>
 
     <script>
-    // Gallery thumbnail swap.
+    // Product tabs (gallery swap + lightbox live in assets/js/main.js).
     (function(){
-      var main = document.getElementById('pg-main-img');
-      document.querySelectorAll('.pg-thumb').forEach(function(t){
-        t.addEventListener('click', function(){
-          if (!main) return;
-          main.src = t.getAttribute('data-full');
-          document.querySelectorAll('.pg-thumb').forEach(function(x){ x.classList.remove('is-active'); });
-          t.classList.add('is-active');
-        });
-      });
       // Tabs.
       var btns = document.querySelectorAll('.ptab-btn');
       var panes = document.querySelectorAll('.ptab-pane');

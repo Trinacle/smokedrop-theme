@@ -251,4 +251,80 @@
 
   /* ---------- Footer year ---------- */
   document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
+
+  /* ---------- Product gallery: thumbnail swap + lightbox ----------
+   * The single-product page uses bespoke .pg-main / .pg-thumb markup (not
+   * WooCommerce's .woocommerce-product-gallery), so WC's native PhotoSwipe
+   * lightbox has nothing to bind to. This module provides both behaviors:
+   *   1. Clicking a thumbnail swaps the main image + marks it active.
+   *   2. Clicking the main image opens a full-screen lightbox with arrow-key
+   *      and arrow-button navigation across the whole gallery set.
+   */
+  (function initProductGallery() {
+    var mainImg = document.getElementById('pg-main-img');
+    var thumbs  = Array.prototype.slice.call(document.querySelectorAll('.pg-thumb'));
+    if (!mainImg || !thumbs.length) return;
+
+    // Build the ordered gallery set from the thumbnails' data-full URLs.
+    var set = thumbs.map(function (t) { return t.getAttribute('data-full'); }).filter(Boolean);
+    if (!set.length) return;
+    var current = 0; // index into `set` currently shown in the main image.
+
+    function show(idx) {
+      current = Math.max(0, Math.min(idx, set.length - 1));
+      mainImg.src = set[current];
+      thumbs.forEach(function (t, i) { t.classList.toggle('is-active', i === current); });
+    }
+
+    // Thumbnail click -> swap main image.
+    thumbs.forEach(function (t, i) {
+      t.addEventListener('click', function () { show(i); });
+    });
+
+    // ---- Lightbox ----
+    var overlay = document.createElement('div');
+    overlay.className = 'sdn-lightbox';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Product image');
+    overlay.innerHTML =
+      '<button class="lb-close" aria-label="Close">&times;</button>' +
+      '<button class="lb-nav lb-prev" aria-label="Previous">&#8249;</button>' +
+      '<img class="lb-img" alt="">' +
+      '<button class="lb-nav lb-next" aria-label="Next">&#8250;</button>';
+    document.body.appendChild(overlay);
+    var lbImg = overlay.querySelector('.lb-img');
+
+    function open(idx) {
+      current = Math.max(0, Math.min(idx, set.length - 1));
+      lbImg.src = set[current];
+      overlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      overlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+    function step(d) {
+      current = (current + d + set.length) % set.length;
+      lbImg.src = set[current];
+    }
+
+    // Main image click -> open lightbox at the current image.
+    mainImg.style.cursor = 'zoom-in';
+    mainImg.addEventListener('click', function () { open(current); });
+
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) close();
+    });
+    overlay.querySelector('.lb-close').addEventListener('click', close);
+    overlay.querySelector('.lb-prev').addEventListener('click', function () { step(-1); });
+    overlay.querySelector('.lb-next').addEventListener('click', function () { step(1); });
+    document.addEventListener('keydown', function (e) {
+      if (!overlay.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') step(-1);
+      else if (e.key === 'ArrowRight') step(1);
+    });
+  })();
 })();
