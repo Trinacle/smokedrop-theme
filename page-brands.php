@@ -92,8 +92,20 @@ $sdn_letters = array_keys( $sdn_grouped );
     </section>
     <?php endif; ?>
 
-    <!-- FEATURED BRAND CARDS (top-ranked, with logos) -->
-    <?php if ( ! empty( $sdn_featured ) ) : ?>
+    <!-- FEATURED BRAND CARDS (top-ranked, WITH logos only) -->
+    <?php
+    // Resolve logos for featured brands via the full resolver (directory + CPT meta).
+    $sdn_featured_with_logo = array();
+    foreach ( $sdn_featured as $b ) {
+        $logo_url = sdn_brand_logo_for_slug( $b['slug'] );
+        if ( $logo_url ) {
+            $sdn_featured_with_logo[] = array( 'b' => $b, 'logo' => $logo_url );
+        }
+    }
+    // Cap the featured grid so it stays a clean grid (not hundreds of cards).
+    $sdn_featured_with_logo = array_slice( $sdn_featured_with_logo, 0, 24 );
+    ?>
+    <?php if ( ! empty( $sdn_featured_with_logo ) ) : ?>
     <section class="sec" style="background:var(--bg-2);">
       <div class="wrap">
         <div class="center" style="margin-bottom:48px;">
@@ -101,15 +113,11 @@ $sdn_letters = array_keys( $sdn_grouped );
           <h2 class="h-sec reveal reveal-d1" style="margin-top:16px;">Top trending brands</h2>
         </div>
         <div class="brand-grid reveal reveal-d2">
-          <?php foreach ( $sdn_featured as $b ) :
-              $logo_url = ! empty( $b['logo'] ) ? home_url( '/wp-content/uploads/' . $b['logo'] ) : '';
+          <?php foreach ( $sdn_featured_with_logo as $fl ) :
+              $b = $fl['b'];
               ?>
               <a href="<?php echo esc_url( home_url( '/brand/' . $b['slug'] . '/' ) ); ?>" class="brand-card" id="brand-<?php echo esc_attr( $b['slug'] ); ?>">
-                <?php if ( $logo_url ) : ?>
-                  <img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy">
-                <?php else : ?>
-                  <span class="brand-card-fallback"><?php echo esc_html( $b['initials'] ); ?></span>
-                <?php endif; ?>
+                <img src="<?php echo esc_url( $fl['logo'] ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy">
                 <span class="brand-card-name"><?php echo esc_html( $b['name'] ); ?></span>
               </a>
           <?php endforeach; ?>
@@ -164,12 +172,14 @@ $sdn_letters = array_keys( $sdn_grouped );
                   $name     = $b['name'];
                   $initials = isset( $b['initials'] ) ? $b['initials'] : strtoupper( substr( $name, 0, 2 ) );
                   $slug     = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $name );
-                  $has_logo = ! empty( $b['logo'] );
+                  // Resolve logo from directory OR CPT post_meta.
+                  $logo_url = sdn_brand_logo_for_slug( $slug );
+                  $has_logo = ! empty( $logo_url );
                   $cls      = $has_logo ? 'brand-pill brand-pill--logo' : 'brand-pill';
                   ?>
                   <a href="<?php echo esc_url( home_url( '/brand/' . $slug . '/' ) ); ?>" class="<?php echo esc_attr( $cls ); ?>">
                     <?php if ( $has_logo ) : ?>
-                      <span class="bp-logo"><img src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['logo'] ) ); ?>" alt="<?php echo esc_attr( $name ); ?>" loading="lazy"></span>
+                      <span class="bp-logo"><img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( $name ); ?>" loading="lazy"></span>
                     <?php else : ?>
                       <span class="bp-mark"><?php echo esc_html( $initials ); ?></span>
                     <?php endif; ?>

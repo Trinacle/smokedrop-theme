@@ -56,6 +56,15 @@ if ( $sdn_requested ) {
         $sdn_slug   = $cpt_post->post_name;
         $sdn_name   = get_the_title( $cpt_post );
         $sdn_logo_url = sdn_brand_logo_url( $cpt_post->ID );
+        // If the CPT logo is just the ucfirst(slug).png guess (may not exist),
+        // prefer an explicit directory 'images' logo or directory 'logo' field.
+        $sdn_dir_images = function_exists( 'sdn_brand_directory_images' ) ? sdn_brand_directory_images( $sdn_requested ) : array();
+        if ( ! empty( $sdn_dir_images['logo'] ) ) {
+            $sdn_logo_url = home_url( '/wp-content/uploads/' . $sdn_dir_images['logo'] );
+        } elseif ( ! $sdn_logo_url || ( ! get_post_meta( $cpt_post->ID, 'brand_logo', true ) && function_exists( 'sdn_brand_logo_for_slug' ) ) ) {
+            $resolved = function_exists( 'sdn_brand_logo_for_slug' ) ? sdn_brand_logo_for_slug( $sdn_requested ) : '';
+            if ( $resolved ) $sdn_logo_url = $resolved;
+        }
         // Use the migrated post content, BUT detect the broken boilerplate
         // the migration wrote (a generic "Welcome to SmokeDrop..." template
         // that hardcodes "Cookies branded items" regardless of the actual
@@ -121,19 +130,20 @@ $sdn_niche = sdn_brand_niche( $sdn_name );
 // Woo products when there ARE Woo products (no Unsplash fallbacks — those
 // make the gallery look fake). Uses $sdn_cpt_id (resolved above) since
 // get_the_ID() is empty in the virtual-brand routing path.
-$sdn_gallery_ids = $sdn_cpt_id ? sdn_brand_gallery_ids( $sdn_cpt_id ) : array();
-$sdn_hero_img    = $sdn_cpt_id ? sdn_brand_hero_image_url( $sdn_cpt_id ) : '';
-$sdn_gallery     = array();
+$sdn_gallery_urls = $sdn_cpt_id ? sdn_brand_gallery_ids( $sdn_cpt_id ) : array();
+$sdn_hero_img     = $sdn_cpt_id ? sdn_brand_hero_image_url( $sdn_cpt_id ) : '';
 
-// 1) Migrated gallery meta (URLs or IDs).
-if ( ! empty( $sdn_gallery_ids ) ) {
-    foreach ( $sdn_gallery_ids as $gid ) {
-        if ( is_numeric( $gid ) ) {
-            $u = wp_get_attachment_image_url( (int) $gid, 'large' );
-            if ( $u ) $sdn_gallery[] = $u;
-        } else {
-            $sdn_gallery[] = $gid;
-        }
+// Also check the directory 'images' field (explicit per-brand image map, e.g. CCell).
+if ( empty( $sdn_gallery_urls ) && function_exists( 'sdn_brand_directory_images' ) ) {
+    $sdn_gallery_urls = sdn_brand_directory_images( $sdn_slug ?: $sdn_requested );
+}
+
+$sdn_gallery = array();
+
+// 1) Migrated/gallery meta (now always an array of URL strings).
+if ( ! empty( $sdn_gallery_urls ) ) {
+    foreach ( $sdn_gallery_urls as $u ) {
+        if ( $u ) $sdn_gallery[] = $u;
     }
 }
 
@@ -148,17 +158,23 @@ if ( count( $sdn_gallery ) < 3 ) {
     $sdn_gallery = array_slice( array_unique( $sdn_gallery ), 0, 3 );
 }
 
+// If we have gallery images but no dedicated hero, use the first gallery image.
+if ( ! $sdn_hero_img && ! empty( $sdn_gallery ) ) {
+    $sdn_hero_img = $sdn_gallery[0];
+}
+
 get_header();
 ?>
 
 <main>
-  <!-- BRAND HERO -->
-  <section class="brand-hero<?php echo $sdn_hero_img ? ' brand-hero--split' : ''; ?>">
-    <div class="wrap <?php echo $sdn_hero_img ? 'brand-hero-grid' : 'brand-hero-inner'; ?>">
+  <!-- BRAND HERO (always 2-column: logo+CTA left, image right) -->
+  <section class="brand-hero brand-hero--split">
+    <div class="wrap brand-hero-grid">
       <div class="brand-hero-left">
         <div class="brand-hero-logo reveal">
           <?php if ( $sdn_logo_url ) : ?>
-            <img src="<?php echo esc_url( $sdn_logo_url ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?>">
+            <img src="<?php echo esc_url( $sdn_logo_url ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?>" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+            <span class="brand-hero-mark" style="display:none"><?php echo esc_html( strtoupper( substr( $sdn_name, 0, 2 ) ) ); ?></span>
           <?php else : ?>
             <span class="brand-hero-mark"><?php echo esc_html( strtoupper( substr( $sdn_name, 0, 2 ) ) ); ?></span>
           <?php endif; ?>
@@ -173,11 +189,13 @@ get_header();
           </div>
         </div>
       </div>
-      <?php if ( $sdn_hero_img ) : ?>
-        <div class="bhg-img reveal reveal-d2">
+      <div class="bhg-img reveal reveal-d2">
+        <?php if ( $sdn_hero_img ) : ?>
           <img src="<?php echo esc_url( $sdn_hero_img ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?> product">
-        </div>
-      <?php endif; ?>
+        <?php else : ?>
+          <div class="bhg-fallback"><span><?php echo esc_html( strtoupper( substr( $sdn_name, 0, 2 ) ) ); ?></span></div>
+        <?php endif; ?>
+      </div>
     </div>
   </section>
 

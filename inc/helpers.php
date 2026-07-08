@@ -50,11 +50,65 @@ function sdn_get_brand_field( $field, $post_id = null ) {
 function sdn_brand_logo_url( $post_id = null ) {
     $post_id = $post_id ?: get_the_ID();
     $logo = sdn_get_brand_field( 'brand_logo', $post_id );
-    if ( $logo ) return $logo;
+    if ( $logo ) return sdn_normalize_upload_url( $logo );
     // Fallback: try thesmokedrop.com standard logo path
     $slug = get_post_field( 'post_name', $post_id );
     $capitalized = ucfirst( $slug );
     return home_url( '/wp-content/uploads/' . $capitalized . '.png' );
+}
+
+/* ---------- Resolve a logo for a brand SLUG (not post ID) ----------
+ * Used by /brands/ page + featured grids. Checks: (1) the directory array's
+ * 'logo' field, (2) the brand CPT post_meta 'brand_logo', (3) the directory
+ * 'images' map logo. Returns '' if none found.
+ */
+function sdn_brand_logo_for_slug( $slug ) {
+    $slug = sanitize_title( $slug );
+    if ( ! $slug ) return '';
+
+    // 1) Directory array 'logo' field (relative path under uploads).
+    if ( function_exists( 'sdn_brand_directory' ) ) {
+        foreach ( sdn_brand_directory() as $b ) {
+            $bslug = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $b['name'] );
+            if ( $bslug === $slug && ! empty( $b['logo'] ) ) {
+                return home_url( '/wp-content/uploads/' . $b['logo'] );
+            }
+        }
+    }
+
+    // 2) Brand CPT post_meta (the migration wrote 173 logos here).
+    $cpt = get_page_by_path( $slug, OBJECT, 'brand' );
+    if ( $cpt && $cpt->post_status === 'publish' ) {
+        $logo = get_post_meta( $cpt->ID, 'brand_logo', true );
+        if ( $logo ) return sdn_normalize_upload_url( $logo );
+    }
+
+    // 3) Directory 'images' map (explicit per-brand image sets).
+    $images = sdn_brand_directory_images( $slug );
+    if ( ! empty( $images['logo'] ) ) {
+        return sdn_normalize_upload_url( $images['logo'] );
+    }
+
+    return '';
+}
+
+/* ---------- Get explicit per-brand images from the directory map ----------
+ * Reads the optional 'images' field added to brand-directory.php entries
+ * (e.g. CCell). Returns an associative array: ['logo'=>..., 'img1'=>...,
+ * 'img2'=>..., 'img3'=>...] or empty array if not set.
+ */
+function sdn_brand_directory_images( $slug ) {
+    $slug = sanitize_title( $slug );
+    if ( ! $slug || ! function_exists( 'sdn_brand_directory' ) ) return array();
+
+    $all = array_merge( sdn_brand_directory(), ( function_exists( 'sdn_new_brands' ) ? sdn_new_brands() : array() ) );
+    foreach ( $all as $b ) {
+        $bslug = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $b['name'] );
+        if ( $bslug === $slug && ! empty( $b['images'] ) && is_array( $b['images'] ) ) {
+            return $b['images'];
+        }
+    }
+    return array();
 }
 
 /* ---------- Get the split-hero image URL ---------- */
@@ -69,16 +123,56 @@ function sdn_brand_hero_image_url( $post_id = null ) {
     return '';
 }
 
-/* ---------- Get gallery image IDs ---------- */
+/* ---------- Get gallery image URLs or IDs ----------
+ * The migration stored brand_gallery as a comma-separated string of REMOTE
+ * URLs (e.g. "https://thesmokedrop.com/wp-content/uploads/x.jpg,..."), but
+ * the ACF field is configured to return IDs. We handle BOTH: if an entry
+ * looks like a URL (contains http or /), keep it as a URL string; if it's
+ * numeric, resolve it to an attachment image URL. Always returns an array
+ * of resolvable image URL strings.
+ */
 function sdn_brand_gallery_ids( $post_id = null ) {
     $post_id = $post_id ?: get_the_ID();
     $gallery = sdn_get_brand_field( 'brand_gallery', $post_id );
-    if ( $gallery ) {
-        if ( is_array( $gallery ) ) return $gallery;
-        // Gallery field might return comma-separated IDs
-        return array_map( 'intval', explode( ',', $gallery ) );
+    if ( ! $gallery ) return array();
+
+    // ACF may return an array (of IDs or URLs).
+    if ( is_array( $gallery ) ) {
+        $items = $gallery;
+    } else {
+        $items = explode( ',', $gallery );
     }
-    return array();
+
+    $urls = array();
+    foreach ( $items as $item ) {
+        $item = trim( $item );
+        if ( '' === $item ) continue;
+        if ( is_numeric( $item ) ) {
+            // Numeric -> attachment ID
+            $url = wp_get_attachment_image_url( intval( $item ), 'large' );
+            if ( $url ) $urls[] = $url;
+        } elseif ( preg_match( '#^https?://#i', $item ) || strpos( $item, '/' ) !== false ) {
+            // It's a URL or path -> normalize staging/prod to current host
+            $urls[] = sdn_normalize_upload_url( $item );
+        }
+    }
+    return $urls;
+}
+
+/* ---------- Normalize a thesmokedrop.com upload URL to the current host ----------
+ * The migration stored production URLs (thesmokedrop.com/wp-content/uploads/...).
+ * On staging we need thesmokedrop.com/staging/5411/... and vice-versa. This
+ * rewrites the host + path prefix so images resolve on whichever environment
+ * we're running on.
+ */
+function sdn_normalize_upload_url( $url ) {
+    if ( ! $url ) return $url;
+    // Match any thesmokedrop.com host (prod or staging path) + /wp-content/uploads/
+    if ( preg_match( '#https?://thesmokedrop\.com(/staging/[0-9]+)?(/wp-content/uploads/.+)#i', $url, $m ) ) {
+        return home_url( $m[2] );
+    }
+    // Already a relative path or local URL
+    return $url;
 }
 
 /* ---------- Render a video embed (YouTube/IG/FB/Vimeo) ---------- */

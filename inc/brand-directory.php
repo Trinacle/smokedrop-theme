@@ -17,7 +17,12 @@ function sdn_brand_directory() {
         array( 'name' => "Arizer", 'slug' => "arizer", 'initials' => "AR", 'value' => 9 ),
         array( 'name' => "Blazy Susan", 'slug' => "blazy-susan", 'initials' => "BS", 'value' => 9 ),
         array( 'name' => "Blunt Wrap", 'slug' => "blunt-wrap", 'initials' => "BW", 'value' => 9 ),
-        array( 'name' => "CCell", 'slug' => "ccell", 'initials' => "CC", 'value' => 9 ),
+        array( 'name' => "CCell", 'slug' => "ccell", 'initials' => "CC", 'value' => 9, 'images' => array(
+            'logo' => 'CCell.png',
+            'img1' => 'Snapinst.app_441764211_1614126682758283_6118410090591023648_n_1024.jpg',
+            'img2' => 'CCell1.jpg',
+            'img3' => 'Snapinst.app_458413760_18335374555134934_5419868033705028228_n_1024.webp',
+        ) ),
         array( 'name' => "Cheech Glass", 'slug' => "cheech-glass", 'initials' => "CG", 'value' => 9 ),
         array( 'name' => "DaVinci", 'slug' => "davinci", 'initials' => "DA", 'value' => 9 ),
         array( 'name' => "Dart", 'slug' => "dart", 'initials' => "DA", 'value' => 9 ),
