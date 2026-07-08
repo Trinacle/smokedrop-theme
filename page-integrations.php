@@ -18,6 +18,7 @@ get_header();
 
 $sdn_platforms = sdn_platforms();
 $register      = 'https://wholesale.thesmokedrop.com/register';
+$call          = home_url( '/call' );
 ?>
 
 <main>
@@ -26,7 +27,11 @@ $register      = 'https://wholesale.thesmokedrop.com/register';
     <div class="ph-inner center">
       <p class="eyebrow reveal" style="justify-content:center;">Shopping Cart Integrations</p>
       <h1 class="display reveal reveal-d1" style="margin:24px 0;">Import 20,000+ products<br><span class="italic gradient-text">to your store.</span></h1>
-      <p class="lede reveal reveal-d2" style="max-width:620px;margin:0 auto;">Native apps for Shopify, WooCommerce, and BigCommerce, plus a full REST API for custom stacks. One integration, every platform.</p>
+      <p class="lede reveal reveal-d2" style="max-width:620px;margin:0 auto;">Native apps for Shopify, WooCommerce, and BigCommerce, plus a full REST API for custom stacks. Connect once and your inventory, orders, and tracking stay in sync automatically.</p>
+      <div class="hero-actions reveal reveal-d3" style="justify-content:center;margin-top:32px;">
+        <a href="<?php echo esc_url( $register ); ?>" class="btn btn-lime btn-lg">Start Free Trial</a>
+        <a href="<?php echo esc_url( $call ); ?>" class="btn btn-outline btn-lg">Talk to our team</a>
+      </div>
     </div>
   </section>
 
@@ -40,26 +45,43 @@ $register      = 'https://wholesale.thesmokedrop.com/register';
     </div>
   </section>
 
-  <!-- PER-PLATFORM VALUE PROPS -->
+  <!-- PER-PLATFORM RICH CARDS -->
   <section class="sec" style="background:var(--bg-2);">
     <div class="wrap">
       <div class="center" style="margin-bottom:56px;">
-        <p class="eyebrow reveal" style="justify-content:center;">Why integrate</p>
-        <h2 class="h-sec reveal reveal-d1" style="margin-top:16px;">One platform. <span class="italic gradient-text">Every workflow.</span></h2>
+        <p class="eyebrow reveal" style="justify-content:center;">Built for your platform</p>
+        <h2 class="h-sec reveal reveal-d1" style="margin-top:16px;">Every integration, <span class="italic gradient-text">all the features.</span></h2>
       </div>
-      <div class="feat-grid">
-        <?php foreach ( $sdn_platforms as $p ) : ?>
-          <div class="feat-card reveal">
-            <div class="fc-ico">
-              <?php if ( ! empty( $p['logo'] ) ) : ?>
-                <img src="<?php echo esc_url( $p['logo'] ); ?>" alt="<?php echo esc_attr( $p['name'] ); ?>" style="width:32px;height:32px;object-fit:contain;" onerror="this.style.display='none'">
-              <?php else : ?>
-                <span style="font-family:var(--display);font-weight:700;color:var(--green-xl);">&lt;/&gt;</span>
-              <?php endif; ?>
+      <div class="int-platforms">
+        <?php foreach ( $sdn_platforms as $p ) : $d = ( $p['slug'] === 'api' ) ? ' reveal-d2' : ''; ?>
+          <div class="int-platform reveal<?php echo esc_attr( $d ); ?>">
+            <div class="int-platform-head">
+              <span class="int-logo">
+                <?php if ( ! empty( $p['logo'] ) ) : ?>
+                  <img src="<?php echo esc_url( $p['logo'] ); ?>" alt="<?php echo esc_attr( $p['name'] ); ?>" onerror="this.style.display='none'">
+                <?php else : ?>
+                  <span class="int-logo-glyph">&lt;/&gt;</span>
+                <?php endif; ?>
+              </span>
+              <div>
+                <h3><?php echo esc_html( $p['name'] ); ?></h3>
+                <p class="int-tag"><?php echo esc_html( $p['tagline'] ); ?></p>
+              </div>
             </div>
-            <h4><?php echo esc_html( $p['name'] ); ?></h4>
-            <p><?php echo esc_html( $p['tagline'] ); ?></p>
-            <a href="<?php echo esc_url( home_url( '/integrations/' . $p['slug'] . '/' ) ); ?>" class="link-arrow" style="margin-top:14px;font-size:.85rem;">Learn more <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            <p class="int-desc"><?php echo esc_html( $p['desc'] ); ?></p>
+            <?php if ( ! empty( $p['features'] ) ) : ?>
+              <ul class="int-feats">
+                <?php foreach ( array_slice( $p['features'], 0, 4 ) as $f ) : ?>
+                  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span><strong><?php echo esc_html( $f[0] ); ?></strong> &mdash; <?php echo esc_html( $f[1] ); ?></span></li>
+                <?php endforeach; ?>
+              </ul>
+            <?php endif; ?>
+            <div class="int-platform-actions">
+              <?php if ( ! empty( $p['install_url'] ) ) : ?>
+                <a href="<?php echo esc_url( $p['install_url'] ); ?>" class="btn btn-lime" target="_blank" rel="noopener"><?php echo esc_html( $p['install_label'] ); ?></a>
+              <?php endif; ?>
+              <a href="<?php echo esc_url( home_url( '/integrations/' . $p['slug'] . '/' ) ); ?>" class="link-arrow">Learn more <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
           </div>
         <?php endforeach; ?>
       </div>
@@ -71,6 +93,7 @@ $register      = 'https://wholesale.thesmokedrop.com/register';
     <div class="wrap wrap-tight center">
       <p class="eyebrow reveal" style="justify-content:center;">Every integration includes</p>
       <h2 class="display reveal reveal-d1" style="margin-top:24px;">Real-time sync.<br><span class="italic gradient-text">Automatic fulfillment.</span></h2>
+      <p class="lede reveal reveal-d2" style="max-width:580px;margin:20px auto 0;">No matter which platform you sell on, you get the same retailer-focused toolset &mdash; designed to grow your store without growing your workload.</p>
       <div class="bento-tag-row reveal reveal-d2" style="justify-content:center;margin-top:40px;">
         <span class="bento-tag">&#10003; Real-time inventory sync</span>
         <span class="bento-tag">&#10003; Automatic order routing</span>
