@@ -41,32 +41,82 @@ function sdn_migrate_get( $url, $timeout = 30 ) {
 
 /* ---------- Extract clean description text from a post's rendered content ---------- */
 function sdn_migrate_extract_desc( $html, $brand_name ) {
-    // Strip scripts/styles/tags, collapse whitespace.
-    $text = preg_replace( '/<script.*?<\/script>/s', '', $html );
-    $text = preg_replace( '/<style.*?<\/style>/s', '', $text );
-    $text = preg_replace( '/<[^>]+>/', ' ', $text );
-    $text = html_entity_decode( $text, ENT_QUOTES );
-    $text = preg_replace( '/\s+/', ' ', $text );
+    // Strip scripts/styles, then split into block-level segments so we can
+    // score each independently (post structures vary wildly — some have the
+    // real description before the boilerplate forms, some after).
+    $clean = preg_replace( '/<script.*?<\/script>/s', '', $html );
+    $clean = preg_replace( '/<style.*?<\/style>/s', '', $clean );
+    $clean = preg_replace( '/<h[1-6][^>]*>/', "\n\n", $clean );
+    $clean = preg_replace( '/<\/(p|div|section|li|blockquote)>/i', "\n\n", $clean );
+    $clean = preg_replace( '/<[^>]+>/', ' ', $clean );
+    $clean = html_entity_decode( $clean, ENT_QUOTES );
+    $clean = preg_replace( '/\s+/', ' ', $clean );
+    $clean = str_replace( '. ', ".\n", $clean );
 
-    // Start anchor: the real brand description begins after the marketing heading,
-    // at "Looking for", "Welcome to SmokeDrop", or "If you"re looking".
-    $start = 0;
-    $anchors = array( 'Looking for', 'Welcome to SmokeDrop', 'If you' );
-    foreach ( $anchors as $a ) {
-        $pos = stripos( $text, $a );
-        if ( $pos !== false && ( $start === 0 || $pos < $start ) ) $start = $pos;
+    // Boilerplate phrases that mark UI/CTA text, never real brand copy.
+    $boilerplate = array(
+        'Create a SmokeDrop', 'Fillout the form', 'I have an account', 'Create an account',
+        'SHOPPING CART INTAGRATIONS', 'SHOPPING CART INTEGRATIONS', 'Get the App',
+        'START SELLING TODAY', 'Get Started', 'Sign Up', 'Sign In', 'Request a Demo',
+        'Start Dropshipping', 'Our Products', 'WE LOVE YOUR FEEDBACK', 'Ready to start',
+        'Dropship & Wholesale', 'wholesale and dropshipping platform',
+        // Testimonial text (appears in every post, is long, and was being mis-scored).
+        'highly recommend this app', 'Rated 5 out of 5', 'Online Retailer',
+        'flourishing', 'really love you guys', 'apprehensive until I found',
+        'streamline my dropshipping', 'Darth Vapor', 'Session Glass', 'Rolling Tray',
+    );
+
+    $name_norm = strtolower( preg_replace( '/[^a-z0-9]/', '', $brand_name ) );
+
+    // Find the START of the real description: the segment containing the brand
+    // intro hook ("Meet", "Looking to add", "Looking for", etc.). The brand
+    // name lives in a neighboring segment (segments split on ". "), so we only
+    // require the hook here — not the name in the same segment.
+    $hooks = array( 'Meet ', 'Looking to add', 'Looking for', 'Welcome to SmokeDrop', 'If you' );
+    $segments = preg_split( '/\n+/', $clean );
+    $start_idx = -1;
+    foreach ( $segments as $i => $seg ) {
+        $seg_t = trim( $seg );
+        if ( strlen( $seg_t ) < 20 ) continue;
+        foreach ( $hooks as $hook ) {
+            if ( stripos( $seg_t, $hook ) !== false ) { $start_idx = $i; break 2; }
+        }
     }
-    if ( $start > 0 ) $text = substr( $text, $start );
 
-    // End anchor: the boilerplate picks back up at these markers.
-    $end_markers = array( 'Create a SmokeDrop Account', 'SHOPPING CART INTAGRATIONS', 'SHOPPING CART INTEGRATIONS', 'Fillout the form below', 'Get the App', 'START SELLING TODAY' );
-    foreach ( $end_markers as $m ) {
-        $pos = stripos( $text, $m );
-        if ( $pos !== false ) { $text = substr( $text, 0, $pos ); break; }
+    // Fallback: if no hook found, score segments (long + brand name + not boilerplate).
+    if ( $start_idx < 0 ) {
+        $best_score = 0;
+        foreach ( $segments as $i => $seg ) {
+            $seg = trim( $seg );
+            if ( strlen( $seg ) < 60 ) continue;
+            $is_boiler = false;
+            foreach ( $boilerplate as $bp ) {
+                if ( stripos( $seg, $bp ) !== false ) { $is_boiler = true; break; }
+            }
+            if ( $is_boiler ) continue;
+            $score = strlen( $seg );
+            $seg_norm = strtolower( preg_replace( '/[^a-z0-9]/', '', $seg ) );
+            if ( $name_norm && strpos( $seg_norm, $name_norm ) !== false ) $score += 500;
+            if ( $score > $best_score ) { $best_score = $score; $start_idx = $i; }
+        }
     }
 
-    $text = trim( $text );
-    // Need a minimum of real content; otherwise the caller falls back to the generator.
+    if ( $start_idx < 0 ) return '';
+
+    // Gather from the start segment forward, stopping at boilerplate.
+    $out = array();
+    for ( $j = $start_idx; $j <= min( count( $segments ) - 1, $start_idx + 8 ); $j++ ) {
+        $seg = trim( $segments[ $j ] );
+        if ( strlen( $seg ) < 30 ) continue;
+        $is_boiler = false;
+        foreach ( $boilerplate as $bp ) {
+            if ( stripos( $seg, $bp ) !== false ) { $is_boiler = true; break; }
+        }
+        if ( $is_boiler ) break;
+        $out[] = $seg;
+    }
+
+    $text = trim( implode( ' ', $out ) );
     return ( strlen( $text ) > 200 ) ? $text : '';
 }
 
@@ -184,7 +234,7 @@ function sdn_migrate_one_brand( $post, $cat_name ) {
 /* ---------- Run the migration once (gated by an option) ---------- */
 add_action( 'init', 'sdn_migrate_brands_run', 60 );
 function sdn_migrate_brands_run() {
-    if ( get_option( 'sdn_brands_migrated' ) === '3' ) return;
+    if ( get_option( 'sdn_brands_migrated' ) === '4' ) return;
     if ( ! post_type_exists( 'brand' ) ) return;
     // Only run on the front end, never in the admin (to avoid blocking the dashboard).
     if ( is_admin() ) return;
@@ -225,5 +275,5 @@ function sdn_migrate_brands_run() {
     }
 
     // Mark complete regardless of count (idempotent; re-run by bumping the option).
-    update_option( 'sdn_brands_migrated', '3' );
+    update_option( 'sdn_brands_migrated', '4' );
 }
