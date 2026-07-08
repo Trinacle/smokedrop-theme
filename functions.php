@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '1.2.0' );
+define( 'SDN_VERSION', '1.3.0' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 
@@ -81,6 +81,7 @@ function sdn_flag_bespoke_template( $template ) {
         'page-sitemap.php', 'page-help.php', 'page-testimonials.php',
         'page-wholesalers.php', 'page-integrations.php', 'page-integration-platform.php',
         'page-advertise.php', 'page-search.php',
+        'page-legal.php', 'page-recommend-tools-for-ecommerce.php',
         'home.php', 'category.php', 'single.php',
         'archive-brand.php', 'single-brand.php',
         // WooCommerce overrides live in /woocommerce/ but resolve to these

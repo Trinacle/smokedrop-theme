@@ -38,6 +38,13 @@ function sdn_seed_pages_list() {
         'sitemap'        => array( 'Sitemap',             'page-sitemap.php' ),
         'advertise'      => array( 'Advertise',           'page-advertise.php' ),
         'marketplace-search' => array( 'Marketplace Search', 'page-search.php' ),
+        // Recommended partner tools (replaces legacy /recomend-tools-for-ecommerce/)
+        'recommend-tools-for-ecommerce' => array( 'Recommended Tools', 'page-recommend-tools-for-ecommerce.php' ),
+        // Legal / standard document pages share one reusable legal template.
+        'terms-of-use-for-suppliers'    => array( 'Supplier Terms of Use', 'page-legal.php' ),
+        'terms-of-use'                  => array( 'Terms of Use', 'page-legal.php' ),
+        'privacy-policy'                => array( 'Privacy Policy', 'page-legal.php' ),
+        'retailer-terms-of-use-agreement' => array( 'Retailer Terms of Use', 'page-legal.php' ),
         // Integrations hub
         'integrations'   => array( 'Integrations',        'page-integrations.php' ),
         // Integrations sub-pages (parent = integrations -> /integrations/{slug}/)
@@ -111,7 +118,7 @@ function sdn_seed_one_page( $slug, $title, $template, $parent_slug ) {
 /* ---------- Run the seed once (gated by an option) ---------- */
 add_action( 'init', 'sdn_seed_bespoke_pages', 40 );
 function sdn_seed_bespoke_pages() {
-    if ( get_option( 'sdn_pages_seeded' ) === '4' ) return;
+    if ( get_option( 'sdn_pages_seeded' ) === '5' ) return;
     if ( ! post_type_exists( 'page' ) ) return;
 
     foreach ( sdn_seed_pages_list() as $slug => $spec ) {
@@ -133,6 +140,14 @@ function sdn_seed_bespoke_pages() {
         wp_trash_post( $old_search->ID );
     }
 
+    // Trash the misspelled /recomend-tools-for-ecommerce/ page (note the
+    // missing 'm'). Its content is superseded by the canonical
+    // /recommend-tools-for-ecommerce/ page, recreated in the new design.
+    $misspelled = get_page_by_path( 'recomend-tools-for-ecommerce', OBJECT, 'page' );
+    if ( $misspelled && $misspelled->post_status !== 'trash' ) {
+        wp_trash_post( $misspelled->ID );
+    }
+
     // Point the WooCommerce shop page at the Marketplace page.
     $marketplace = get_page_by_path( 'marketplace', OBJECT, 'page' );
     if ( $marketplace ) {
@@ -146,6 +161,6 @@ function sdn_seed_bespoke_pages() {
         update_option( 'page_on_front', $front->ID );
     }
 
-    update_option( 'sdn_pages_seeded', '4' );
+    update_option( 'sdn_pages_seeded', '5' );
     flush_rewrite_rules();
 }

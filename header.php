@@ -123,7 +123,7 @@
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/help' ) ); ?>"><strong>Help Center</strong><span>FAQs &amp; docs</span></a>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/call' ) ); ?>"><strong>Schedule a Call</strong><span>Book a support call</span></a>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/quick-start-guide' ) ); ?>"><strong>Quick Start Guide</strong><span>Live in under an hour</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/recomend-tools-for-ecommerce' ) ); ?>"><strong>Recommended Tools</strong><span>E-commerce stack we trust</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/recommend-tools-for-ecommerce' ) ); ?>"><strong>Recommended Tools</strong><span>E-commerce stack we trust</span></a>
 
                     <?php
                     // Blog categories (top 6 by post count).
