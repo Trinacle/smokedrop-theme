@@ -118,6 +118,7 @@ function sdn_strip_builder_assets() {
         $kill[] = 'forminator-forms-flat';
         $kill[] = 'forminator-forms-bold';
         $kill[] = 'forminator-module-css'; // per-form generated stylesheet (blue/white colors)
+        $kill[] = 'forminator-utilities';
     }
 
     // Never touch our own assets, the admin bar, or core icon fonts.
@@ -155,6 +156,35 @@ function sdn_strip_builder_assets() {
 
 /* ---------- Drop leftover Astra/Elementor body classes on bespoke views ---------- */
 add_filter( 'body_class', 'sdn_clean_body_classes', 20 );
+
+/* ---------- Inline Forminator overrides on the Contact page ----------
+ * Dequeuing (above) can be fragile under page caches + load-order races.
+ * This prints the re-skin CSS inline at the very end of <head> via wp_head
+ * (priority 99, after all enqueued stylesheets) so the noir form styling
+ * ALWAYS wins over Forminator's blue/white material theme.
+ */
+add_action( 'wp_head', 'sdn_contact_forminator_overrides', 99 );
+function sdn_contact_forminator_overrides() {
+    if ( ! is_page( 'contact' ) ) return;
+    ?>
+<style>
+.contact-form-card .forminator-custom-form,.contact-form-card .forminator-ui{background:transparent!important;border:none!important;box-shadow:none!important;padding:0!important}
+.contact-form-card .forminator-row{margin-bottom:18px!important;background:transparent!important;border:none!important}
+.contact-form-card .forminator-col{padding:0!important}
+.contact-form-card .forminator-label{color:var(--ink-mute)!important;font-size:.78rem!important;font-weight:600!important;letter-spacing:.08em!important;text-transform:uppercase!important;margin-bottom:6px!important;font-family:inherit!important}
+.contact-form-card .forminator-required{color:var(--green-xl)!important}
+.contact-form-card .forminator-input,.contact-form-card textarea.forminator-input{background:var(--bg)!important;border:1px solid var(--line)!important;border-radius:var(--r-md)!important;color:var(--ink)!important;font-size:.95rem!important;font-family:inherit!important;padding:14px 16px!important;width:100%!important;box-sizing:border-box!important;height:auto!important;margin:0!important;box-shadow:none!important;transition:border-color .25s var(--ease)!important}
+.contact-form-card .forminator-input:focus,.contact-form-card textarea.forminator-input:focus{border-color:var(--green-l)!important;outline:none!important}
+.contact-form-card .forminator-input::placeholder,.contact-form-card textarea::placeholder{color:var(--ink-mute)!important}
+.contact-form-card textarea.forminator-input{min-height:120px!important;resize:vertical!important}
+.contact-form-card .forminator-button-submit{background:var(--green)!important;color:#fff!important;border:none!important;border-radius:var(--r-md)!important;padding:14px 32px!important;font-size:.95rem!important;font-weight:600!important;font-family:inherit!important;width:100%!important;text-transform:none!important;letter-spacing:normal!important;cursor:pointer!important;box-shadow:none!important;margin-top:8px!important;transition:background .2s var(--ease),transform .2s var(--ease)!important}
+.contact-form-card .forminator-button-submit:hover{background:var(--green-d)!important;transform:translateY(-1px)!important}
+.contact-form-card .forminator-response-message{border-radius:var(--r-md)!important;padding:14px 16px!important;font-size:.9rem!important}
+.contact-form-card .forminator-error{background:rgba(255,99,99,.1)!important;border:1px solid rgba(255,99,99,.3)!important;color:#ff8585!important}
+.contact-form-card .forminator-success{background:rgba(19,194,123,.1)!important;border:1px solid rgba(19,194,123,.3)!important;color:var(--green-xl)!important}
+</style>
+    <?php
+}
 function sdn_clean_body_classes( $classes ) {
     if ( ! sdn_is_bespoke_view() ) {
         return $classes;
