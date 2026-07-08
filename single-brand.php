@@ -134,10 +134,10 @@ get_header();
         <div class="brand-hero-text reveal reveal-d1">
           <p class="eyebrow">Brand on the SmokeDrop marketplace &middot; <?php echo esc_html( ucfirst( $sdn_niche ) ); ?></p>
           <h1 class="display"><?php echo esc_html( $sdn_name ); ?></h1>
-          <div class="brand-hero-desc"><?php echo wp_kses_post( wpautop( $sdn_desc ) ); ?></div>
+          <div class="brand-hero-desc"><?php echo $sdn_desc ? wp_kses_post( $sdn_desc ) : wp_kses_post( wpautop( sdn_brand_description( $sdn_name ) ) ); ?></div>
           <div class="hero-actions">
             <a href="<?php echo esc_url( $sdn_register ); ?>" class="btn btn-lime btn-lg">Dropship <?php echo esc_html( $sdn_name ); ?> products</a>
-            <a href="<?php echo esc_url( $sdn_brands_pg ); ?>" class="btn btn-outline btn-lg">All brands</a>
+            <a href="<?php echo esc_url( home_url( '/wholesalers' ) ); ?>" class="btn btn-outline btn-lg">View Wholesale Prices</a>
           </div>
         </div>
       </div>
@@ -149,7 +149,15 @@ get_header();
     </div>
   </section>
 
-  <!-- BRAND GALLERY (3 product photos) -->
+  <!-- BRAND GALLERY (3 product photos) — only when real photos exist -->
+  <?php
+  // Detect whether the gallery has real photos (not Unsplash fallbacks).
+  $sdn_has_real_gallery = false;
+  foreach ( $sdn_gallery as $g ) {
+      if ( strpos( $g, 'unsplash.com' ) === false ) { $sdn_has_real_gallery = true; break; }
+  }
+  ?>
+  <?php if ( $sdn_has_real_gallery ) : ?>
   <section class="sec brand-gallery-sec">
     <div class="wrap">
       <p class="eyebrow reveal">From the catalog</p>
@@ -163,6 +171,7 @@ get_header();
       </div>
     </div>
   </section>
+  <?php endif; ?>
 
   <?php if ( ! empty( $sdn_products ) ) : ?>
     <!-- BRAND PRODUCTS -->

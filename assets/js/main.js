@@ -42,7 +42,7 @@
   let closeTimer = null;
 
   function clearClose() { if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; } }
-  function scheduleClose() { clearClose(); closeTimer = setTimeout(closeMenu, 450); }
+  function scheduleClose() { clearClose(); closeTimer = setTimeout(closeMenu, 600); }
 
   function openMenu(menuId) {
     clearClose();
@@ -62,7 +62,9 @@
   }
 
   // The trick: treat header + mega + backdrop as ONE hover zone.
-  // Only schedule close when mouse leaves the ENTIRE zone.
+  // Only schedule close when mouse leaves the ENTIRE zone. The scheduleClose
+  // is cancelled by clearClose on mouseenter of ANY zone element, so moving
+  // from the trigger to the mega panel (even across a gap) keeps it open.
   function bindZone(el) {
     el.addEventListener('mouseenter', clearClose);
     el.addEventListener('mouseleave', scheduleClose);
@@ -71,13 +73,15 @@
     const id = item.getAttribute('data-menu');
     item.addEventListener('mouseenter', function () { openMenu(id); });
     item.querySelector('.nav-link').addEventListener('click', function (e) {
-      e.preventDefault();
-      const open = item.classList.contains('is-open');
-      if (open) closeMenu(); else openMenu(id);
+      // Let the link navigate (so clicking "Brands" goes to /brands/).
+      // Only toggle the menu on click if it's already open (close gesture).
+      if (item.classList.contains('is-open')) { e.preventDefault(); closeMenu(); }
     });
     bindZone(item);
   });
   if (mega) bindZone(mega);
+  // Also bind each panel so moving within the mega keeps it open.
+  panels.forEach(function (p) { bindZone(p); });
   if (backdrop) backdrop.addEventListener('click', closeMenu);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
 
