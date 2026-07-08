@@ -44,8 +44,6 @@ $sdn_help = array(
             'Suppliers and brands are 100% free: no listing fees, no transaction fees, unlimited retailers. The Supplier plan ($49.99/mo) unlocks advanced order automation and analytics.' ),
         array( 'How do payouts work?',
             'Escrow-based payouts run on a schedule, with batch invoicing, Net Terms, and credit memos. Funds land in your account automatically.' ),
-        array( 'How is MAP enforced?',
-            'Set your minimum advertised pricing once. SmokeDrop blocks underpriced listings automatically across every retailer in the network.' ),
     ),
     'Account & Billing' => array(
         array( 'Is there a free trial?',

@@ -22,8 +22,6 @@ $matrix = array(
     array( 'Free retailer tier',                  true,  false, true,  false ),
     array( 'No PO / transaction fees',            true,  false, false, true  ),
     array( 'Built for smoke/vape/CBD',            true,  true,  false, false ),
-    array( 'MAP enforcement',                     true,  true,  false, false ),
-    array( 'Restricted-state logic',              true,  true,  false, false ),
     array( 'Blind dropshipping',                  true,  true,  true,  true  ),
     array( '24-hour ship window',                 true,  true,  false, true  ),
     array( 'Real-time inventory sync',            true,  true,  true,  true  ),
@@ -54,7 +52,7 @@ $matrix = array(
             <div class="inner"><p class="bento-eyebrow">vs Spocket</p><h3>Built for smoke, not AliExpress.</h3><p>Spocket is for generic goods with 2-week shipping. SmokeDrop is USA-based with automatic order fulfillment and tracking sync.</p></div>
           </div>
           <div class="bento-cell dark reveal reveal-d2">
-            <div class="inner"><p class="bento-eyebrow">vs Duoplane</p><h3>Automation, not just routing.</h3><p>Duoplane routes orders. SmokeDrop automates sourcing, sync, payments, compliance, and fulfillment end to end.</p></div>
+            <div class="inner"><p class="bento-eyebrow">vs Duoplane</p><h3>Automation, not just routing.</h3><p>Duoplane routes orders. SmokeDrop automates sourcing, sync, payments, and fulfillment end to end.</p></div>
           </div>
         </div>
 
