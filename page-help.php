@@ -67,6 +67,9 @@ $sdn_help = array(
         <a href="<?php echo esc_url( $contact_url ); ?>" class="btn btn-lime btn-lg">Contact support</a>
         <a href="<?php echo esc_url( $call_url ); ?>" class="btn btn-outline btn-lg">Book a call</a>
       </div>
+      <div class="reveal reveal-d3" style="max-width:560px;margin:32px auto 0;">
+        <?php get_search_form(); ?>
+      </div>
     </div>
   </section>
 

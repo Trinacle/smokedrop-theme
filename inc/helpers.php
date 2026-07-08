@@ -225,6 +225,45 @@ function sdn_arrow() {
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
 }
 
+/* ---------- Numeric pagination (blog, category, search) ----------
+ * Renders styled page numbers using paginate_links(). Use on any archive
+ * with a paged main query. Styled by the .sdn-pagination rules in styles.css.
+ */
+function sdn_pagination() {
+    global $wp_query;
+    if ( $wp_query->max_num_pages <= 1 ) return;
+
+    $big   = 999999999; // need an unlikely integer for the base
+    $links = paginate_links( array(
+        'base'      => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+        'format'    => '?paged=%#%',
+        'current'   => max( 1, get_query_var( 'paged' ) ),
+        'total'     => $wp_query->max_num_pages,
+        'prev_text' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
+        'next_text' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
+        'type'      => 'array',
+        'mid_size'  => 1,
+        'end_size'  => 1,
+    ) );
+    if ( empty( $links ) ) return;
+    ?>
+    <nav class="sdn-pagination" aria-label="<?php esc_attr_e( 'Articles', 'smokedrop-noir' ); ?>">
+      <ul>
+        <?php foreach ( $links as $link ) : ?>
+          <li><?php echo $link; // phpcs:ignore — paginate_links output is escaped internally ?></li>
+        <?php endforeach; ?>
+      </ul>
+      <p class="sdn-page-info"><?php
+        printf(
+          esc_html__( 'Page %1$s of %2$s', 'smokedrop-noir' ),
+          max( 1, get_query_var( 'paged' ) ),
+          number_format_i18n( $wp_query->max_num_pages )
+        );
+      ?></p>
+    </nav>
+    <?php
+}
+
 /* ---------- Reusable CTA component ---------- */
 function sdn_cta( $title = 'Ready to take your drop shipping to the next level?', $desc = 'Request a demo today & see how SmokeDrop can help boost your dropshipping revenue.' ) {
     ?>

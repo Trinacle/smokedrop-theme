@@ -24,14 +24,14 @@
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brand"><?php echo sdn_logo( 42 ); // phpcs:ignore ?></a>
                 <p>The wholesale and dropshipping platform for the smoke, vape, and hemp industry. Sync 20,000+ products in one click.</p>
                 <div class="foot-cta-stack">
-                    <a href="https://apps.shopify.com/smoke-drop" class="foot-mini-cta">
-                        <svg viewBox="0 0 24 24" fill="#95bf47" width="20" height="20"><path d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/></svg>
-                        <span>Install on Shopify</span>
-                    </a>
-                    <a href="<?php echo esc_url( home_url( '/download-smokedrop-plugin' ) ); ?>" class="foot-mini-cta">
-                        <svg viewBox="0 0 24 24" fill="#7f54b3" width="20" height="20"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 8h4a3 3 0 0 1 0 6h-1l3 4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <span>Download WooCommerce Plugin</span>
-                    </a>
+    <a href="https://apps.shopify.com/smoke-drop" class="foot-mini-cta">
+        <svg viewBox="0 0 24 24" fill="#95bf47" width="28" height="28"><path d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/></svg>
+        <span>Install on Shopify</span>
+    </a>
+    <a href="<?php echo esc_url( home_url( '/download-smokedrop-plugin' ) ); ?>" class="foot-mini-cta">
+        <svg viewBox="0 0 24 24" fill="#7f54b3" width="28" height="28"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 8h4a3 3 0 0 1 0 6h-1l3 4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Download WooCommerce Plugin</span>
+    </a>
                 </div>
                 <div class="foot-social">
                     <a href="https://www.facebook.com/thesmokedrop/" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg></a>
