@@ -42,12 +42,26 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
           <span class="line-mask line-mask-d1"><span>leading <em class="italic gradient-text">dropship</em></span></span>
           <span class="line-mask line-mask-d2"><span>marketplace.</span></span>
         </h1>
-        <p class="lede reveal reveal-d3">Import over 20,000 smoke shop products to your online store. The dropshipping platform built for smoke shops &mdash; connect to 300+ smoke, vape, hemp and glass brands. Customers order from you. Suppliers ship for you. You keep the margin.</p>
-        <div class="hero-actions reveal reveal-d4">
+
+        <!-- Flip text: rotating value props -->
+        <div class="hero-flip reveal reveal-d3">
+          <span class="hf-prefix">SmokeDrop is</span>
+          <div id="flip" class="hf-flip">
+            <div>
+              <div>dropshipping</div>
+              <div>wholesale</div>
+              <div>automation</div>
+              <div>marketplace</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="lede reveal reveal-d4">Import over 20,000 smoke shop products to your online store. The dropshipping platform built for smoke shops &mdash; connect to 300+ smoke, vape, hemp and glass brands. Customers order from you. Suppliers ship for you. You keep the margin.</p>
+        <div class="hero-actions reveal reveal-d5">
           <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg" data-magnetic>Start Free Trial <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
           <a href="#how" class="btn btn-outline btn-lg" data-magnetic>See how it works</a>
         </div>
-        <div class="hero-integrations reveal reveal-d5">
+        <div class="hero-integrations reveal reveal-d6">
           <?php sdn_integration_bubbles( array( 'shopify', 'woocommerce', 'bigcommerce', 'api' ), 'sm' ); ?>
         </div>
       </div>

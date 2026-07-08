@@ -153,6 +153,45 @@
     revealEls.forEach(function (el) { io.observe(el); });
   } else { revealEls.forEach(function (el) { el.classList.add('in'); }); }
 
+  /* ---------- Parallax + directional slide-in (BetterUp-style) ----------
+   * Elements with [data-parallax] move at a fractional scroll speed (depth).
+   * Elements with .slide-r / .slide-l slide in horizontally on reveal.
+   * Parallax uses requestAnimationFrame + scroll for smooth 60fps movement.
+   */
+  var parallaxEls = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
+  if (parallaxEls.length) {
+    var ticking = false;
+    var onScrollParallax = function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var vh = window.innerHeight;
+        parallaxEls.forEach(function (el) {
+          var rect = el.getBoundingClientRect();
+          if (rect.bottom < 0 || rect.top > vh) return;
+          var speed = parseFloat(el.getAttribute('data-parallax')) || 0.3;
+          var center = rect.top + rect.height / 2;
+          var offset = (center - vh / 2) * speed * -1;
+          el.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
+        });
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScrollParallax, { passive: true });
+    onScrollParallax();
+  }
+
+  /* Directional slide-in observers (.slide-r, .slide-l) */
+  var slideEls = document.querySelectorAll('.slide-r, .slide-l');
+  if ('IntersectionObserver' in window && slideEls.length) {
+    var sio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); sio.unobserve(en.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    slideEls.forEach(function (el) { sio.observe(el); });
+  } else {
+    slideEls.forEach(function (el) { el.classList.add('in'); });
+  }
+
   /* ---------- Horizontal scroll ---------- */
   const hSection = document.querySelector('.horiz');
   if (hSection && window.innerWidth > 1024) {
@@ -341,4 +380,52 @@
       else if (e.key === 'ArrowRight') step(1);
     });
   })();
+
+  /* ---------- Page transitions (slide-in on navigation) ----------
+   * On internal link click, slides a green overlay in from the left edge,
+   * then navigates. On page load, the new page content slides in from the
+   * right. Back/forward navigation (popstate) reverses the direction.
+   * Excludes: external links, hash links, target=_blank, modifier keys, admin.
+   */
+  (function pageTransitions() {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+    var overlay = document.createElement('div');
+    overlay.className = 'sdn-page-transition';
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(overlay);
+
+    // Slide the page content in on load (from right for forward nav).
+    var isBack = sessionStorage.getItem('sdn-nav-back') === '1';
+    sessionStorage.removeItem('sdn-nav-back');
+    document.documentElement.classList.add(isBack ? 'pt-enter-right' : 'pt-enter-left');
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        document.documentElement.classList.remove('pt-enter-right', 'pt-enter-left');
+      });
+    });
+
+    // Intercept internal link clicks.
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a');
+      if (!a || !a.href) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (a.target === '_blank' || a.hasAttribute('download')) return;
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) return;
+      if (a.pathname === window.location.pathname && a.hash) return;
+      if (a.host !== window.location.host) return;
+      if (href.indexOf('/wp-admin') !== -1 || href.indexOf('/wp-login') !== -1) return;
+
+      e.preventDefault();
+      overlay.classList.add('is-active');
+      setTimeout(function () { window.location.href = a.href; }, 380);
+    });
+
+    // Back/forward button — reverse direction.
+    window.addEventListener('popstate', function () {
+      sessionStorage.setItem('sdn-nav-back', '1');
+    });
+  })();
+
 })();

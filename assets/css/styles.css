@@ -971,8 +971,38 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 @keyframes sdn-logo-in{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
 @keyframes sdn-sq-pulse{0%,100%{border-color:var(--green-xl);box-shadow:0 0 0 rgba(19,194,123,0)}50%{border-color:#fff;box-shadow:0 0 12px rgba(19,194,123,.5)}}
 
-/* Info */
-.product-info .p-brand{display:inline-block;color:var(--green-xl);font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;text-decoration:none}
+/* ---------- Hero flip text (rotating value props) ---------- */
+.hero-flip{display:flex;align-items:center;justify-content:center;gap:16px;font-family:var(--display);font-size:clamp(1.8rem,5vw,3rem);font-weight:600;letter-spacing:-.02em;margin:24px 0 8px;text-transform:uppercase}
+.hero-flip .hf-prefix{color:var(--ink-mute)}
+.hero-flip .hf-flip{height:1.3em;overflow:hidden;display:inline-block;vertical-align:bottom}
+.hero-flip .hf-flip > div > div{color:#fff;padding:2px 16px;margin-bottom:1.5em;display:inline-block;background:var(--green);border-radius:10px;line-height:1.2}
+.hero-flip .hf-flip > div{animation:sdn-flip 8s cubic-bezier(.7,.1,.3,1) infinite}
+@keyframes sdn-flip{
+  0%,5%{margin-top:0}
+  20%,25%{margin-top:-2.5em}
+  45%,50%{margin-top:-5em}
+  70%,75%{margin-top:-7.5em}
+  95%,100%{margin-top:0}
+}
+@media(max-width:560px){.hero-flip{font-size:1.5rem;gap:8px}.hero-flip .hf-flip > div > div{padding:2px 10px}}
+
+/* ---------- Parallax + directional slide-in (BetterUp-style) ---------- */
+.slide-r{opacity:0;transform:translateX(80px);transition:opacity .9s var(--ease),transform .9s var(--ease);will-change:opacity,transform}
+.slide-l{opacity:0;transform:translateX(-80px);transition:opacity .9s var(--ease),transform .9s var(--ease);will-change:opacity,transform}
+.slide-r.in,.slide-l.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.slide-r,.slide-l{opacity:1;transform:none;transition:none}[data-parallax]{transform:none!important}}
+
+/* ---------- Page transitions (slide overlay + content enter) ---------- */
+.sdn-page-transition{position:fixed;inset:0;z-index:99998;background:linear-gradient(135deg,var(--green-d),var(--green));transform:translateX(-100%);transition:transform .38s var(--ease);pointer-events:none}
+.sdn-page-transition.is-active{transform:translateX(0)}
+/* New page content slides in from the opposite direction */
+html.pt-enter-left > body{animation:sdn-pt-in-left .5s var(--ease) both}
+html.pt-enter-right > body{animation:sdn-pt-in-right .5s var(--ease) both}
+@keyframes sdn-pt-in-left{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+@keyframes sdn-pt-in-right{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.sdn-page-transition{display:none}html.pt-enter-left>body,html.pt-enter-right>body{animation:none}}
+
+/* Info */.product-info .p-brand{display:inline-block;color:var(--green-xl);font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;text-decoration:none}
 .product-info .p-brand:hover{color:var(--green-l)}
 .product-info h1{font-family:var(--display);font-size:clamp(1.7rem,3.2vw,2.4rem);margin:8px 0 16px;line-height:1.1;letter-spacing:-.02em;font-weight:600}
 .product-info .p-desc{color:var(--ink-dim);font-size:1rem;line-height:1.6;margin-bottom:24px}
