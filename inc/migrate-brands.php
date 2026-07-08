@@ -140,9 +140,9 @@ function sdn_migrate_one_brand( $post, $cat_name ) {
 }
 
 /* ---------- Run the migration once (gated by an option) ---------- */
-add_action( 'init', 'sdn_migrate_brands_run', 50 );
+add_action( 'init', 'sdn_migrate_brands_run', 60 );
 function sdn_migrate_brands_run() {
-    if ( get_option( 'sdn_brands_migrated' ) === '1' ) return;
+    if ( get_option( 'sdn_brands_migrated' ) === '2' ) return;
     if ( ! post_type_exists( 'brand' ) ) return;
     // Only run on the front end, never in the admin (to avoid blocking the dashboard).
     if ( is_admin() ) return;
@@ -183,5 +183,5 @@ function sdn_migrate_brands_run() {
     }
 
     // Mark complete regardless of count (idempotent; re-run by bumping the option).
-    update_option( 'sdn_brands_migrated', '1' );
+    update_option( 'sdn_brands_migrated', '2' );
 }

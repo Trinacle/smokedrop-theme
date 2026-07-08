@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 // Resolve the brand being requested.
 $sdn_brand     = null;
 $sdn_is_cpt    = false;
+$sdn_cpt_id    = 0;
 $sdn_slug      = '';
 $sdn_name      = '';
 $sdn_logo_url  = '';
@@ -29,62 +30,39 @@ $sdn_desc      = '';
 $sdn_register  = 'https://wholesale.thesmokedrop.com/register';
 $sdn_brands_pg = home_url( '/brands' );
 
-if ( have_posts() ) {
-    the_post();
-    if ( get_post_type() === 'brand' ) {
-        // Real CPT post.
-        $sdn_is_cpt   = true;
-        $sdn_slug     = get_post_field( 'post_name', get_the_ID() );
-        $sdn_name     = get_the_title();
-        $sdn_logo_url = sdn_brand_logo_url( get_the_ID() );
-        $sdn_desc     = apply_filters( 'the_content', get_the_content() );
+// The slug we're rendering — either from the main query, the rewrite query var,
+// or the request filter's sdn_brand_slug.
+$sdn_requested = '';
+if ( get_query_var( 'sdn_brand_slug' ) ) {
+    $sdn_requested = get_query_var( 'sdn_brand_slug' );
+} elseif ( isset( $GLOBALS['wp']->query_vars['name'] ) ) {
+    $sdn_requested = $GLOBALS['wp']->query_vars['name'];
+} elseif ( isset( $GLOBALS['wp']->query_vars['brand'] ) ) {
+    $sdn_requested = $GLOBALS['wp']->query_vars['brand'];
+}
+
+// Try a real CPT brand post by slug FIRST (the migration writes content here).
+if ( $sdn_requested ) {
+    $cpt_post = get_page_by_path( $sdn_requested, OBJECT, 'brand' );
+    if ( $cpt_post && $cpt_post->post_status === 'publish' ) {
+        $sdn_is_cpt = true;
+        $sdn_cpt_id = $cpt_post->ID;
+        $sdn_slug   = $cpt_post->post_name;
+        $sdn_name   = get_the_title( $cpt_post );
+        $sdn_logo_url = sdn_brand_logo_url( $cpt_post->ID );
+        $sdn_desc   = trim( wp_strip_all_tags( $cpt_post->post_content ) ) ? apply_filters( 'the_content', $cpt_post->post_content ) : '';
     }
 }
 
-// Fall back to virtual brand data from the directory array.
+// Directory array fallback (for brands not yet in the CPT, or to fill a logo).
 if ( ! $sdn_name ) {
-    // All /brand/{slug}/ traffic arrives via the sdn_brand_slug query var
-    // (routed by the rewrite rule in cpt-brands.php). Try a real CPT post
-    // first, then the directory array.
-    $requested = get_query_var( 'sdn_brand_slug' );
-    if ( ! $requested && isset( $GLOBALS['wp']->query_vars['name'] ) ) {
-        $requested = $GLOBALS['wp']->query_vars['name'];
-    }
-    if ( ! $requested && isset( $GLOBALS['wp']->query_vars['brand'] ) ) {
-        $requested = $GLOBALS['wp']->query_vars['brand'];
-    }
-
-    // 1) Real CPT brand post by slug (takes priority over the directory array).
-    if ( $requested ) {
-        $cpt_post = get_page_by_path( $requested, OBJECT, 'brand' );
-        if ( $cpt_post && $cpt_post->post_status === 'publish' ) {
-            $sdn_is_cpt   = true;
-            $sdn_slug     = $cpt_post->post_name;
-            $sdn_name     = get_the_title( $cpt_post );
-            $sdn_logo_url = sdn_brand_logo_url( $cpt_post->ID );
-        }
-    }
-
-    // 2) Directory array fallback (for brands not yet in the CPT, or to fill
-    //    in a logo when the CPT post has none).
-    if ( ! $sdn_name ) {
-        foreach ( sdn_brand_directory() as $b ) {
-            $bslug = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $b['name'] );
-            if ( $bslug === $requested ) {
-                $sdn_slug     = $bslug;
-                $sdn_name     = str_replace( '\\u2019', "'", $b['name'] );
-                $sdn_logo_url = ! empty( $b['logo'] ) ? home_url( '/wp-content/uploads/' . $b['logo'] ) : '';
-                break;
-            }
-        }
-    }
-
-    // 3) If neither, but a CPT post exists, use its title.
-    if ( ! $sdn_name && $requested ) {
-        $cpt_post = get_page_by_path( $requested, OBJECT, 'brand' );
-        if ( $cpt_post && $cpt_post->post_status === 'publish' ) {
-            $sdn_slug = $cpt_post->post_name;
-            $sdn_name = get_the_title( $cpt_post );
+    foreach ( sdn_brand_directory() as $b ) {
+        $bslug = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $b['name'] );
+        if ( $bslug === $sdn_requested ) {
+            $sdn_slug     = $bslug;
+            $sdn_name     = str_replace( '\\u2019', "'", $b['name'] );
+            $sdn_logo_url = ! empty( $b['logo'] ) ? home_url( '/wp-content/uploads/' . $b['logo'] ) : '';
+            break;
         }
     }
 }
@@ -115,9 +93,10 @@ if ( ! $sdn_desc ) {
 $sdn_niche = sdn_brand_niche( $sdn_name );
 
 // Gallery: prefer migrated CPT meta (real brand photos), fall back to Woo
-// products, then curated images.
-$sdn_gallery_ids = $sdn_is_cpt ? sdn_brand_gallery_ids( get_the_ID() ) : array();
-$sdn_hero_img    = $sdn_is_cpt ? sdn_brand_hero_image_url( get_the_ID() ) : '';
+// products, then curated images. Uses $sdn_cpt_id (resolved above) since
+// get_the_ID() is empty in the virtual-brand routing path.
+$sdn_gallery_ids = $sdn_cpt_id ? sdn_brand_gallery_ids( $sdn_cpt_id ) : array();
+$sdn_hero_img    = $sdn_cpt_id ? sdn_brand_hero_image_url( $sdn_cpt_id ) : '';
 if ( ! empty( $sdn_gallery_ids ) ) {
     $sdn_gallery = array();
     foreach ( $sdn_gallery_ids as $gid ) {
