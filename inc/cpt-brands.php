@@ -162,42 +162,6 @@ function sdn_flush_brand_rewrites() {
     flush_rewrite_rules();
 }
 
-/* ---------- 301 legacy brand URLs to their canonical /brand/{slug}/ home ----------
- * Production has historically served some brand pages at the site root
- * (e.g. https://thesmokedrop.com/storz-bickel/). Those URLs are indexed and
- * linked, so after cutover we redirect them — permanently — to the canonical
- * /brand/{slug}/ page rather than letting them 404. Sourced from the alias map
- * so every aliased slug is covered. Runs on template_redirect (after WP has
- * decided what to load) so it never fights the request filter.
- */
-add_action( 'template_redirect', 'sdn_redirect_legacy_brand_urls' );
-function sdn_redirect_legacy_brand_urls() {
-    if ( is_admin() ) return;
-    $path = isset( $_SERVER['REQUEST_URI'] ) ? rawurldecode( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
-    if ( ! $path ) return;
-
-    // Strip query string + leading slash, then remove the home path (staging
-    // subpath like /staging/5411/) so we compare against the bare route.
-    $path = ltrim( strtok( $path, '?' ), '/' );
-    $home_path = trim( wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
-    if ( $home_path && strpos( $path, $home_path ) === 0 ) {
-        $path = ltrim( substr( $path, strlen( $home_path ) ), '/' );
-    }
-
-    // Only bare top-level {slug}/ requests — never touch /brand/{slug}/ (already
-    // handled by the request filter above).
-    $segments = explode( '/', $path );
-    if ( count( $segments ) !== 1 ) return;
-
-    $slug = $segments[0];
-    $map  = sdn_brand_slug_aliases();
-    if ( ! isset( $map[ $slug ] ) ) return;
-
-    $dest = home_url( '/brand/' . $map[ $slug ] . '/' );
-    wp_safe_redirect( $dest, 301 );
-    exit;
-}
-
 /* ---------- Seed the Brands CPT with the full marketplace directory ----------
  * Runs once on init (guarded by the sdn_brands_seeded option), creating all
  * ~380 brands from sdn_brand_directory() + sdn_new_brands() as editable CPT
