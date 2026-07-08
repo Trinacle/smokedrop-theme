@@ -90,6 +90,42 @@ function sdn_migrate_extract_photos( $html, $logo_url ) {
     return $real;
 }
 
+/* ---------- Find a brand CPT post by title (fuzzy, for slug mismatches) ---------- */
+/* Production slugs often differ from our directory slugs (e.g. "vesselbrand"
+ * vs "vessel"). Match by normalized title so migrated content lands on the
+ * right post regardless of slug. Normalizes "Vessel Brand" -> "vessel". */
+function sdn_migrate_find_by_title( $name ) {
+    $norm = sdn_migrate_normalize_name( $name );
+    if ( ! $norm ) return null;
+
+    // Get all brand posts (cached on first call within a request).
+    static $all_brands = null;
+    if ( $all_brands === null ) {
+        $all_brands = get_posts( array(
+            'post_type'      => 'brand',
+            'posts_per_page' => -1,
+            'post_status'    => 'any',
+            'fields'         => 'ids',
+        ) );
+    }
+    foreach ( $all_brands as $pid ) {
+        $title = get_the_title( $pid );
+        if ( sdn_migrate_normalize_name( $title ) === $norm ) {
+            return get_post( $pid );
+        }
+    }
+    return null;
+}
+
+/* ---------- Normalize a brand name for matching ---------- */
+function sdn_migrate_normalize_name( $name ) {
+    $n = strtolower( trim( $name ) );
+    // Strip common suffixes/words and punctuation.
+    $n = preg_replace( '/\b(brand|brands|the|inc|llc|co)\b/', '', $n );
+    $n = preg_replace( '/[^a-z0-9]/', '', $n );
+    return $n;
+}
+
 /* ---------- Process one brand post from production ---------- */
 function sdn_migrate_one_brand( $post, $cat_name ) {
     $slug     = $post['slug'];
@@ -113,7 +149,13 @@ function sdn_migrate_one_brand( $post, $cat_name ) {
     $desc = sdn_migrate_extract_desc( $content, $name );
 
     // 4) Find or create the CPT brand post.
+    //    First try the exact slug, then fall back to a title match (production
+    //    slugs differ from our directory slugs — e.g. "vesselbrand" vs "vessel",
+    //    "Vessel Brand" vs "Vessel").
     $existing = get_page_by_path( $slug, OBJECT, 'brand' );
+    if ( ! $existing ) {
+        $existing = sdn_migrate_find_by_title( $name );
+    }
     if ( $existing ) {
         $post_id = $existing->ID;
     } else {
@@ -142,7 +184,7 @@ function sdn_migrate_one_brand( $post, $cat_name ) {
 /* ---------- Run the migration once (gated by an option) ---------- */
 add_action( 'init', 'sdn_migrate_brands_run', 60 );
 function sdn_migrate_brands_run() {
-    if ( get_option( 'sdn_brands_migrated' ) === '2' ) return;
+    if ( get_option( 'sdn_brands_migrated' ) === '3' ) return;
     if ( ! post_type_exists( 'brand' ) ) return;
     // Only run on the front end, never in the admin (to avoid blocking the dashboard).
     if ( is_admin() ) return;
@@ -183,5 +225,5 @@ function sdn_migrate_brands_run() {
     }
 
     // Mark complete regardless of count (idempotent; re-run by bumping the option).
-    update_option( 'sdn_brands_migrated', '2' );
+    update_option( 'sdn_brands_migrated', '3' );
 }
