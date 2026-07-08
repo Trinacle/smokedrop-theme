@@ -148,19 +148,31 @@ function sdn_migrate_find_by_title( $name ) {
     $norm = sdn_migrate_normalize_name( $name );
     if ( ! $norm ) return null;
 
-    // Get all brand posts (cached on first call within a request).
-    static $all_brands = null;
-    if ( $all_brands === null ) {
-        $all_brands = get_posts( array(
-            'post_type'      => 'brand',
-            'posts_per_page' => -1,
-            'post_status'    => 'any',
-            'fields'         => 'ids',
-        ) );
+    // Direct title query (more reliable than loading all 380 posts into memory).
+    $q = new WP_Query( array(
+        'post_type'      => 'brand',
+        'post_status'    => 'any',
+        'posts_per_page' => 5,
+        'no_found_rows'  => true,
+        'fields'         => 'ids',
+        'title'          => $name,
+    ) );
+    foreach ( $q->posts as $pid ) {
+        if ( sdn_migrate_normalize_name( get_the_title( $pid ) ) === $norm ) {
+            return get_post( $pid );
+        }
     }
-    foreach ( $all_brands as $pid ) {
-        $title = get_the_title( $pid );
-        if ( sdn_migrate_normalize_name( $title ) === $norm ) {
+
+    // Fallback: scan brand posts whose normalized title matches.
+    $all = get_posts( array(
+        'post_type'      => 'brand',
+        'post_status'    => 'any',
+        'posts_per_page' => -1,
+        'no_found_rows'  => true,
+        'fields'         => 'ids',
+    ) );
+    foreach ( $all as $pid ) {
+        if ( sdn_migrate_normalize_name( get_the_title( $pid ) ) === $norm ) {
             return get_post( $pid );
         }
     }
@@ -234,7 +246,7 @@ function sdn_migrate_one_brand( $post, $cat_name ) {
 /* ---------- Run the migration once (gated by an option) ---------- */
 add_action( 'init', 'sdn_migrate_brands_run', 60 );
 function sdn_migrate_brands_run() {
-    if ( get_option( 'sdn_brands_migrated' ) === '4' ) return;
+    if ( get_option( 'sdn_brands_migrated' ) === '5' ) return;
     if ( ! post_type_exists( 'brand' ) ) return;
     // Only run on the front end, never in the admin (to avoid blocking the dashboard).
     if ( is_admin() ) return;
@@ -274,6 +286,49 @@ function sdn_migrate_brands_run() {
         if ( $page > 5 ) break;                       // hard cap (500 posts)
     }
 
+    // Dedup: merge brand posts that share a normalized title (created by slug
+    // mismatches like vesselbrand/vessel). Keeps the oldest as canonical, copies
+    // its meta/content to the canonical if missing, trashes the duplicates.
+    sdn_migrate_dedup_brands();
+
     // Mark complete regardless of count (idempotent; re-run by bumping the option).
-    update_option( 'sdn_brands_migrated', '4' );
+    update_option( 'sdn_brands_migrated', '5' );
+}
+
+/* ---------- Dedup brand posts by normalized title ---------- */
+function sdn_migrate_dedup_brands() {
+    $all = get_posts( array(
+        'post_type'      => 'brand',
+        'post_status'    => 'any',
+        'posts_per_page' => -1,
+        'no_found_rows'  => true,
+        'fields'         => 'ids',
+        'orderby'        => 'date',
+        'order'          => 'ASC',
+    ) );
+    $seen = array();
+    foreach ( $all as $pid ) {
+        $norm = sdn_migrate_normalize_name( get_the_title( $pid ) );
+        if ( ! $norm ) continue;
+        if ( isset( $seen[ $norm ] ) ) {
+            $canonical = $seen[ $norm ];
+            // Copy migrated meta to the canonical post if the canonical is missing it.
+            foreach ( array( 'brand_logo', 'brand_hero_image', 'brand_gallery' ) as $key ) {
+                if ( ! get_post_meta( $canonical, $key, true ) ) {
+                    $val = get_post_meta( $pid, $key, true );
+                    if ( $val ) update_post_meta( $canonical, $key, $val );
+                }
+            }
+            // Copy real post_content if canonical has the generic seed.
+            $canon_content = get_post_field( 'post_content', $canonical );
+            $dup_content   = get_post_field( 'post_content', $pid );
+            if ( strpos( $canon_content, 'products are available for dropship and wholesale' ) !== false && $dup_content && strlen( $dup_content ) > 200 ) {
+                wp_update_post( array( 'ID' => $canonical, 'post_content' => $dup_content ) );
+            }
+            // Trash the duplicate.
+            wp_trash_post( $pid );
+        } else {
+            $seen[ $norm ] = $pid;
+        }
+    }
 }
