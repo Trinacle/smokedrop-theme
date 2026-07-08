@@ -35,20 +35,21 @@ $call    = home_url( '/call' );
         <div class="tool-row reveal">
           <div class="tool-media">
             <div class="tool-card-tag">Merchant processing</div>
-            <h2 class="h-sec" style="margin-top:12px;">Accept payments.<br><span class="italic gradient-text">100% domestic.</span></h2>
+            <h2 class="tool-name">Paynet</h2>
+            <p class="tool-tagline">Accept payments. <span class="italic gradient-text">100% domestic.</span></p>
           </div>
           <div class="tool-body">
-            <p class="lede" style="font-size:1.05rem;">Process Visa, Mastercard, Discover, and AMEX with OpenTransact &mdash; built for smoke, vape, and CBD merchants.</p>
+            <p class="lede" style="font-size:1.05rem;">Process Visa, Mastercard, Discover, and AMEX with Paynet &mdash; built for smoke, vape, and CBD merchants.</p>
             <div class="tool-checks">
               <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>100% domestic processing (Visa, Mastercard, Discover, AMEX)</span></div>
               <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Credit, debit, and prepaid cards supported</span></div>
-              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>3.75% discount rate (same as Square) with volume discounts</span></div>
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Competitive rates with volume discounts</span></div>
               <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Daily settlements via direct deposit / ACH</span></div>
               <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Integrated fraud-reduction tools</span></div>
               <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Works with Shopify, WooCommerce, and BigCommerce</span></div>
             </div>
             <div class="tool-meta">
-              <p><strong>Qualification:</strong> Start-ups selling SmokeDrop products welcome. No minimum sales volume. Flat $150/mo for full-time OpenTransact support. Valid business documentation required.</p>
+              <p><strong>Qualification:</strong> Start-ups selling SmokeDrop products welcome. No minimum sales volume. Valid business documentation required.</p>
               <p><strong>Setup:</strong> Minimal paperwork, approval within 1&ndash;2 business days, 24/7 merchant support, and full-service online account reporting.</p>
             </div>
             <a href="<?php echo esc_url( $call ); ?>" class="btn btn-lime btn-lg" style="margin-top:8px;">Complete online application</a>
@@ -63,7 +64,8 @@ $call    = home_url( '/call' );
         <div class="tool-row reverse reveal">
           <div class="tool-media">
             <div class="tool-card-tag">Web design &amp; marketing</div>
-            <h2 class="h-sec" style="margin-top:12px;">A store that<br><span class="italic gradient-text">converts.</span></h2>
+            <h2 class="tool-name">Trinacle</h2>
+            <p class="tool-tagline">A store that <span class="italic gradient-text">converts.</span></p>
           </div>
           <div class="tool-body">
             <p class="lede" style="font-size:1.05rem;">Trinacle is a family-owned online marketing agency with a passion for creating highly converting marketing channels &mdash; over 25 years of experience.</p>
@@ -89,7 +91,8 @@ $call    = home_url( '/call' );
         <div class="tool-row reveal">
           <div class="tool-media">
             <div class="tool-card-tag">Shipping protection</div>
-            <h2 class="h-sec" style="margin-top:12px;">Protect every<br><span class="italic gradient-text">package.</span></h2>
+            <h2 class="tool-name">SavedBy</h2>
+            <p class="tool-tagline">Protect every <span class="italic gradient-text">package.</span></p>
           </div>
           <div class="tool-body">
             <p class="lede" style="font-size:1.05rem;">With SavedBy, customers can protect their package in case it&rsquo;s lost, stolen, or damaged &mdash; added peace of mind at checkout.</p>
