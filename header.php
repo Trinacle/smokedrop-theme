@@ -47,7 +47,7 @@
         </button>
         <a href="https://apps.shopify.com/smoke-drop" class="btn btn-outline hide-mob" style="font-size:.85rem;padding:8px 16px;">Shopify App</a>
         <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime">Get Started</a>
-        <button class="menu-trigger" aria-label="Menu" aria-expanded="false"></button>
+        <button class="menu-trigger" aria-label="Menu" aria-expanded="false"><span></span></button>
     </div>
 </header>
 
@@ -176,17 +176,23 @@
 
 <!-- MOBILE NAV -->
 <div class="mobile-nav">
-    <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
-    <a href="<?php echo esc_url( home_url( '/retailers' ) ); ?>">For Retailers</a>
-    <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Suppliers</a>
-    <a href="<?php echo esc_url( home_url( '/wholesalers' ) ); ?>">For Wholesalers</a>
-    <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">Brands We Carry</a>
-    <a href="<?php echo esc_url( get_post_type_archive_link( 'product' ) ?: home_url( '/marketplace' ) ); ?>">Marketplace</a>
-    <a href="<?php echo esc_url( home_url( '/pricing' ) ); ?>">Pricing</a>
-    <a href="<?php echo esc_url( home_url( '/advertise' ) ); ?>">Advertise</a>
-    <a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">Blog</a>
-    <a href="<?php echo esc_url( home_url( '/help' ) ); ?>">Help Center</a>
-    <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>">Contact</a>
+    <div class="mn-auth">
+        <a href="https://wholesale.thesmokedrop.com/login" class="btn btn-outline btn-block">Log in</a>
+        <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-block">Create account</a>
+    </div>
+    <nav class="mn-links">
+        <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
+        <a href="<?php echo esc_url( home_url( '/retailers' ) ); ?>">For Retailers</a>
+        <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Suppliers</a>
+        <a href="<?php echo esc_url( home_url( '/wholesalers' ) ); ?>">For Wholesalers</a>
+        <a href="<?php echo esc_url( home_url( '/brands' ) ); ?>">Brands We Carry</a>
+        <a href="<?php echo esc_url( get_post_type_archive_link( 'product' ) ?: home_url( '/marketplace' ) ); ?>">Marketplace</a>
+        <a href="<?php echo esc_url( home_url( '/pricing' ) ); ?>">Pricing</a>
+        <a href="<?php echo esc_url( home_url( '/advertise' ) ); ?>">Advertise</a>
+        <a href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">Blog</a>
+        <a href="<?php echo esc_url( home_url( '/help' ) ); ?>">Help Center</a>
+        <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>">Contact</a>
+    </nav>
 </div>
 
 

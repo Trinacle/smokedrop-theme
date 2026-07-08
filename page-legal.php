@@ -34,7 +34,7 @@ $legal_title = get_the_title();
 
     <section class="sec">
       <div class="wrap wrap-tight">
-        <article class="legal-doc reveal">
+        <article class="legal-doc">
           <?php
           // Render the authored legal content with formatting preserved.
           if ( have_posts() ) :
