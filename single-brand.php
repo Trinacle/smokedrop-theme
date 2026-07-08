@@ -92,9 +92,10 @@ if ( ! $sdn_desc ) {
 }
 $sdn_niche = sdn_brand_niche( $sdn_name );
 
-// Gallery: prefer migrated CPT meta (real brand photos), backfill from Woo
-// products, then curated images. Blends both sources so a brand with one
-// migrated photo still gets a full real gallery.
+// Gallery: prefer migrated CPT meta (real brand photos). Only backfill from
+// Woo products when there ARE Woo products (no Unsplash fallbacks — those
+// make the gallery look fake). Uses $sdn_cpt_id (resolved above) since
+// get_the_ID() is empty in the virtual-brand routing path.
 $sdn_gallery_ids = $sdn_cpt_id ? sdn_brand_gallery_ids( $sdn_cpt_id ) : array();
 $sdn_hero_img    = $sdn_cpt_id ? sdn_brand_hero_image_url( $sdn_cpt_id ) : '';
 $sdn_gallery     = array();
@@ -110,9 +111,15 @@ if ( ! empty( $sdn_gallery_ids ) ) {
         }
     }
 }
-// 2) Backfill to 3 photos from WooCommerce products (real brand products).
+
+// 2) Backfill to 3 from Woo products ONLY (real brand products, no Unsplash).
+//    sdn_brand_gallery_images() falls back to Unsplash internally, so filter
+//    those out — we'd rather show fewer real photos than fake ones.
 if ( count( $sdn_gallery ) < 3 ) {
-    $sdn_gallery = array_merge( $sdn_gallery, sdn_brand_gallery_images( $sdn_name, 3 ) );
+    $woo_imgs = sdn_brand_gallery_images( $sdn_name, 3 );
+    foreach ( $woo_imgs as $wi ) {
+        if ( strpos( $wi, 'unsplash.com' ) === false ) $sdn_gallery[] = $wi;
+    }
     $sdn_gallery = array_slice( array_unique( $sdn_gallery ), 0, 3 );
 }
 
@@ -149,14 +156,8 @@ get_header();
     </div>
   </section>
 
-  <!-- BRAND GALLERY (3 product photos) — only when real photos exist -->
-  <?php
-  // Detect whether the gallery has real photos (not Unsplash fallbacks).
-  $sdn_has_real_gallery = false;
-  foreach ( $sdn_gallery as $g ) {
-      if ( strpos( $g, 'unsplash.com' ) === false ) { $sdn_has_real_gallery = true; break; }
-  }
-  ?>
+  <!-- BRAND GALLERY (product photos) — only when real photos exist -->
+  <?php $sdn_has_real_gallery = ! empty( $sdn_gallery ); ?>
   <?php if ( $sdn_has_real_gallery ) : ?>
   <section class="sec brand-gallery-sec">
     <div class="wrap">
