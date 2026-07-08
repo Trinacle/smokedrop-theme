@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '1.7.0' );
+define( 'SDN_VERSION', '1.8.0' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 
@@ -107,6 +107,20 @@ function sdn_strip_builder_assets() {
 
     // Handles (or substrings) to remove. Poppins is pulled in by astra-google-fonts.
     $kill = array( 'astra', 'elementor', 'e-animation', 'ekit', 'elementskit', 'uael', 'ultimate-elementor', 'widget-' );
+
+    // On the Contact page we fully re-skin the Forminator form with the noir
+    // theme, but Forminator's own material-design CSS loads AFTER styles.css
+    // and overrides it. Dequeue Forminator's design/stylesheets here so our
+    // scoped .contact-form-card overrides win. (Grid + icons stay — needed for
+    // layout. Only the color/material theme sheets are removed.)
+    if ( is_page( 'contact' ) ) {
+        $kill[] = 'forminator-form-material';
+        $kill[] = 'forminator-form-flat';
+        $kill[] = 'forminator-form-bold';
+        $kill[] = 'forminator-form-accent';
+        $kill[] = 'forminator-module-css'; // the per-form generated stylesheet (blue/white colors)
+    }
+
     // Never touch our own assets, the admin bar, or core icon fonts.
     $keep = array( 'sdn-', 'admin-bar', 'dashicons' );
 
