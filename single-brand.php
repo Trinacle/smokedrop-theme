@@ -56,7 +56,26 @@ if ( $sdn_requested ) {
         $sdn_slug   = $cpt_post->post_name;
         $sdn_name   = get_the_title( $cpt_post );
         $sdn_logo_url = sdn_brand_logo_url( $cpt_post->ID );
-        $sdn_desc   = trim( wp_strip_all_tags( $cpt_post->post_content ) ) ? apply_filters( 'the_content', $cpt_post->post_content ) : '';
+        // Use the migrated post content, BUT detect the broken boilerplate
+        // the migration wrote (a generic "Welcome to SmokeDrop..." template
+        // that hardcodes "Cookies branded items" regardless of the actual
+        // brand). When detected, fall back to the generated brand-specific
+        // description so the page reads correctly.
+        $raw_content = $cpt_post->post_content;
+        $has_real    = trim( wp_strip_all_tags( $raw_content ) ) ? true : false;
+        $is_boilerplate = $has_real && (
+            stripos( $raw_content, 'Cookies branded' ) !== false ||
+            stripos( $raw_content, 'Cookies products into your' ) !== false ||
+            ( stripos( $raw_content, 'Welcome to SmokeDrop, where innovation meets convenience' ) !== false
+              && stripos( $raw_content, 'Cookies' ) !== false )
+        );
+        if ( $has_real && ! $is_boilerplate ) {
+            $sdn_desc = apply_filters( 'the_content', $raw_content );
+        } elseif ( function_exists( 'sdn_brand_description' ) ) {
+            $sdn_desc = '<p>' . esc_html( sdn_brand_description( $sdn_name ) ) . '</p>';
+        } else {
+            $sdn_desc = '';
+        }
     }
 }
 
