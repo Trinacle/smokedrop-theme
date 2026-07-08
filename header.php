@@ -69,22 +69,18 @@
             <div class="mega-panel" data-panel="solutions">
                 <div class="mega-grid">
                     <div class="mega-col-head">Solutions</div>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/retailers' ) ); ?>"><strong>For Retailers</strong><span>Automate dropshipping & sync inventory</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/retailers' ) ); ?>"><strong>For Retailers</strong><span>Automate dropshipping &amp; sync inventory</span></a>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>"><strong>For Suppliers</strong><span>Launch a dropship channel, from $49.99/mo</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>"><strong>For Wholesalers</strong><span>Grow distribution</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/wholesalers' ) ); ?>"><strong>For Wholesalers</strong><span>Grow distribution</span></a>
 
                     <div class="mega-col-head">Platform</div>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/platform' ) ); ?>"><strong>Platform Overview</strong><span>How SmokeDrop works</span></a>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/pricing' ) ); ?>"><strong>Pricing</strong><span>7-day free trial, from $49.99/mo</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/advertise' ) ); ?>"><strong>Advertise</strong><span>Reach active buyers</span></a>
 
                     <div class="mega-col-head">Resources</div>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/testimonials' ) ); ?>"><strong>Testimonials</strong><span>What retailers say</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>"><strong>Blog</strong><span>Guides & insights</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/help' ) ); ?>"><strong>Help Center</strong><span>FAQs & docs</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( home_url( '/help' ) ); ?>"><strong>Help Center</strong><span>FAQs &amp; docs</span></a>
+                    <a class="mega-link" href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>"><strong>Blog</strong><span>Guides &amp; insights</span></a>
                     <a class="mega-link" href="<?php echo esc_url( home_url( '/demo' ) ); ?>"><strong>Get a Demo</strong><span>See SmokeDrop in action</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/call' ) ); ?>"><strong>Schedule Call</strong><span>Book a support call</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( home_url( '/contact' ) ); ?>"><strong>Contact</strong><span>Talk to our team</span></a>
                 </div>
             </div>
 

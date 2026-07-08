@@ -82,7 +82,7 @@ function sdn_flag_bespoke_template( $template ) {
         'page-wholesalers.php', 'page-integrations.php', 'page-integration-platform.php',
         'page-advertise.php', 'page-search.php',
         'page-legal.php', 'page-recommend-tools-for-ecommerce.php',
-        'home.php', 'category.php', 'single.php', 'search.php',
+        'home.php', 'category.php', 'single.php', 'search.php', '404.php',
         'archive-brand.php', 'single-brand.php',
         // WooCommerce overrides live in /woocommerce/ but resolve to these
         // basenames and DO pass through template_include, so flag them bespoke.

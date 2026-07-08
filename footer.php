@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="foot-col">
-                <h5>Platform</h5>
+                <h5>Platforms</h5>
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Overview</a>
                 <a href="<?php echo esc_url( home_url( '/retailers' ) ); ?>">For Retailers</a>
                 <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>">For Suppliers</a>
