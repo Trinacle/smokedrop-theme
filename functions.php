@@ -19,6 +19,7 @@ require_once SDN_DIR . '/inc/helpers.php';
 require_once SDN_DIR . '/inc/brand-directory.php';
 require_once SDN_DIR . '/inc/brand-content.php';
 require_once SDN_DIR . '/inc/seed-pages.php';
+require_once SDN_DIR . '/inc/migrate-brands.php';
 
 /* ---------- Theme setup ---------- */
 add_action( 'after_setup_theme', 'sdn_theme_setup' );

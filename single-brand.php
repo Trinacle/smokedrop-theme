@@ -107,38 +107,63 @@ if ( empty( $sdn_products ) ) {
     $sdn_products = sdn_get_brand_products_by_title( $sdn_name, 12 );
 }
 
-// Generate unique descriptive copy for the brand (the CPT seed content is
-// generic; the generator produces niche-aware, name-stable unique text).
-$sdn_desc = sdn_brand_description( $sdn_name );
+// Generate unique descriptive copy ONLY when the CPT post has no real content
+// (the migration writes real brand copy into post_content; don't clobber it).
+if ( ! $sdn_desc ) {
+    $sdn_desc = sdn_brand_description( $sdn_name );
+}
 $sdn_niche = sdn_brand_niche( $sdn_name );
 
-// Pull 3 product photos for the brand gallery (from real Woo products,
-// falling back to curated images when the brand has no products yet).
-$sdn_gallery = sdn_brand_gallery_images( $sdn_name, 3 );
+// Gallery: prefer migrated CPT meta (real brand photos), fall back to Woo
+// products, then curated images.
+$sdn_gallery_ids = $sdn_is_cpt ? sdn_brand_gallery_ids( get_the_ID() ) : array();
+$sdn_hero_img    = $sdn_is_cpt ? sdn_brand_hero_image_url( get_the_ID() ) : '';
+if ( ! empty( $sdn_gallery_ids ) ) {
+    $sdn_gallery = array();
+    foreach ( $sdn_gallery_ids as $gid ) {
+        // Gallery meta may be URLs (from migration) or IDs.
+        if ( is_numeric( $gid ) ) {
+            $u = wp_get_attachment_image_url( (int) $gid, 'large' );
+            if ( $u ) $sdn_gallery[] = $u;
+        } else {
+            $sdn_gallery[] = $gid; // already a URL
+        }
+    }
+}
+if ( empty( $sdn_gallery ) ) {
+    $sdn_gallery = sdn_brand_gallery_images( $sdn_name, 3 );
+}
 
 get_header();
 ?>
 
 <main>
   <!-- BRAND HERO -->
-  <section class="brand-hero">
-    <div class="wrap brand-hero-inner">
-      <div class="brand-hero-logo reveal">
-        <?php if ( $sdn_logo_url ) : ?>
-          <img src="<?php echo esc_url( $sdn_logo_url ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?>">
-        <?php else : ?>
-          <span class="brand-hero-mark"><?php echo esc_html( strtoupper( substr( $sdn_name, 0, 2 ) ) ); ?></span>
-        <?php endif; ?>
-      </div>
-      <div class="brand-hero-text reveal reveal-d1">
-        <p class="eyebrow">Brand on the SmokeDrop marketplace &middot; <?php echo esc_html( ucfirst( $sdn_niche ) ); ?></p>
-        <h1 class="display"><?php echo esc_html( $sdn_name ); ?></h1>
-        <div class="brand-hero-desc"><?php echo wp_kses_post( wpautop( $sdn_desc ) ); ?></div>
-        <div class="hero-actions">
-          <a href="<?php echo esc_url( $sdn_register ); ?>" class="btn btn-lime btn-lg">Dropship <?php echo esc_html( $sdn_name ); ?> products</a>
-          <a href="<?php echo esc_url( $sdn_brands_pg ); ?>" class="btn btn-outline btn-lg">All brands</a>
+  <section class="brand-hero<?php echo $sdn_hero_img ? ' brand-hero--split' : ''; ?>">
+    <div class="wrap <?php echo $sdn_hero_img ? 'brand-hero-grid' : 'brand-hero-inner'; ?>">
+      <div class="brand-hero-left">
+        <div class="brand-hero-logo reveal">
+          <?php if ( $sdn_logo_url ) : ?>
+            <img src="<?php echo esc_url( $sdn_logo_url ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?>">
+          <?php else : ?>
+            <span class="brand-hero-mark"><?php echo esc_html( strtoupper( substr( $sdn_name, 0, 2 ) ) ); ?></span>
+          <?php endif; ?>
+        </div>
+        <div class="brand-hero-text reveal reveal-d1">
+          <p class="eyebrow">Brand on the SmokeDrop marketplace &middot; <?php echo esc_html( ucfirst( $sdn_niche ) ); ?></p>
+          <h1 class="display"><?php echo esc_html( $sdn_name ); ?></h1>
+          <div class="brand-hero-desc"><?php echo wp_kses_post( wpautop( $sdn_desc ) ); ?></div>
+          <div class="hero-actions">
+            <a href="<?php echo esc_url( $sdn_register ); ?>" class="btn btn-lime btn-lg">Dropship <?php echo esc_html( $sdn_name ); ?> products</a>
+            <a href="<?php echo esc_url( $sdn_brands_pg ); ?>" class="btn btn-outline btn-lg">All brands</a>
+          </div>
         </div>
       </div>
+      <?php if ( $sdn_hero_img ) : ?>
+        <div class="bhg-img reveal reveal-d2">
+          <img src="<?php echo esc_url( $sdn_hero_img ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?> product">
+        </div>
+      <?php endif; ?>
     </div>
   </section>
 
@@ -149,7 +174,7 @@ get_header();
       <h2 class="h-sec reveal reveal-d1" style="margin-top:14px;margin-bottom:32px;">Featured <?php echo esc_html( $sdn_name ); ?> products</h2>
       <div class="brand-gallery reveal reveal-d2">
         <?php foreach ( $sdn_gallery as $i => $img ) : ?>
-          <div class="brand-gallery-cell<?php echo $i === 1 ? ' brand-gallery-cell--wide' : ''; ?>">
+          <div class="bg-cell">
             <img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?> product" loading="lazy">
           </div>
         <?php endforeach; ?>
