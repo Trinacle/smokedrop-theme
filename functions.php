@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '1.9.0' );
+define( 'SDN_VERSION', '2.0.0' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 

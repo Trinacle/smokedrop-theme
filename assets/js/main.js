@@ -8,6 +8,20 @@
 (function () {
   'use strict';
 
+  /* ---------- Screen loader ----------
+   * Full-screen overlay shown on first paint; hidden once the page has loaded
+   * (window.load) or after a 3s failsafe — whichever fires first.
+   */
+  var sdnLoader = document.getElementById('sdn-loader');
+  if (sdnLoader) {
+    var sdnLoaderDone = function () {
+      sdnLoader.classList.add('is-done');
+      setTimeout(function () { if (sdnLoader.parentNode) sdnLoader.parentNode.removeChild(sdnLoader); }, 500);
+    };
+    window.addEventListener('load', sdnLoaderDone);
+    setTimeout(sdnLoaderDone, 3000); // failsafe in case load never fires
+  }
+
   /* ---------- Custom cursor (DISABLED per request) ---------- */
   // Cursor effect removed — using native cursor instead.
   // Magnetic button effect also removed.

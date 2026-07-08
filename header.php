@@ -17,6 +17,19 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<!-- Screen loader -->
+<div id="sdn-loader" class="sdn-loader">
+    <div class="sdn-loader-sq">
+        <span class="sq sq-tl"></span>
+        <span class="sq sq-tr"></span>
+        <span class="sq sq-br"></span>
+        <span class="sq sq-bl"></span>
+        <div class="sdn-loader-logo">
+            <img src="<?php echo esc_url( home_url( '/wp-content/uploads/SmokeDrop-Logo-loading.gif' ) ); ?>" alt="SmokeDrop" width="140" height="44">
+        </div>
+    </div>
+</div>
+
 <div class="mega-backdrop"></div>
 
 <header class="site">

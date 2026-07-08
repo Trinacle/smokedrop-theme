@@ -954,6 +954,23 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .sdn-lightbox .lb-close:hover,.sdn-lightbox .lb-nav:hover{background:var(--green-xl);border-color:var(--green-xl);color:#0a0b0a}
 @media(max-width:600px){.sdn-lightbox .lb-nav{width:42px;height:42px;font-size:1.6rem}.sdn-lightbox .lb-close{width:38px;height:38px;font-size:1.4rem}.sdn-lightbox .lb-prev{left:10px}.sdn-lightbox .lb-next{right:10px}.sdn-lightbox .lb-close{top:14px;right:14px}}
 
+/* ---------- Screen loader (digital square load-in) ---------- */
+.sdn-loader{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:#08090a;transition:opacity .5s var(--ease),visibility .5s}
+.sdn-loader.is-done{opacity:0;visibility:hidden}
+.sdn-loader-sq{position:relative;width:200px;height:200px;display:grid;place-items:center}
+.sdn-loader-sq .sq{position:absolute;width:48px;height:48px;border:2px solid var(--green-xl);opacity:0;animation:sdn-sq-in .5s var(--ease) forwards}
+.sdn-loader-sq .sq-tl{top:0;left:0;border-right:none;border-bottom:none;border-radius:8px 0 0 0}
+.sdn-loader-sq .sq-tr{top:0;right:0;border-left:none;border-bottom:none;border-radius:0 8px 0 0;animation-delay:.1s}
+.sdn-loader-sq .sq-br{bottom:0;right:0;border-left:none;border-top:none;border-radius:0 0 8px 0;animation-delay:.2s}
+.sdn-loader-sq .sq-bl{bottom:0;left:0;border-right:none;border-top:none;border-radius:0 0 0 8px;animation-delay:.3s}
+.sdn-loader-logo{position:relative;z-index:2;opacity:0;animation:sdn-logo-in .6s var(--ease) .4s forwards}
+.sdn-loader-logo img{display:block;max-width:140px;height:auto;filter:drop-shadow(0 0 16px rgba(19,194,123,.3))}
+/* Pulse loop on the corners after they're in */
+.sdn-loader-sq .sq{animation:sdn-sq-in .5s var(--ease) forwards,sdn-sq-pulse 1.4s var(--ease) .5s infinite}
+@keyframes sdn-sq-in{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+@keyframes sdn-logo-in{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+@keyframes sdn-sq-pulse{0%,100%{border-color:var(--green-xl);box-shadow:0 0 0 rgba(19,194,123,0)}50%{border-color:#fff;box-shadow:0 0 12px rgba(19,194,123,.5)}}
+
 /* Info */
 .product-info .p-brand{display:inline-block;color:var(--green-xl);font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;text-decoration:none}
 .product-info .p-brand:hover{color:var(--green-l)}
