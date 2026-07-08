@@ -801,7 +801,7 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 /* ---------- 17. Footer ---------- */
 .site-footer{background:var(--bg-2);border-top:1px solid var(--line);padding:100px 32px 40px;position:relative;overflow:hidden;z-index:2}
 .foot-inner{max-width:1400px;margin:0 auto}
-.foot-grid{display:grid;grid-template-columns:1.5fr repeat(4,1fr);gap:48px;padding-bottom:60px;border-bottom:1px solid var(--line)}
+.foot-grid{display:grid;grid-template-columns:1.5fr repeat(4,1fr);gap:48px;padding:0 40px 60px;border-bottom:1px solid var(--line)}
 .foot-brand p{color:var(--ink-mute);max-width:300px;margin-top:18px;font-size:.95rem}
 .foot-col h5{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-bottom:18px}
 .foot-col a{display:block;padding:7px 0;color:var(--ink-mute);font-size:.95rem;transition:color .25s,padding-left .3s}
@@ -1083,7 +1083,7 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
   .products{grid-template-columns:repeat(2,1fr)}
   .split{grid-template-columns:1fr;gap:48px}
   .split.reverse .split-text{order:-1}
-  .foot-grid{grid-template-columns:1fr 1fr}
+  .foot-grid{grid-template-columns:1fr 1fr;padding:0 24px 60px}
   .stat-band{grid-template-columns:repeat(2,1fr)}
   .foot-newsletter{grid-template-columns:1fr}
   .dual{grid-template-columns:1fr}
