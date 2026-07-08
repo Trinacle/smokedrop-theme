@@ -92,25 +92,28 @@ if ( ! $sdn_desc ) {
 }
 $sdn_niche = sdn_brand_niche( $sdn_name );
 
-// Gallery: prefer migrated CPT meta (real brand photos), fall back to Woo
-// products, then curated images. Uses $sdn_cpt_id (resolved above) since
-// get_the_ID() is empty in the virtual-brand routing path.
+// Gallery: prefer migrated CPT meta (real brand photos), backfill from Woo
+// products, then curated images. Blends both sources so a brand with one
+// migrated photo still gets a full real gallery.
 $sdn_gallery_ids = $sdn_cpt_id ? sdn_brand_gallery_ids( $sdn_cpt_id ) : array();
 $sdn_hero_img    = $sdn_cpt_id ? sdn_brand_hero_image_url( $sdn_cpt_id ) : '';
+$sdn_gallery     = array();
+
+// 1) Migrated gallery meta (URLs or IDs).
 if ( ! empty( $sdn_gallery_ids ) ) {
-    $sdn_gallery = array();
     foreach ( $sdn_gallery_ids as $gid ) {
-        // Gallery meta may be URLs (from migration) or IDs.
         if ( is_numeric( $gid ) ) {
             $u = wp_get_attachment_image_url( (int) $gid, 'large' );
             if ( $u ) $sdn_gallery[] = $u;
         } else {
-            $sdn_gallery[] = $gid; // already a URL
+            $sdn_gallery[] = $gid;
         }
     }
 }
-if ( empty( $sdn_gallery ) ) {
-    $sdn_gallery = sdn_brand_gallery_images( $sdn_name, 3 );
+// 2) Backfill to 3 photos from WooCommerce products (real brand products).
+if ( count( $sdn_gallery ) < 3 ) {
+    $sdn_gallery = array_merge( $sdn_gallery, sdn_brand_gallery_images( $sdn_name, 3 ) );
+    $sdn_gallery = array_slice( array_unique( $sdn_gallery ), 0, 3 );
 }
 
 get_header();
