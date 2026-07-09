@@ -818,10 +818,10 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 
 /* Split hero (brand page with a hero product photo) */
 .brand-hero--split{padding:140px 20px 70px}
-.brand-hero-grid .brand-hero-left{display:flex;align-items:center;gap:40px;flex-wrap:wrap}
-.brand-hero-grid .brand-hero-logo{width:200px;height:200px;padding:32px}
+.brand-hero-grid .brand-hero-left{display:flex;flex-direction:column;align-items:flex-start;gap:24px}
+.brand-hero-grid .brand-hero-logo{width:200px;height:200px;padding:32px;background:#fff;border:1px solid var(--line);border-radius:var(--r-xl);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
 .brand-hero-grid .brand-hero-logo img{max-height:120px;width:auto;max-width:100%;object-fit:contain}
-.brand-hero-grid .brand-hero-text{flex:1;min-width:280px}
+.brand-hero-grid .brand-hero-text{flex:1;min-width:280px;width:100%}
 .brand-hero-cta{font-family:var(--display);font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:600;letter-spacing:-.02em;line-height:1.1;margin:0 0 10px}
 .brand-hero-sub{color:var(--ink-mute);font-size:1.02rem;margin-bottom:24px}
 .brand-hero-grid .bhg-img{border-radius:var(--r-2xl);overflow:hidden;aspect-ratio:1;background:var(--bg-2);border:1px solid var(--line);max-height:460px}

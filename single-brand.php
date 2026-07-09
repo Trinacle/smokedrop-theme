@@ -181,16 +181,15 @@ get_header();
   <section class="brand-hero brand-hero--split">
     <div class="wrap brand-hero-grid">
       <div class="brand-hero-left">
-        <div class="brand-hero-logo reveal">
-          <?php if ( $sdn_logo_url ) : ?>
-            <img src="<?php echo esc_url( $sdn_logo_url ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?>" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
-            <span class="brand-hero-mark" style="display:none"><?php echo esc_html( strtoupper( substr( $sdn_name, 0, 2 ) ) ); ?></span>
-          <?php else : ?>
-            <span class="brand-hero-mark"><?php echo esc_html( strtoupper( substr( $sdn_name, 0, 2 ) ) ); ?></span>
-          <?php endif; ?>
-        </div>
         <div class="brand-hero-text reveal reveal-d1">
-          <h1 class="brand-hero-cta">Start Dropshipping <?php echo esc_html( $sdn_name ); ?></h1>
+          <div class="brand-hero-logo">
+            <?php if ( $sdn_logo_url ) : ?>
+              <img src="<?php echo esc_url( $sdn_logo_url ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?>" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+              <span class="brand-hero-mark" style="display:none"><?php echo esc_html( strtoupper( substr( $sdn_name, 0, 2 ) ) ); ?></span>
+            <?php else : ?>
+              <span class="brand-hero-mark"><?php echo esc_html( strtoupper( substr( $sdn_name, 0, 2 ) ) ); ?></span>
+            <?php endif; ?>
+          </div>
           <p class="brand-hero-sub">Create a SmokeDrop account to get started.</p>
           <div class="hero-actions">
             <a href="<?php echo esc_url( $sdn_register ); ?>" class="btn btn-lime btn-lg">Dropship <?php echo esc_html( $sdn_name ); ?> products</a>
