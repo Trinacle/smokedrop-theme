@@ -824,6 +824,30 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .brand-hero-grid .bhg-img{border-radius:var(--r-2xl);overflow:hidden;aspect-ratio:1;background:var(--bg-2);border:1px solid var(--line);max-height:460px}
 .brand-hero-grid .bhg-img img{width:100%;height:100%;object-fit:cover}
 @media(max-width:900px){.brand-hero-grid{grid-template-columns:1fr !important}.brand-hero-grid .bhg-img{max-height:340px;order:-1}}
+
+/* ---------- Brand content layout (Row 2: 30/70 sidebar + description) ---------- */
+.brand-content-layout{display:grid;grid-template-columns:30% 1fr;gap:40px;align-items:flex-start}
+.brand-sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:100px}
+.brand-sidebar .bs-img{border-radius:var(--r-lg);overflow:hidden;aspect-ratio:1;background:var(--bg-2);border:1px solid var(--line)}
+.brand-sidebar .bs-img img{width:100%;height:100%;object-fit:cover}
+.brand-sidebar .foot-mini-cta{display:flex;text-decoration:none}
+.brand-sidebar .foot-mini-cta small{display:block;color:var(--ink-mute);font-size:.72rem;font-weight:400}
+.brand-main{min-width:0}
+.brand-desc-full{color:var(--ink-dim);font-size:1.02rem;line-height:1.75}
+.brand-desc-full h2,.brand-desc-full h3,.brand-desc-full h4{font-family:var(--display);color:var(--ink);font-weight:600;letter-spacing:-.02em;margin:28px 0 12px;line-height:1.25}
+.brand-desc-full h2{font-size:1.5rem;padding-bottom:.3em;border-bottom:1px solid var(--line)}
+.brand-desc-full h3{font-size:1.2rem}
+.brand-desc-full h4{font-size:1rem;text-transform:uppercase;letter-spacing:.04em}
+.brand-desc-full p{margin:0 0 1.1em}
+.brand-desc-full ul,.brand-desc-full ol{margin:0 0 1.1em;padding-left:1.5em}
+.brand-desc-full li{margin:.4em 0}
+.brand-desc-full ul li{list-style:disc}
+.brand-desc-full ul li::marker{color:var(--green-xl)}
+.brand-desc-full ol li{list-style:decimal}
+.brand-desc-full a{color:var(--green-xl);text-decoration:underline;text-underline-offset:2px}
+.brand-desc-full strong,.brand-desc-full b{color:var(--ink);font-weight:600}
+.brand-desc-full img{display:none}
+@media(max-width:900px){.brand-content-layout{grid-template-columns:1fr}.brand-sidebar{position:static;flex-direction:column}}
 .brand-features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .bf-card{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-md);padding:28px}
 .bf-card .bf-ico{width:44px;height:44px;border-radius:12px;background:rgba(19,194,123,.1);color:var(--green-xl);display:grid;place-items:center;margin-bottom:16px;border:1px solid rgba(19,194,123,.2)}

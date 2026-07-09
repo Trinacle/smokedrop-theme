@@ -177,7 +177,7 @@ get_header();
 ?>
 
 <main>
-  <!-- BRAND HERO (always 2-column: logo+CTA left, image right) -->
+  <!-- ROW 1: Hero (50/50 — logo+name+buttons left, Image 1 right) -->
   <section class="brand-hero brand-hero--split">
     <div class="wrap brand-hero-grid">
       <div class="brand-hero-left">
@@ -192,7 +192,6 @@ get_header();
         <div class="brand-hero-text reveal reveal-d1">
           <p class="eyebrow">Brand on the SmokeDrop marketplace &middot; <?php echo esc_html( ucfirst( $sdn_niche ) ); ?></p>
           <h1 class="display"><?php echo esc_html( $sdn_name ); ?></h1>
-          <div class="brand-hero-desc"><?php echo $sdn_desc ? wp_kses_post( $sdn_desc ) : wp_kses_post( wpautop( sdn_brand_description( $sdn_name ) ) ); ?></div>
           <div class="hero-actions">
             <a href="<?php echo esc_url( $sdn_register ); ?>" class="btn btn-lime btn-lg">Dropship <?php echo esc_html( $sdn_name ); ?> products</a>
             <a href="<?php echo esc_url( home_url( '/wholesalers' ) ); ?>" class="btn btn-outline btn-lg">View Wholesale Prices</a>
@@ -209,27 +208,57 @@ get_header();
     </div>
   </section>
 
-  <!-- BRAND GALLERY (product photos) — only when real photos exist -->
-  <?php $sdn_has_real_gallery = ! empty( $sdn_gallery ); ?>
-  <?php if ( $sdn_has_real_gallery ) : ?>
-  <section class="sec brand-gallery-sec">
+  <!-- ROW 2: Content (30/70 — sidebar left, full description right) -->
+  <section class="sec">
     <div class="wrap">
-      <p class="eyebrow reveal">From the catalog</p>
-      <h2 class="h-sec reveal reveal-d1" style="margin-top:14px;margin-bottom:32px;">Featured <?php echo esc_html( $sdn_name ); ?> products</h2>
-      <div class="brand-gallery reveal reveal-d2">
-        <?php foreach ( $sdn_gallery as $i => $img ) : ?>
-          <div class="bg-cell">
-            <img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?> product" loading="lazy">
+      <div class="brand-content-layout">
+
+        <!-- SIDEBAR (30%) -->
+        <aside class="brand-sidebar reveal">
+          <?php
+          // Image 2 and Image 3 from the gallery (indices 1 and 2).
+          $sdn_img2 = ! empty( $sdn_gallery[1] ) ? $sdn_gallery[1] : '';
+          $sdn_img3 = ! empty( $sdn_gallery[2] ) ? $sdn_gallery[2] : '';
+          ?>
+          <?php if ( $sdn_img2 ) : ?>
+            <div class="bs-img"><img src="<?php echo esc_url( $sdn_img2 ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?> product" loading="lazy"></div>
+          <?php endif; ?>
+          <?php if ( $sdn_img3 ) : ?>
+            <div class="bs-img"><img src="<?php echo esc_url( $sdn_img3 ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?> product" loading="lazy"></div>
+          <?php endif; ?>
+
+          <!-- Dropship Full Catalog CTA -->
+          <div class="shop-account-cta">
+            <h5>Dropship Full Catalog</h5>
+            <p>Create a free account to access every brand and product at wholesale prices.</p>
+            <a href="<?php echo esc_url( $sdn_register ); ?>" class="btn btn-lime" style="width:100%;text-align:center;box-sizing:border-box;">Create Free Account</a>
           </div>
-        <?php endforeach; ?>
+
+          <!-- Platform mini-CTAs -->
+          <a href="https://apps.shopify.com/smoke-drop" class="foot-mini-cta" style="display:flex;">
+            <span class="fmc-ic"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="#95bf47" d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/></svg></span>
+            <div><strong>Install on Shopify</strong><small>One-click from App Store</small></div>
+          </a>
+          <a href="<?php echo esc_url( home_url( '/download-smokedrop-plugin' ) ); ?>" class="foot-mini-cta" style="display:flex;">
+            <span class="fmc-ic"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="#7f54b3" d="M3 3h18v18H3z"/><path fill="#fff" d="M8.5 8.8c.3-1.2 1.2-1.8 2.4-1.8 1.8 0 3 1.4 3 3.5 0 2-1.3 3.5-3.1 3.5-.7 0-1.3-.2-1.7-.7l-.4 2.5c0 .3-.2.5-.5.6h-.1c-.3 0-.5-.2-.5-.5l.9-7.1z"/></svg></span>
+            <div><strong>WooCommerce Plugin</strong><small>Self-hosted WordPress</small></div>
+          </a>
+        </aside>
+
+        <!-- MAIN CONTENT (70%) — full brand description -->
+        <div class="brand-main reveal reveal-d1">
+          <div class="brand-desc-full">
+            <?php echo $sdn_desc ? wp_kses_post( $sdn_desc ) : wp_kses_post( wpautop( sdn_brand_description( $sdn_name ) ) ); ?>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
-  <?php endif; ?>
 
   <?php if ( ! empty( $sdn_products ) ) : ?>
     <!-- BRAND PRODUCTS -->
-    <section class="sec brand-products-sec">
+    <section class="sec brand-products-sec" style="background:var(--bg-2);">
       <div class="wrap">
         <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:40px;">
           <div>
@@ -266,7 +295,7 @@ get_header();
   <?php endif; ?>
 
   <!-- WHY DROPSHIP THIS BRAND -->
-  <section class="sec" style="background:var(--bg-2);">
+  <section class="sec">
     <div class="wrap">
       <div class="center" style="max-width:760px;margin:0 auto 56px;">
         <p class="eyebrow reveal" style="justify-content:center;">Why dropship <?php echo esc_html( $sdn_name ); ?>?</p>
