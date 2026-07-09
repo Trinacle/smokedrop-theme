@@ -46,27 +46,54 @@ function sdn_get_brand_field( $field, $post_id = null ) {
     return get_post_meta( $post_id, $field, true );
 }
 
-/* ---------- Get the brand logo URL ---------- */
+/* ---------- Get the brand logo URL ----------
+ * Resolution priority (directory data is AUTHORITATIVE over migration meta,
+ * which often contains a product photo instead of a logo):
+ *   1) Directory 'images.logo' map (explicit per-brand override)
+ *   2) Directory 'logo' field
+ *   3) Migration 'brand_logo' meta (unreliable — may be a product photo)
+ *   4) ucfirst(slug).png convention guess
+ */
 function sdn_brand_logo_url( $post_id = null ) {
     $post_id = $post_id ?: get_the_ID();
+    $slug    = get_post_field( 'post_name', $post_id );
+
+    // 1) + 2) Directory overrides (images.logo, then logo field).
+    if ( $slug && function_exists( 'sdn_brand_logo_for_slug' ) ) {
+        $dir_logo = sdn_brand_logo_for_slug( $slug );
+        if ( $dir_logo ) return $dir_logo;
+    }
+
+    // 3) Migration 'brand_logo' meta (fallback — may be a product photo).
     $logo = sdn_get_brand_field( 'brand_logo', $post_id );
     if ( $logo ) return sdn_normalize_upload_url( $logo );
-    // Fallback: try thesmokedrop.com standard logo path
-    $slug = get_post_field( 'post_name', $post_id );
+
+    // 4) ucfirst(slug).png convention guess.
     $capitalized = ucfirst( $slug );
     return home_url( '/wp-content/uploads/' . $capitalized . '.png' );
 }
 
 /* ---------- Resolve a logo for a brand SLUG (not post ID) ----------
- * Used by /brands/ page + featured grids. Checks: (1) the directory array's
- * 'logo' field, (2) the brand CPT post_meta 'brand_logo', (3) the directory
- * 'images' map logo. Returns '' if none found.
+ * Used by /brands/ page + featured grids. Priority order:
+ *   1) Directory 'images.logo' map (explicit per-brand, e.g. CCell, Storz-Bickel)
+ *   2) Directory 'logo' field (the 16 known -300x162 logos)
+ *   3) Migration 'brand_logo' meta — LAST because the migration stored the
+ *      production featured_media (a product PHOTO, not a logo) here for many
+ *      brands. Only used as a fallback for brands with CPT posts that have no
+ *      directory override.
+ * Returns '' if none found.
  */
 function sdn_brand_logo_for_slug( $slug ) {
     $slug = sanitize_title( $slug );
     if ( ! $slug ) return '';
 
-    // 1) Directory array 'logo' field (relative path under uploads).
+    // 1) Directory 'images' map logo (explicit per-brand override — authoritative).
+    $images = sdn_brand_directory_images( $slug );
+    if ( ! empty( $images['logo'] ) ) {
+        return sdn_normalize_upload_url( $images['logo'] );
+    }
+
+    // 2) Directory array 'logo' field (relative path under uploads).
     if ( function_exists( 'sdn_brand_directory' ) ) {
         foreach ( sdn_brand_directory() as $b ) {
             $bslug = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $b['name'] );
@@ -76,17 +103,12 @@ function sdn_brand_logo_for_slug( $slug ) {
         }
     }
 
-    // 2) Brand CPT post_meta (the migration wrote 173 logos here).
+    // 3) Migration 'brand_logo' meta — LAST resort (may contain a product photo,
+    //    but better than nothing for brands with CPT posts and no directory data).
     $cpt = get_page_by_path( $slug, OBJECT, 'brand' );
     if ( $cpt && $cpt->post_status === 'publish' ) {
         $logo = get_post_meta( $cpt->ID, 'brand_logo', true );
         if ( $logo ) return sdn_normalize_upload_url( $logo );
-    }
-
-    // 3) Directory 'images' map (explicit per-brand image sets).
-    $images = sdn_brand_directory_images( $slug );
-    if ( ! empty( $images['logo'] ) ) {
-        return sdn_normalize_upload_url( $images['logo'] );
     }
 
     return '';

@@ -55,16 +55,12 @@ if ( $sdn_requested ) {
         $sdn_cpt_id = $cpt_post->ID;
         $sdn_slug   = $cpt_post->post_name;
         $sdn_name   = get_the_title( $cpt_post );
+        // Logo: sdn_brand_logo_url() now resolves directory images.logo -> directory
+        // logo -> migration meta -> ucfirst(slug).png (in that priority order), so
+        // directory overrides (CCell, Storz-Bickel) win over the unreliable meta.
         $sdn_logo_url = sdn_brand_logo_url( $cpt_post->ID );
-        // If the CPT logo is just the ucfirst(slug).png guess (may not exist),
-        // prefer an explicit directory 'images' logo or directory 'logo' field.
+        // Directory 'images' map for hero/gallery (CCell, Storz-Bickel, etc.).
         $sdn_dir_images = function_exists( 'sdn_brand_directory_images' ) ? sdn_brand_directory_images( $sdn_requested ) : array();
-        if ( ! empty( $sdn_dir_images['logo'] ) ) {
-            $sdn_logo_url = home_url( '/wp-content/uploads/' . $sdn_dir_images['logo'] );
-        } elseif ( ! $sdn_logo_url || ( ! get_post_meta( $cpt_post->ID, 'brand_logo', true ) && function_exists( 'sdn_brand_logo_for_slug' ) ) ) {
-            $resolved = function_exists( 'sdn_brand_logo_for_slug' ) ? sdn_brand_logo_for_slug( $sdn_requested ) : '';
-            if ( $resolved ) $sdn_logo_url = $resolved;
-        }
         // Use the migrated post content, BUT detect the broken boilerplate
         // the migration wrote (a generic "Welcome to SmokeDrop..." template
         // that hardcodes "Cookies branded items" regardless of the actual
@@ -133,8 +129,22 @@ $sdn_niche = sdn_brand_niche( $sdn_name );
 $sdn_gallery_urls = $sdn_cpt_id ? sdn_brand_gallery_ids( $sdn_cpt_id ) : array();
 $sdn_hero_img     = $sdn_cpt_id ? sdn_brand_hero_image_url( $sdn_cpt_id ) : '';
 
-// Also check the directory 'images' field (explicit per-brand image map, e.g. CCell).
-if ( empty( $sdn_gallery_urls ) && function_exists( 'sdn_brand_directory_images' ) ) {
+// Directory 'images' map (explicit per-brand, e.g. CCell, Storz-Bickel) takes
+// priority for hero + gallery — it's the verified-correct image set.
+if ( ! empty( $sdn_dir_images ) ) {
+    $sdn_hero_img = ! empty( $sdn_dir_images['img1'] )
+        ? sdn_normalize_upload_url( $sdn_dir_images['img1'] )
+        : $sdn_hero_img;
+    $dir_gallery = array();
+    foreach ( array( 'img1', 'img2', 'img3' ) as $key ) {
+        if ( ! empty( $sdn_dir_images[ $key ] ) ) {
+            $dir_gallery[] = sdn_normalize_upload_url( $sdn_dir_images[ $key ] );
+        }
+    }
+    if ( ! empty( $dir_gallery ) ) {
+        $sdn_gallery_urls = $dir_gallery;
+    }
+} elseif ( empty( $sdn_gallery_urls ) && function_exists( 'sdn_brand_directory_images' ) ) {
     $sdn_gallery_urls = sdn_brand_directory_images( $sdn_slug ?: $sdn_requested );
 }
 

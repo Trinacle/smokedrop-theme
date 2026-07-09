@@ -11,7 +11,11 @@ function sdn_brand_directory() {
     return array(
         array( 'name' => "Puffco", 'slug' => "puffco", 'initials' => "PU", 'value' => 10, 'logo' => "2023/07/puffco-300x162.png" ),
         array( 'name' => "RAW", 'slug' => "raw", 'initials' => "RA", 'value' => 10, 'logo' => "2023/07/raw-300x162.png" ),
-        array( 'name' => "Storz & Bickel", 'slug' => "storz-and-bickel", 'initials' => "SB", 'value' => 10 ),
+        array( 'name' => "Storz & Bickel", 'slug' => "storz-and-bickel", 'initials' => "SB", 'value' => 10, 'images' => array(
+            'logo' => 'Storz-Bickel.png',
+            'img1' => 'Storz-Bickel-600x600.jpg',
+            'img2' => 'Snapinst.app_470679373_1040965324466559_7178810035500507420_n_1080.jpg',
+        ) ),
         array( 'name' => "Stündenglass", 'slug' => "stundenglass", 'initials' => "ST", 'value' => 10 ),
         array( 'name' => "Vessel", 'slug' => "vessel", 'initials' => "VE", 'value' => 10, 'logo' => "2024/08/vessel0-300x162.jpg" ),
         array( 'name' => "Arizer", 'slug' => "arizer", 'initials' => "AR", 'value' => 9 ),
