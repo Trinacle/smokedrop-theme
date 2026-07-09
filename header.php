@@ -20,7 +20,7 @@
 <!-- Screen loader -->
 <div id="sdn-loader" class="sdn-loader">
     <div class="sdn-loader-logo">
-        <img src="<?php echo esc_url( home_url( '/wp-content/uploads/SmokeDrop-Logo-icon.webp' ) ); ?>" alt="SmokeDrop" width="48" height="48">
+        <?php echo sdn_logo( 36 ); // phpcs:ignore ?>
     </div>
 </div>
 

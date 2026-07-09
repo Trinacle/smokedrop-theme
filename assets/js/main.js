@@ -323,12 +323,16 @@
   function initProductGallery() {
     var mainImg = document.getElementById('pg-main-img');
     var thumbs  = Array.prototype.slice.call(document.querySelectorAll('.pg-thumb'));
-    if (!mainImg || !thumbs.length) return; // not a product page, or already bound
+    if (!mainImg) return; // not a product page
     if (mainImg.dataset.sdnGallery) return; // already initialized
     mainImg.dataset.sdnGallery = '1';
 
-    // Build the ordered gallery set from the thumbnails' data-full URLs.
+    // Build the ordered gallery set from the thumbnails' data-full URLs,
+    // falling back to just the main image itself if there are no thumbnails.
     var set = thumbs.map(function (t) { return t.getAttribute('data-full'); }).filter(Boolean);
+    if (!set.length && mainImg.src) {
+      set = [mainImg.src]; // at least the main image so the lightbox works
+    }
     if (!set.length) return;
     var current = 0;
 

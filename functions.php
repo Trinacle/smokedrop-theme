@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '2.7.1' );
+define( 'SDN_VERSION', '2.8.0' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 
@@ -157,6 +157,25 @@ function sdn_strip_builder_assets() {
 
 /* ---------- Drop leftover Astra/Elementor body classes on bespoke views ---------- */
 add_filter( 'body_class', 'sdn_clean_body_classes', 20 );
+
+/* ---------- Default product sort to 'latest' on the shop/marketplace ---------- */
+add_filter( 'woocommerce_default_catalog_orderby_options', 'sdn_default_orderby_latest' );
+add_filter( 'woocommerce_default_catalog_orderby', 'sdn_default_orderby_latest' );
+function sdn_default_orderby_latest() {
+    return 'date';
+}
+
+/* ---------- Hide out-of-stock products from the shop/marketplace ---------- */
+add_action( 'woocommerce_product_query', 'sdn_hide_out_of_stock' );
+function sdn_hide_out_of_stock( $q ) {
+    $meta_query = $q->get( 'meta_query' );
+    $meta_query[] = array(
+        'key'     => '_stock_status',
+        'value'   => 'outofstock',
+        'compare' => '!=',
+    );
+    $q->set( 'meta_query', $meta_query );
+}
 
 /* ---------- Inline Forminator overrides on the Contact page ----------
  * Dequeuing (above) can be fragile under page caches + load-order races.
