@@ -86,10 +86,10 @@
   triggers.forEach(function (item) {
     const id = item.getAttribute('data-menu');
     item.addEventListener('mouseenter', function () { openMenu(id); });
-    item.querySelector('.nav-link').addEventListener('click', function (e) {
-      // Let the link navigate (so clicking "Brands" goes to /brands/).
-      // Only toggle the menu on click if it's already open (close gesture).
-      if (item.classList.contains('is-open')) { e.preventDefault(); closeMenu(); }
+    item.querySelector('.nav-link').addEventListener('click', function () {
+      // Always let the link navigate to its href (Brands -> /brands/, etc).
+      // Just close the mega panel so it doesn't linger during page transition.
+      closeMenu();
     });
     bindZone(item);
   });
