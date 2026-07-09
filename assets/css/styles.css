@@ -996,17 +996,20 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .hero-flip .hf-prefix{color:var(--ink-mute);flex-shrink:0}
 .hero-flip .hf-suffix{color:var(--ink-mute);flex-shrink:0}
 .hero-flip .hf-flip{height:1.4em;overflow:hidden;display:inline-block;vertical-align:bottom;flex-shrink:0}
-.hero-flip .hf-flip > div{height:100%;animation:sdn-flip 10s steps(1,end) infinite}
+.hero-flip .hf-flip > div{height:100%;animation:sdn-flip 14s steps(1,end) infinite}
 .hero-flip .hf-flip > div > div{color:#fff;padding:0 14px;display:block;height:1.4em;line-height:1.4em;background:var(--green);border-radius:8px;text-align:center;white-space:nowrap}
 @keyframes sdn-flip{
-  0%,9%{transform:translateY(0)}
-  12.5%,21.5%{transform:translateY(-1.4em)}
-  25%,34%{transform:translateY(-2.8em)}
-  37.5%,46.5%{transform:translateY(-4.2em)}
-  50%,59%{transform:translateY(-5.6em)}
-  62.5%,71.5%{transform:translateY(-7em)}
-  75%,84%{transform:translateY(-8.4em)}
-  87.5%,96%{transform:translateY(-9.8em)}
+  0%,6%{transform:translateY(0)}
+  9.09%,15.09%{transform:translateY(-1.4em)}
+  18.18%,24.18%{transform:translateY(-2.8em)}
+  27.27%,33.27%{transform:translateY(-4.2em)}
+  36.36%,42.36%{transform:translateY(-5.6em)}
+  45.45%,51.45%{transform:translateY(-7em)}
+  54.54%,60.54%{transform:translateY(-8.4em)}
+  63.63%,69.63%{transform:translateY(-9.8em)}
+  72.72%,78.72%{transform:translateY(-11.2em)}
+  81.81%,87.81%{transform:translateY(-12.6em)}
+  90.9%,96.9%{transform:translateY(-14em)}
   100%{transform:translateY(0)}
 }
 @media(max-width:760px){.hero-flip{flex-wrap:wrap;font-size:1.1rem}.hero-flip .hf-prefix,.hero-flip .hf-suffix{flex-basis:100%}}

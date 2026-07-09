@@ -52,10 +52,13 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
               <div>Pipes</div>
               <div>Bongs</div>
               <div>Vaporizers</div>
-              <div>Rolling Papers</div>
+              <div>Ashtrays</div>
               <div>Grinders</div>
               <div>Vape Pens</div>
               <div>Gummies</div>
+              <div>Bowls</div>
+              <div>Dab Straws</div>
+              <div>E-Rigs</div>
             </div>
           </div>
           <span class="hf-suffix">Available</span>
