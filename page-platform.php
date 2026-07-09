@@ -81,6 +81,62 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
       </div>
     </section>
 
+    <!-- STATS BAND -->
+    <section class="sec-sm" style="background:#13c27b;">
+      <div class="wrap">
+        <div class="scale-stats">
+          <div class="ss reveal"><div class="n" style="color:#000;font-weight:800;"><span data-count="20000" data-suffix="+">0</span></div><div class="l" style="color:#000;font-weight:600;">Products</div></div>
+          <div class="ss reveal reveal-d1"><div class="n" style="color:#000;font-weight:800;"><span data-count="300" data-suffix="+">0</span></div><div class="l" style="color:#000;font-weight:600;">Brands</div></div>
+          <div class="ss reveal reveal-d2"><div class="n" style="color:#000;font-weight:800;"><span data-count="3" data-suffix="">0</span></div><div class="l" style="color:#000;font-weight:600;">Platform integrations</div></div>
+          <div class="ss reveal reveal-d3"><div class="n" style="color:#000;font-weight:800;">$0</div><div class="l" style="color:#000;font-weight:600;">Transaction fees</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUILT FOR EVERY WORKFLOW -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="tool-row reveal">
+          <div class="tool-media">
+            <div class="tool-card-tag">For Retailers</div>
+            <h2 class="tool-name" style="font-size:2.2rem;">Dropship or buy wholesale.</h2>
+          </div>
+          <div class="tool-body">
+            <p class="lede" style="font-size:1.05rem;color:var(--ink);">Whether you want to dropship with zero inventory or buy wholesale to stock your shelves, SmokeDrop handles both from one platform. No switching tools, no separate accounts.</p>
+            <div class="tool-checks">
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Dropship:</strong> Import products, set prices, suppliers ship under your brand</span></div>
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Wholesale:</strong> Buy at wholesale pricing with no minimum order</span></div>
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Both:</strong> Dropship slow movers, stock your bestsellers locally</span></div>
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span><strong>No transaction fees</strong> on anything you buy or sell</span></div>
+            </div>
+            <a href="<?php echo esc_url( $retail_url ); ?>" class="btn btn-lime btn-lg" style="margin-top:8px;">Start dropshipping</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOR SUPPLIERS -->
+    <section class="sec" style="background:var(--bg-2);">
+      <div class="wrap">
+        <div class="tool-row reverse reveal">
+          <div class="tool-media">
+            <div class="tool-card-tag">For Suppliers &amp; Brands</div>
+            <h2 class="tool-name" style="font-size:2.2rem;">Reach hundreds of retailers.</h2>
+          </div>
+          <div class="tool-body">
+            <p class="lede" style="font-size:1.05rem;color:var(--ink);">List your catalog once and instantly reach hundreds of vetted smoke shop retailers. Automated order routing, real-time inventory sync, and no per-listing fees.</p>
+            <div class="tool-grid">
+              <div class="tool-tile"><strong>List once</strong><span>Reach every retailer in the network</span></div>
+              <div class="tool-tile"><strong>Automated orders</strong><span>Orders route straight to your fulfillment</span></div>
+              <div class="tool-tile"><strong>Demand analytics</strong><span>See sell-through by retailer &amp; region</span></div>
+              <div class="tool-tile"><strong>100% free to start</strong><span>$49.99/mo only when you scale</span></div>
+            </div>
+            <a href="<?php echo esc_url( home_url( '/suppliers' ) ); ?>" class="btn btn-outline btn-lg" style="margin-top:8px;">Become a supplier</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- WHITE SECTION: Integrations -->
     <section class="sec" style="background:#fff;color:#1d1d1f;">
       <div class="wrap center" style="color:#1d1d1f;">

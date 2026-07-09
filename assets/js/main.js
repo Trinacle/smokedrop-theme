@@ -9,17 +9,22 @@
   'use strict';
 
   /* ---------- Screen loader ----------
-   * Full-screen overlay shown on first paint; hidden once the page has loaded
-   * (window.load) or after a 3s failsafe — whichever fires first.
+   * Simple full-screen overlay; hidden on DOMContentLoaded (fast) with a 2s
+   * failsafe. Loader starts GREEN and fades to the black site bg on hide.
    */
   var sdnLoader = document.getElementById('sdn-loader');
   if (sdnLoader) {
     var sdnLoaderDone = function () {
       sdnLoader.classList.add('is-done');
-      setTimeout(function () { if (sdnLoader.parentNode) sdnLoader.parentNode.removeChild(sdnLoader); }, 500);
+      setTimeout(function () { if (sdnLoader.parentNode) sdnLoader.parentNode.removeChild(sdnLoader); }, 350);
     };
-    window.addEventListener('load', sdnLoaderDone);
-    setTimeout(sdnLoaderDone, 3000); // failsafe in case load never fires
+    // Hide as soon as the DOM is interactive (don't wait for all images).
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', sdnLoaderDone);
+    } else {
+      sdnLoaderDone();
+    }
+    setTimeout(sdnLoaderDone, 2000); // failsafe
   }
 
   /* ---------- Custom cursor (DISABLED per request) ---------- */
@@ -312,16 +317,20 @@
    *   1. Clicking a thumbnail swaps the main image + marks it active.
    *   2. Clicking the main image opens a full-screen lightbox with arrow-key
    *      and arrow-button navigation across the whole gallery set.
+   * Runs on DOMContentLoaded AND on window.load (belt-and-suspenders, in case
+   * WooCommerce injects gallery markup late).
    */
-  (function initProductGallery() {
+  function initProductGallery() {
     var mainImg = document.getElementById('pg-main-img');
     var thumbs  = Array.prototype.slice.call(document.querySelectorAll('.pg-thumb'));
-    if (!mainImg || !thumbs.length) return;
+    if (!mainImg || !thumbs.length) return; // not a product page, or already bound
+    if (mainImg.dataset.sdnGallery) return; // already initialized
+    mainImg.dataset.sdnGallery = '1';
 
     // Build the ordered gallery set from the thumbnails' data-full URLs.
     var set = thumbs.map(function (t) { return t.getAttribute('data-full'); }).filter(Boolean);
     if (!set.length) return;
-    var current = 0; // index into `set` currently shown in the main image.
+    var current = 0;
 
     function show(idx) {
       current = Math.max(0, Math.min(idx, set.length - 1));
@@ -379,7 +388,12 @@
       else if (e.key === 'ArrowLeft') step(-1);
       else if (e.key === 'ArrowRight') step(1);
     });
-  })();
+  }
+  initProductGallery();
+  // Re-try after window.load in case WooCommerce renders the gallery late.
+  if (document.readyState !== 'complete') {
+    window.addEventListener('load', initProductGallery);
+  }
 
   /* ---------- Page transitions (slide-in on navigation) ----------
    * On internal link click, slides a black overlay in from the left edge,

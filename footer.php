@@ -25,11 +25,11 @@
                 <p>The wholesale and dropshipping platform for the smoke, vape, and hemp industry. Sync 20,000+ products in one click.</p>
                 <div class="foot-cta-stack">
     <a href="https://apps.shopify.com/smoke-drop" class="foot-mini-cta">
-        <svg viewBox="0 0 24 24" fill="#95bf47" width="28" height="28"><path d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/></svg>
+        <span class="fmc-ic"><svg viewBox="0 0 24 24" width="32" height="32"><path fill="#95bf47" d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/><path fill="#5e8e3e" d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43l-.27.39a4.07 4.07 0 0 1 2.96 4.01c0 2.42-1.45 4.62-3.13 6.2.18.12.36.23.54.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/><path fill="#fff" d="M13.5 8.2c0-.3-.08-.55-.22-.75l.7.06c.05 0 .09.04.09.09 0 .16-.05.4-.2.55-.05.05-.13.05-.18.01-.1-.08-.19-.2-.19-.2z"/></svg></span>
         <span>Install on Shopify</span>
     </a>
     <a href="<?php echo esc_url( home_url( '/download-smokedrop-plugin' ) ); ?>" class="foot-mini-cta">
-        <svg viewBox="0 0 24 24" fill="#7f54b3" width="28" height="28"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 8h4a3 3 0 0 1 0 6h-1l3 4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="fmc-ic"><svg viewBox="0 0 24 24" width="32" height="32"><path fill="#7f54b3" d="M3 3h18v18H3z"/><path fill="#fff" d="M8.5 8.8c.3-1.2 1.2-1.8 2.4-1.8 1.8 0 3 1.4 3 3.5 0 2-1.3 3.5-3.1 3.5-.7 0-1.3-.2-1.7-.7l-.4 2.5c0 .3-.2.5-.5.6h-.1c-.3 0-.5-.2-.5-.5l.9-7.1zm1.9 4.2c0 .5.4.9.9.9 1 0 1.6-1 1.6-2.2 0-.9-.5-1.6-1.4-1.6-.6 0-1.1.5-1.2 1.1l-.1.8c0 .3 0 .7.2 1z"/><path fill="#b3a0d4" d="M16.5 8.8c-.2 1.3-.7 2.6-1.4 3.8.5.3 1 .6 1.6.8.5-.9.9-1.9 1.1-3-.2-.6-.7-1.2-1.3-1.6z"/></svg></span>
         <span>Download WooCommerce Plugin</span>
     </a>
                 </div>

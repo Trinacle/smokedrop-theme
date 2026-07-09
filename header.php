@@ -19,14 +19,8 @@
 
 <!-- Screen loader -->
 <div id="sdn-loader" class="sdn-loader">
-    <div class="sdn-loader-sq">
-        <span class="sq sq-tl"></span>
-        <span class="sq sq-tr"></span>
-        <span class="sq sq-br"></span>
-        <span class="sq sq-bl"></span>
-        <div class="sdn-loader-logo">
-            <img src="<?php echo esc_url( home_url( '/wp-content/uploads/SmokeDrop-Logo-icon.webp' ) ); ?>" alt="SmokeDrop" width="56" height="56">
-        </div>
+    <div class="sdn-loader-logo">
+        <img src="<?php echo esc_url( home_url( '/wp-content/uploads/SmokeDrop-Logo-icon.webp' ) ); ?>" alt="SmokeDrop" width="48" height="48">
     </div>
 </div>
 

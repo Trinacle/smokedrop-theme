@@ -61,8 +61,8 @@ $sdn_top_brands = array_slice( $sdn_top_brands, 0, 10 );
 
           <!-- Create account CTA -->
           <div class="shop-account-cta">
-            <h5>Unlock the full catalog</h5>
-            <p>Create a free account to see every brand and product on the marketplace.</p>
+            <h5>Dropship Full Catalog</h5>
+            <p>Create a free account to access every brand and product at wholesale prices.</p>
             <a href="<?php echo esc_url( $register ); ?>" class="btn btn-lime" style="width:100%;text-align:center;box-sizing:border-box;">Create Free Account</a>
           </div>
 
@@ -80,7 +80,6 @@ $sdn_top_brands = array_slice( $sdn_top_brands, 0, 10 );
         <!-- MAIN: product grid -->
         <div class="shop-main">
           <div class="shop-toolbar reveal">
-            <?php woocommerce_result_count(); ?>
             <?php woocommerce_catalog_ordering(); ?>
           </div>
 
