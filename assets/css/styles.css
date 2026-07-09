@@ -996,7 +996,7 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .hero-flip .hf-prefix{color:var(--ink-mute);flex-shrink:0}
 .hero-flip .hf-suffix{color:var(--ink-mute);flex-shrink:0}
 .hero-flip .hf-flip{height:1.4em;overflow:hidden;display:inline-block;vertical-align:bottom;flex-shrink:0}
-.hero-flip .hf-flip > div{height:100%;animation:sdn-flip 16s steps(1,end) infinite}
+.hero-flip .hf-flip > div{height:100%;animation:sdn-flip 10s steps(1,end) infinite}
 .hero-flip .hf-flip > div > div{color:#fff;padding:0 14px;display:block;height:1.4em;line-height:1.4em;background:var(--green);border-radius:8px;text-align:center;white-space:nowrap}
 @keyframes sdn-flip{
   0%,9%{transform:translateY(0)}

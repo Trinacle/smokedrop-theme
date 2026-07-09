@@ -58,7 +58,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
               <div>Gummies</div>
             </div>
           </div>
-          <span class="hf-suffix">SKU's Available</span>
+          <span class="hf-suffix">Available</span>
         </div>
 
         <p class="lede reveal reveal-d4">Import over 20,000 smoke shop products to your online store. The dropshipping platform built for smoke shops &mdash; connect to 300+ smoke, vape, hemp and glass brands. Customers order from you. Suppliers ship for you. You keep the margin.</p>
