@@ -1018,16 +1018,6 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .slide-r.in,.slide-l.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.slide-r,.slide-l{opacity:1;transform:none;transition:none}[data-parallax]{transform:none!important}}
 
-/* ---------- Page transitions (slide overlay + content enter) ---------- */
-.sdn-page-transition{position:fixed;inset:0;z-index:99998;background:var(--bg);transform:translateX(-100%);transition:transform .22s var(--ease);pointer-events:none}
-.sdn-page-transition.is-active{transform:translateX(0)}
-/* New page content slides in from the opposite direction */
-html.pt-enter-left > body{animation:sdn-pt-in-left .32s var(--ease) both}
-html.pt-enter-right > body{animation:sdn-pt-in-right .32s var(--ease) both}
-@keyframes sdn-pt-in-left{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
-@keyframes sdn-pt-in-right{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.sdn-page-transition{display:none}html.pt-enter-left>body,html.pt-enter-right>body{animation:none}}
-
 /* Info */.product-info .p-brand{display:inline-block;color:var(--green-xl);font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;text-decoration:none}
 .product-info .p-brand:hover{color:var(--green-l)}
 .product-info h1{font-family:var(--display);font-size:clamp(1.7rem,3.2vw,2.4rem);margin:8px 0 16px;line-height:1.1;letter-spacing:-.02em;font-weight:600}

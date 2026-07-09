@@ -190,6 +190,7 @@ get_header();
               <span class="brand-hero-mark"><?php echo esc_html( strtoupper( substr( $sdn_name, 0, 2 ) ) ); ?></span>
             <?php endif; ?>
           </div>
+          <h1 class="brand-hero-cta">Start Dropshipping <?php echo esc_html( $sdn_name ); ?></h1>
           <p class="brand-hero-sub">Create a SmokeDrop account to get started.</p>
           <div class="hero-actions">
             <a href="<?php echo esc_url( $sdn_register ); ?>" class="btn btn-lime btn-lg">Dropship <?php echo esc_html( $sdn_name ); ?> products</a>
