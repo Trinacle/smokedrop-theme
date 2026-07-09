@@ -177,7 +177,7 @@ get_header();
 ?>
 
 <main>
-  <!-- ROW 1: Hero (50/50 — logo+name+buttons left, Image 1 right) -->
+  <!-- ROW 1: Hero (50/50 — logo+CTA left, Image 1 right) -->
   <section class="brand-hero brand-hero--split">
     <div class="wrap brand-hero-grid">
       <div class="brand-hero-left">
@@ -190,8 +190,8 @@ get_header();
           <?php endif; ?>
         </div>
         <div class="brand-hero-text reveal reveal-d1">
-          <p class="eyebrow">Brand on the SmokeDrop marketplace &middot; <?php echo esc_html( ucfirst( $sdn_niche ) ); ?></p>
-          <h1 class="display"><?php echo esc_html( $sdn_name ); ?></h1>
+          <h1 class="brand-hero-cta">Start Dropshipping <?php echo esc_html( $sdn_name ); ?></h1>
+          <p class="brand-hero-sub">Create a SmokeDrop account to get started.</p>
           <div class="hero-actions">
             <a href="<?php echo esc_url( $sdn_register ); ?>" class="btn btn-lime btn-lg">Dropship <?php echo esc_html( $sdn_name ); ?> products</a>
             <a href="<?php echo esc_url( home_url( '/wholesalers' ) ); ?>" class="btn btn-outline btn-lg">View Wholesale Prices</a>
@@ -245,8 +245,9 @@ get_header();
           </a>
         </aside>
 
-        <!-- MAIN CONTENT (70%) — full brand description -->
+        <!-- MAIN CONTENT (70%) — brand title + full description -->
         <div class="brand-main reveal reveal-d1">
+          <h2 class="brand-title">Dropship &amp; Wholesale <?php echo esc_html( $sdn_name ); ?> Products</h2>
           <div class="brand-desc-full">
             <?php echo $sdn_desc ? wp_kses_post( $sdn_desc ) : wp_kses_post( wpautop( sdn_brand_description( $sdn_name ) ) ); ?>
           </div>
