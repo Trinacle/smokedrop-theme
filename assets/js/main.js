@@ -56,7 +56,7 @@
   let closeTimer = null;
 
   function clearClose() { if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; } }
-  function scheduleClose() { clearClose(); closeTimer = setTimeout(closeMenu, 600); }
+  function scheduleClose() { clearClose(); closeTimer = setTimeout(closeMenu, 1000); }
 
   function openMenu(menuId) {
     clearClose();
@@ -382,7 +382,7 @@
   })();
 
   /* ---------- Page transitions (slide-in on navigation) ----------
-   * On internal link click, slides a green overlay in from the left edge,
+   * On internal link click, slides a black overlay in from the left edge,
    * then navigates. On page load, the new page content slides in from the
    * right. Back/forward navigation (popstate) reverses the direction.
    * Excludes: external links, hash links, target=_blank, modifier keys, admin.
@@ -419,7 +419,7 @@
 
       e.preventDefault();
       overlay.classList.add('is-active');
-      setTimeout(function () { window.location.href = a.href; }, 380);
+      setTimeout(function () { window.location.href = a.href; }, 220);
     });
 
     // Back/forward button — reverse direction.

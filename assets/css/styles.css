@@ -957,14 +957,14 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 /* ---------- Screen loader (digital square load-in) ---------- */
 .sdn-loader{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:#08090a;transition:opacity .5s var(--ease),visibility .5s}
 .sdn-loader.is-done{opacity:0;visibility:hidden}
-.sdn-loader-sq{position:relative;width:200px;height:200px;display:grid;place-items:center}
-.sdn-loader-sq .sq{position:absolute;width:48px;height:48px;border:2px solid var(--green-xl);opacity:0;animation:sdn-sq-in .5s var(--ease) forwards}
-.sdn-loader-sq .sq-tl{top:0;left:0;border-right:none;border-bottom:none;border-radius:8px 0 0 0}
-.sdn-loader-sq .sq-tr{top:0;right:0;border-left:none;border-bottom:none;border-radius:0 8px 0 0;animation-delay:.1s}
-.sdn-loader-sq .sq-br{bottom:0;right:0;border-left:none;border-top:none;border-radius:0 0 8px 0;animation-delay:.2s}
-.sdn-loader-sq .sq-bl{bottom:0;left:0;border-right:none;border-top:none;border-radius:0 0 0 8px;animation-delay:.3s}
+.sdn-loader-sq{position:relative;width:120px;height:120px;display:grid;place-items:center}
+.sdn-loader-sq .sq{position:absolute;width:28px;height:28px;border:2px solid var(--green-xl);opacity:0;animation:sdn-sq-in .5s var(--ease) forwards}
+.sdn-loader-sq .sq-tl{top:0;left:0;border-right:none;border-bottom:none;border-radius:6px 0 0 0}
+.sdn-loader-sq .sq-tr{top:0;right:0;border-left:none;border-bottom:none;border-radius:0 6px 0 0;animation-delay:.1s}
+.sdn-loader-sq .sq-br{bottom:0;right:0;border-left:none;border-top:none;border-radius:0 0 6px 0;animation-delay:.2s}
+.sdn-loader-sq .sq-bl{bottom:0;left:0;border-right:none;border-top:none;border-radius:0 0 0 6px;animation-delay:.3s}
 .sdn-loader-logo{position:relative;z-index:2;opacity:0;animation:sdn-logo-in .6s var(--ease) .4s forwards}
-.sdn-loader-logo img{display:block;max-width:140px;height:auto;filter:drop-shadow(0 0 16px rgba(19,194,123,.3))}
+.sdn-loader-logo img{display:block;width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 0 12px rgba(19,194,123,.3))}
 /* Pulse loop on the corners after they're in */
 .sdn-loader-sq .sq{animation:sdn-sq-in .5s var(--ease) forwards,sdn-sq-pulse 1.4s var(--ease) .5s infinite}
 @keyframes sdn-sq-in{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
@@ -993,13 +993,13 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 @media(prefers-reduced-motion:reduce){.slide-r,.slide-l{opacity:1;transform:none;transition:none}[data-parallax]{transform:none!important}}
 
 /* ---------- Page transitions (slide overlay + content enter) ---------- */
-.sdn-page-transition{position:fixed;inset:0;z-index:99998;background:linear-gradient(135deg,var(--green-d),var(--green));transform:translateX(-100%);transition:transform .38s var(--ease);pointer-events:none}
+.sdn-page-transition{position:fixed;inset:0;z-index:99998;background:var(--bg);transform:translateX(-100%);transition:transform .22s var(--ease);pointer-events:none}
 .sdn-page-transition.is-active{transform:translateX(0)}
 /* New page content slides in from the opposite direction */
-html.pt-enter-left > body{animation:sdn-pt-in-left .5s var(--ease) both}
-html.pt-enter-right > body{animation:sdn-pt-in-right .5s var(--ease) both}
-@keyframes sdn-pt-in-left{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
-@keyframes sdn-pt-in-right{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+html.pt-enter-left > body{animation:sdn-pt-in-left .32s var(--ease) both}
+html.pt-enter-right > body{animation:sdn-pt-in-right .32s var(--ease) both}
+@keyframes sdn-pt-in-left{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes sdn-pt-in-right{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.sdn-page-transition{display:none}html.pt-enter-left>body,html.pt-enter-right>body{animation:none}}
 
 /* Info */.product-info .p-brand{display:inline-block;color:var(--green-xl);font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;text-decoration:none}
