@@ -230,13 +230,23 @@ function sdn_migrate_one_brand( $post, $cat_name ) {
     return true;
 }
 
-/* ---------- Run the migration once (gated by an option) ---------- */
+/* ---------- Run the migration once (gated by an option) ----------
+ * DISABLED on production — the migration makes ~350 HTTP requests to the
+ * production REST API, which causes a feedback loop that maxes out all PHP
+ * processes. Only runs on staging (detected via /staging/ in the URL path).
+ */
 add_action( 'init', 'sdn_migrate_brands_run', 60 );
 function sdn_migrate_brands_run() {
     if ( get_option( 'sdn_brands_migrated' ) === '6' ) return;
     if ( ! post_type_exists( 'brand' ) ) return;
-    // Only run on the front end, never in the admin (to avoid blocking the dashboard).
     if ( is_admin() ) return;
+    // SAFETY: never run on production (only staging).
+    $home = home_url( '/' );
+    if ( strpos( $home, '/staging/' ) === false ) {
+        // Production — mark as done so it never tries.
+        update_option( 'sdn_brands_migrated', '6' );
+        return;
+    }
 
     $cat = sdn_migrate_get( 'https://thesmokedrop.com/wp-json/wp/v2/categories?slug=brands&_fields=id,count', 20 );
     if ( empty( $cat ) || ! isset( $cat[0]['id'] ) ) {
