@@ -72,7 +72,9 @@ if ( $sdn_requested ) {
             stripos( $raw_content, 'Cookies branded' ) !== false ||
             stripos( $raw_content, 'Cookies products into your' ) !== false ||
             ( stripos( $raw_content, 'Welcome to SmokeDrop, where innovation meets convenience' ) !== false
-              && stripos( $raw_content, 'Cookies' ) !== false )
+              && stripos( $raw_content, 'Cookies' ) !== false ) ||
+            // Seeder boilerplate (created by cpt-brands.php when no migration ran).
+            stripos( $raw_content, 'products are available for dropship and wholesale on SmokeDrop' ) !== false
         );
         if ( $has_real && ! $is_boilerplate ) {
             $sdn_desc = apply_filters( 'the_content', $raw_content );
@@ -190,7 +192,7 @@ get_header();
               <span class="brand-hero-mark"><?php echo esc_html( strtoupper( substr( $sdn_name, 0, 2 ) ) ); ?></span>
             <?php endif; ?>
           </div>
-          <h1 class="brand-hero-cta">Start Dropshipping <?php echo esc_html( $sdn_name ); ?></h1>
+          <h1 class="brand-hero-cta">Start Dropshipping<br><?php echo esc_html( $sdn_name ); ?></h1>
           <p class="brand-hero-sub">Create a SmokeDrop account to get started.</p>
           <div class="hero-actions">
             <a href="<?php echo esc_url( $sdn_register ); ?>" class="btn btn-lime btn-lg">Dropship <?php echo esc_html( $sdn_name ); ?> products</a>
