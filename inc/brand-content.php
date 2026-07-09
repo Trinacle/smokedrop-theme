@@ -78,7 +78,7 @@ function sdn_brand_description( $brand_name ) {
     $pick     = abs( crc32( $brand_name ) ) % count( $pool );
     $intro    = $pool[ $pick ];
 
-    $middle = " Dropship $brand_name products with zero inventory — every order routes to the nearest supplier and ships blind within 24 hours, with real-time stock and price sync across your Shopify, WooCommerce, or BigCommerce store. Or buy at wholesale pricing with no minimum order and stock your shelves directly.";
+    $middle = " Dropship $brand_name products with zero inventory — every order routes to the right supplier and ships blind under your brand, with real-time stock and price sync across your Shopify, WooCommerce, or BigCommerce store. Or buy at wholesale pricing with no minimum order and stock your shelves directly.";
 
     $close = " $brand_name is ranked among the top brands on the SmokeDrop network, available to retailers and wholesalers with no transaction fees and no commissions.";
 

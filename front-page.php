@@ -132,7 +132,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
             <p class="lede">Control everything from your shopping cart, including inventory, order management, and pricing. Stock 20,000+ SKUs with zero inventory.</p>
             <ul class="checks">
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Auto-sync inventory to Shopify, WooCommerce, BigCommerce</span></li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Blind dropshipping, ships under your brand in 24h</span></li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Blind dropshipping, ships under your brand</span></li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>We carry the latest items from the top brands</span></li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>No contracts, no minimums, no warehouse</span></li>
             </ul>
@@ -213,7 +213,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
             <div class="inner">
               <p class="bento-eyebrow">Blind dropship</p>
               <h3>Ships under your brand.</h3>
-              <p>Orders route to the nearest supplier and ship blind within 24 hours. Your customer never sees our name.</p>
+              <p>Orders route to the right supplier and ship blind under your brand. Your customer never sees our name.</p>
               <div class="bento-visual">
                 <svg viewBox="0 0 320 100" style="width:100%;max-width:300px;"><path d="M3,70 L80,70 M80,70 L80,20 L200,20 L200,70 M200,70 L317,70" stroke="rgba(255,255,255,.2)" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="80" y="20" width="120" height="50" rx="6" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.2)" stroke-width="2.5"/><path d="M95,40 L140,40 M95,52 L160,52" stroke="var(--green-xl)" stroke-width="2.5" stroke-linecap="round"/><circle cx="280" cy="70" r="10" fill="var(--green-xl)"/><path d="M275,70 L279,74 L286,66" stroke="#0a0b0a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>

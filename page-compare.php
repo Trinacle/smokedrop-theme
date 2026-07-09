@@ -23,7 +23,7 @@ $matrix = array(
     array( 'No PO / transaction fees',            true,  false, false, true  ),
     array( 'Built for smoke/vape/CBD',            true,  true,  false, false ),
     array( 'Blind dropshipping',                  true,  true,  true,  true  ),
-    array( '24-hour ship window',                 true,  true,  false, true  ),
+    array( 'Automatic order routing',            true,  true,  false, true  ),
     array( 'Real-time inventory sync',            true,  true,  true,  true  ),
     array( 'Automated supplier payments',         true,  true,  false, false ),
     array( 'Dropship accounting (QuickBooks)',    true,  true,  false, false ),

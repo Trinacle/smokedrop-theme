@@ -421,7 +421,7 @@ function sdn_platforms() {
             'features'  => array(
                 array( 'Import in a few clicks', 'Add curated collections or individual products to your Shopify store instantly.' ),
                 array( 'Real-time inventory sync', 'Stock and price updates flow from suppliers into Shopify in under a minute.' ),
-                array( 'Automatic order fulfillment', 'Customer orders route to the nearest supplier and ship blind within 24 hours.' ),
+                array( 'Automatic order fulfillment', 'Customer orders route to the right supplier and ship blind under your brand.' ),
                 array( 'Tracking sync', 'Tracking numbers update across suppliers, your store, and your customer automatically.' ),
             ),
             'steps' => array(
@@ -464,7 +464,7 @@ function sdn_platforms() {
                 array( 'Native BigCommerce app', 'Install from the BigCommerce marketplace.' ),
                 array( 'Direct catalog import', 'List SmokeDrop products from your control panel.' ),
                 array( 'Inventory automation', 'Real-time stock and price sync across every channel.' ),
-                array( 'Blind dropshipping', 'Ships under your brand within 24 hours.' ),
+                array( 'Blind dropshipping', 'Ships under your brand with white-label packing slips.' ),
             ),
             'steps' => array(
                 array( 'Install the app', 'Add SmokeDrop from the BigCommerce marketplace.' ),

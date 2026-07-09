@@ -57,7 +57,7 @@ $brands_url  = home_url( '/brands' );
             <div class="inner"><p class="bento-eyebrow">300+ brands</p><h3>The catalog competitors wish they had.</h3><p>PAX, Puffco, Cookies, GRAV, RAW, Dr. Dabber and hundreds more. Import curated collections in one click.</p></div>
           </div>
           <div class="bento-cell dark reveal">
-            <div class="inner"><p class="bento-eyebrow">Blind dropship</p><h3>Ships under your brand.</h3><p>Orders route to the nearest supplier and ship blind within 24 hours. Your customer never sees our name.</p></div>
+            <div class="inner"><p class="bento-eyebrow">Blind dropship</p><h3>Ships under your brand.</h3><p>Orders route to the right supplier and ship blind under your brand. Your customer never sees our name.</p></div>
           </div>
           <div class="bento-cell wide dark reveal reveal-d1">
             <div class="inner"><p class="bento-eyebrow">Transparent margins</p><h3>See wholesale cost before you import.</h3><p>You set the final price. The difference is all yours. No PO fees, no hidden margin tax, no per-SKU charges.</p></div>

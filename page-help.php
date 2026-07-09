@@ -31,9 +31,9 @@ $sdn_help = array(
     ),
     'Dropshipping' => array(
         array( 'How does blind dropshipping work?',
-            'When a customer orders from you, SmokeDrop routes it to the nearest supplier, who ships under your brand within 24 hours. Your customer never sees our name.' ),
+            'When a customer orders from you, SmokeDrop routes it to the right supplier, who ships under your brand with white-label packing slips. Your customer never sees our name.' ),
         array( 'How fast do orders ship?',
-            'Most orders ship within 24 hours via smart routing to the supplier nearest your customer. We maintain a 98% on-time fulfillment rate.' ),
+            'Orders route to the supplier automatically. Shipping speed depends on the supplier and the product. Tracking numbers sync back to your store as soon as they ship.' ),
         array( 'How does inventory sync work?',
             'Inventory, price, and detail changes flow from suppliers into your store in real time — sub-minute updates, 24/7. You never sell what you don\'t have.' ),
         array( 'Can I set my own retail prices?',
