@@ -39,7 +39,7 @@
 
     <nav class="nav-row" aria-label="Primary">
         <div class="nav-item has-mega" data-menu="solutions">
-            <a class="nav-link" href="<?php echo esc_url( home_url( '/' ) ); ?>">Solutions <?php echo sdn_chevron(); // phpcs:ignore ?></a>
+            <a class="nav-link" href="<?php echo esc_url( home_url( '/solutions' ) ); ?>">Solutions <?php echo sdn_chevron(); // phpcs:ignore ?></a>
         </div>
         <div class="nav-item has-mega" data-menu="brands">
             <a class="nav-link" href="<?php echo esc_url( home_url( '/brands' ) ); ?>">Brands <?php echo sdn_chevron(); // phpcs:ignore ?></a>
@@ -47,7 +47,7 @@
         <div class="nav-item"><a class="nav-link" href="<?php echo esc_url( home_url( '/pricing' ) ); ?>">Pricing</a></div>
         <div class="nav-item"><a class="nav-link" href="<?php echo esc_url( get_post_type_archive_link( 'product' ) ?: home_url( '/marketplace' ) ); ?>">Marketplace</a></div>
         <div class="nav-item has-mega" data-menu="resources">
-            <a class="nav-link" href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">Resources <?php echo sdn_chevron(); // phpcs:ignore ?></a>
+            <a class="nav-link" href="<?php echo esc_url( home_url( '/resources' ) ); ?>">Resources <?php echo sdn_chevron(); // phpcs:ignore ?></a>
         </div>
         <div class="nav-item has-mega" data-menu="advertise">
             <a class="nav-link" href="<?php echo esc_url( home_url( '/advertise' ) ); ?>">Advertise <?php echo sdn_chevron(); // phpcs:ignore ?></a>

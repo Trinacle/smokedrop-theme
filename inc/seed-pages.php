@@ -40,6 +40,10 @@ function sdn_seed_pages_list() {
         'marketplace-search' => array( 'Marketplace Search', 'page-search.php' ),
         // Recommended partner tools (replaces legacy /recomend-tools-for-ecommerce/)
         'recommend-tools-for-ecommerce' => array( 'Recommended Tools', 'page-recommend-tools-for-ecommerce.php' ),
+        // Nav hub pages.
+        'solutions'                     => array( 'Solutions', 'page-solutions.php' ),
+        'resources'                     => array( 'Resources', 'page-resources.php' ),
+        'download-smokedrop-plugin'     => array( 'Download Plugin', 'page-download-smokedrop-plugin.php' ),
         // Legal / standard document pages share one reusable legal template.
         'terms-of-use-for-suppliers'    => array( 'Supplier Terms of Use', 'page-legal.php' ),
         'terms-of-use'                  => array( 'Terms of Use', 'page-legal.php' ),
@@ -118,7 +122,7 @@ function sdn_seed_one_page( $slug, $title, $template, $parent_slug ) {
 /* ---------- Run the seed once (gated by an option) ---------- */
 add_action( 'init', 'sdn_seed_bespoke_pages', 40 );
 function sdn_seed_bespoke_pages() {
-    if ( get_option( 'sdn_pages_seeded' ) === '5' ) return;
+    if ( get_option( 'sdn_pages_seeded' ) === '6' ) return;
     if ( ! post_type_exists( 'page' ) ) return;
 
     foreach ( sdn_seed_pages_list() as $slug => $spec ) {
@@ -161,6 +165,6 @@ function sdn_seed_bespoke_pages() {
         update_option( 'page_on_front', $front->ID );
     }
 
-    update_option( 'sdn_pages_seeded', '5' );
+    update_option( 'sdn_pages_seeded', '6' );
     flush_rewrite_rules();
 }
