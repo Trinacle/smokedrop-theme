@@ -82,6 +82,69 @@ $retail_url = home_url( '/retailers' );
       </div>
     </section>
 
+    <!-- COMMITMENT TO THE INDUSTRY -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="tool-row reveal">
+          <div class="tool-media">
+            <div class="tool-card-tag">Our Commitment</div>
+            <h2 class="tool-name" style="font-size:2.2rem;">Built for the industry.</h2>
+          </div>
+          <div class="tool-body">
+            <p class="lede" style="font-size:1.05rem;color:var(--ink);">We&rsquo;re not a generic dropshipping platform bolted onto the smoke and vape category. SmokeDrop was built from the ground up for this industry &mdash; headshop, vape, CBD, hemp, glass, and accessories.</p>
+            <div class="tool-checks">
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>The deepest catalog in the category &mdash; 300+ brands, 20,000+ products</span></div>
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Native integrations with Shopify, WooCommerce, and BigCommerce</span></div>
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Real industry knowledge &mdash; we understand smoke shop supply chains</span></div>
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>No transaction fees or commissions on your sales</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMITMENT TO CUSTOMERS -->
+    <section class="sec" style="background:var(--bg-2);">
+      <div class="wrap">
+        <div class="tool-row reverse reveal">
+          <div class="tool-media">
+            <div class="tool-card-tag">Our Commitment</div>
+            <h2 class="tool-name" style="font-size:2.2rem;">Customers first.</h2>
+          </div>
+          <div class="tool-body">
+            <p class="lede" style="font-size:1.05rem;color:var(--ink);">Every decision we make starts with a question: does this help our retailers and suppliers sell more? Your success is our success &mdash; we don&rsquo;t charge transaction fees because we want you to keep your full margin.</p>
+            <div class="tool-grid">
+              <div class="tool-tile"><strong>Responsive support</strong><span>Live chat + email, fast replies</span></div>
+              <div class="tool-tile"><strong>Vetted suppliers</strong><span>Every supplier onboarded &amp; checked</span></div>
+              <div class="tool-tile"><strong>Transparent pricing</strong><span>One flat fee, no hidden costs</span></div>
+              <div class="tool-tile"><strong>Real onboarding</strong><span>1:1 calls to get you live fast</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUILDING BETTER SOFTWARE -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="tool-row reveal">
+          <div class="tool-media">
+            <div class="tool-card-tag">Our Commitment</div>
+            <h2 class="tool-name" style="font-size:2.2rem;">Always improving.</h2>
+          </div>
+          <div class="tool-body">
+            <p class="lede" style="font-size:1.05rem;color:var(--ink);">We ship updates continuously. New brands added weekly, new features released regularly, and performance improvements pushed constantly. The platform you start with today will be even better next quarter.</p>
+            <div class="tool-checks">
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>New brands and products added to the marketplace every week</span></div>
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Sub-minute inventory sync &mdash; constantly optimized for speed</span></div>
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>REST API &amp; EDI for custom integrations and enterprise stacks</span></div>
+              <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>Roadmap driven by retailer and supplier feedback</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- CTA -->
     <section class="sec-sm">
       <div class="wrap">

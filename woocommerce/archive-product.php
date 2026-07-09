@@ -17,8 +17,13 @@ $shopify_app = 'https://apps.shopify.com/smoke-drop';
 $woo_plugin  = home_url( '/download-smokedrop-plugin' );
 $brands_url  = home_url( '/brands' );
 $register    = 'https://wholesale.thesmokedrop.com/register';
-$cat_terms   = get_terms( array( 'taxonomy' => 'product_cat', 'hide_empty' => true ) );
-$brand_terms = get_terms( array( 'taxonomy' => 'product_brand', 'hide_empty' => true ) );
+// Top 10 high-value brands from the directory (ranked by 'value').
+$sdn_dir_brands = function_exists( 'sdn_brand_directory' ) ? sdn_brand_directory() : array();
+$sdn_top_brands = array();
+foreach ( $sdn_dir_brands as $b ) {
+    if ( isset( $b['value'] ) && $b['value'] >= 8 ) $sdn_top_brands[] = $b;
+}
+$sdn_top_brands = array_slice( $sdn_top_brands, 0, 10 );
 ?>
 
 <main>
@@ -27,11 +32,11 @@ $brand_terms = get_terms( array( 'taxonomy' => 'product_brand', 'hide_empty' => 
     <div class="ph-smoke"><div class="ph-blob b1"></div><div class="ph-blob b2"></div><div class="ph-blob b3"></div></div>
     <div class="ph-inner center">
       <p class="eyebrow reveal" style="justify-content:center;">The Marketplace</p>
-      <h1 class="display reveal reveal-d1" style="margin:24px 0;">20,000+ products.<br><span class="italic gradient-text">One integration.</span></h1>
-      <p class="lede reveal reveal-d2" style="max-width:780px;margin:0 auto;">Water pipes, vaporizers, CBD, glass &amp; accessories from 300+ brands. Dropship or buy wholesale, with real-time inventory sync.</p>
+      <h1 class="display reveal reveal-d1" style="margin:24px 0;">Featured New Products<br><span class="italic gradient-text">&amp; Brands.</span></h1>
+      <p class="lede reveal reveal-d2" style="max-width:680px;margin:0 auto;">A curated selection of products from our top brands. <strong>Create a free account</strong> to unlock the full marketplace &mdash; 20,000+ products across 300+ brands.</p>
       <div class="hero-actions reveal reveal-d3" style="justify-content:center;margin-top:32px;">
-        <a href="<?php echo esc_url( $register ); ?>" class="btn btn-lime btn-lg">Start Free Trial</a>
-        <a href="<?php echo esc_url( $brands_url ); ?>" class="btn btn-outline btn-lg">Browse brands</a>
+        <a href="<?php echo esc_url( $register ); ?>" class="btn btn-lime btn-lg">Create Free Account</a>
+        <a href="<?php echo esc_url( $brands_url ); ?>" class="btn btn-outline btn-lg">Browse all brands</a>
       </div>
     </div>
   </section>
@@ -40,36 +45,26 @@ $brand_terms = get_terms( array( 'taxonomy' => 'product_brand', 'hide_empty' => 
     <div class="wrap">
       <div class="shop-layout">
 
-        <!-- SIDEBAR: filters + promos -->
+        <!-- SIDEBAR: top brands + create account CTA -->
         <aside class="shop-sidebar reveal">
-          <?php if ( is_array( $cat_terms ) && ! empty( $cat_terms ) ) : ?>
-            <div class="shop-filter-block">
-              <h5>Categories</h5>
-              <ul class="shop-filter-list">
-                <?php foreach ( $cat_terms as $ct ) : ?>
-                  <li><a href="<?php echo esc_url( get_term_link( $ct ) ); ?>"><?php echo esc_html( $ct->name ); ?> <span class="count"><?php echo (int) $ct->count; ?></span></a></li>
-                <?php endforeach; ?>
-              </ul>
-            </div>
-          <?php endif; ?>
+          <div class="shop-filter-block">
+            <h5>Top Brands</h5>
+            <ul class="shop-filter-list brand-list">
+              <?php foreach ( $sdn_top_brands as $b ) :
+                  $slug = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $b['name'] );
+                  ?>
+                  <li><a href="<?php echo esc_url( home_url( '/brand/' . $slug . '/' ) ); ?>"><?php echo esc_html( $b['name'] ); ?></a></li>
+              <?php endforeach; ?>
+            </ul>
+            <a href="<?php echo esc_url( $brands_url ); ?>" class="filter-more">View all 300+ brands &rarr;</a>
+          </div>
 
-          <?php if ( is_array( $brand_terms ) && ! empty( $brand_terms ) ) : ?>
-            <div class="shop-filter-block">
-              <h5>Brands</h5>
-              <ul class="shop-filter-list brand-list">
-                <?php
-                $shown = 0;
-                foreach ( $brand_terms as $bt ) :
-                    if ( $shown >= 12 ) break;
-                    ?>
-                    <li><a href="<?php echo esc_url( get_term_link( $bt ) ); ?>"><?php echo esc_html( $bt->name ); ?></a></li>
-                <?php $shown++; endforeach; ?>
-              </ul>
-              <?php if ( count( $brand_terms ) > 12 ) : ?>
-                <a href="<?php echo esc_url( $brands_url ); ?>" class="filter-more">All <?php echo (int) count( $brand_terms ); ?> brands &rarr;</a>
-              <?php endif; ?>
-            </div>
-          <?php endif; ?>
+          <!-- Create account CTA -->
+          <div class="shop-account-cta">
+            <h5>Unlock the full catalog</h5>
+            <p>Create a free account to see every brand and product on the marketplace.</p>
+            <a href="<?php echo esc_url( $register ); ?>" class="btn btn-lime" style="width:100%;text-align:center;box-sizing:border-box;">Create Free Account</a>
+          </div>
 
           <a href="<?php echo esc_url( $shopify_app ); ?>" class="shopify-cta" style="display:flex;">
             <svg viewBox="0 0 24 24" fill="#95bf47" width="22" height="22"><path d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/></svg>

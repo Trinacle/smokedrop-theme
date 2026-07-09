@@ -849,7 +849,7 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 
 /* ---------- 17. Footer ---------- */
 .site-footer{background:var(--bg-2);border-top:1px solid var(--line);padding:100px 32px 40px;position:relative;overflow:hidden;z-index:2}
-.footer-inner,.foot-inner{max-width:1400px;margin:0 auto}
+.footer-inner,.foot-inner{max-width:100%;margin:0 auto}
 .foot-grid{display:grid;grid-template-columns:1.5fr repeat(4,1fr);gap:48px;padding:0 40px 60px;border-bottom:1px solid var(--line)}
 .foot-brand p{color:var(--ink-mute);max-width:300px;margin-top:18px;font-size:.95rem}
 .foot-col h5{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-bottom:18px}
@@ -1076,6 +1076,9 @@ html.pt-enter-right > body{animation:sdn-pt-in-right .32s var(--ease) both}
 .shop-filter-list .count{color:var(--ink-mute);font-size:.8rem}
 .shop-filter-list.brand-list{margin-bottom:8px}
 .filter-more{font-size:.82rem;color:var(--green-xl);text-decoration:none}
+.shop-account-cta{background:linear-gradient(135deg,var(--green-d),var(--green));border-radius:var(--r-lg);padding:24px;margin-bottom:24px}
+.shop-account-cta h5{color:#fff;font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.shop-account-cta p{color:rgba(255,255,255,.85);font-size:.88rem;line-height:1.5;margin-bottom:16px}
 .filter-more:hover{text-decoration:underline}
 
 .shop-main{min-width:0}
