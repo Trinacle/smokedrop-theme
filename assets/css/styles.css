@@ -1099,6 +1099,10 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .shop-account-cta{background:linear-gradient(135deg,var(--green-d),var(--green));border-radius:var(--r-lg);padding:24px;margin-bottom:24px}
 .shop-account-cta h5{color:#fff;font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
 .shop-account-cta p{color:rgba(255,255,255,.85);font-size:.88rem;line-height:1.5;margin-bottom:16px}
+.login-cta-banner{margin-top:32px;padding:20px 24px;border-radius:var(--r-lg);background:var(--bg-2);border:1px solid var(--green-l);text-align:center}
+.login-cta-banner p{color:var(--ink-dim);font-size:.92rem;margin:0}
+.login-cta-banner a{color:var(--green-xl);font-weight:600;text-decoration:none}
+.login-cta-banner a:hover{text-decoration:underline}
 .filter-more:hover{text-decoration:underline}
 
 .shop-main{min-width:0}

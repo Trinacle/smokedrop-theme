@@ -68,6 +68,11 @@ $sdn_query = get_search_query();
 
           <?php sdn_pagination(); ?>
 
+          <!-- Login to see all products -->
+          <div class="login-cta-banner">
+            <p>Want to see every product? <a href="https://wholesale.thesmokedrop.com/register">Log in or create a free account</a> to access the full SmokeDrop catalog.</p>
+          </div>
+
         <?php else : ?>
           <div class="center" style="padding:60px 20px;">
             <div class="reveal" style="font-size:3rem;margin-bottom:16px;">🔍</div>

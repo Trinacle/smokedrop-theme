@@ -120,8 +120,12 @@ $sdn_top_brands = array_slice( $sdn_top_brands, 0, 10 );
               echo '<div class="shop-empty"><p>No products found.</p><a href="' . esc_url( $register ) . '" class="btn btn-lime">Start dropshipping</a></div>';
           }
 
-          woocommerce_pagination();
-          ?>
+          <?php woocommerce_pagination(); ?>
+
+          <!-- Login to see all products -->
+          <div class="login-cta-banner">
+            <p>Want to see every product? <a href="<?php echo esc_url( $register ); ?>">Log in or create a free account</a> to access the full SmokeDrop catalog.</p>
+          </div>
         </div>
 
       </div>
