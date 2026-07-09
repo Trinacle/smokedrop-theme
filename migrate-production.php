@@ -1,222 +1,152 @@
 <?php
 /**
- * Production brand migration script — run via WP-CLI.
+ * Production brand migration v2 — direct DB, no HTTP requests.
+ * Faster, no server load.
  *
- * Usage (from the WordPress root, NOT the theme folder):
- *   wp eval-file wp-content/themes/smokedrop-noir/migrate-production.php
- *
- * Or from cPanel Terminal:
+ * Usage:
  *   cd ~/public_html/.website_a4a78f90
  *   wp eval-file wp-content/themes/smokedrop-noir/migrate-production.php
- *
- * This script pulls real brand descriptions, logos, hero images, and gallery
- * images from the production blog posts (category 'brands') and writes them
- * into the brand CPT posts. It runs from the command line so it won't block
- * web requests or max out PHP processes.
- *
- * Safe to re-run (idempotent). Reports progress as it goes.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-    echo "ERROR: This script must be run via 'wp eval-file' (WordPress must be loaded).\n";
+    echo "ERROR: Run via wp eval-file.\n";
     return;
 }
 
-echo "=== SmokeDrop Brand Migration (CLI) ===\n";
+echo "=== Brand Migration v2 (direct DB) ===\n";
 echo "Started: " . date( 'Y-m-d H:i:s' ) . "\n\n";
 
-// --- Config ---
-$api_base = 'https://thesmokedrop.com/wp-json/wp/v2';
-$timeout  = 30;
+// --- Get brand blog posts directly from the DB (category 18 = Brands) ---
+$brand_posts = get_posts( array(
+    'post_type'      => 'post',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'category'       => 18,
+    'fields'         => 'ids',
+) );
+echo "Found " . count( $brand_posts ) . " brand blog posts (category 18)\n\n";
 
-// --- Helper: fetch JSON from an API URL ---
-function cli_migrate_get( $url, $timeout = 30 ) {
-    $response = wp_remote_get( $url, array(
-        'timeout' => $timeout,
-        'headers' => array( 'Accept' => 'application/json' ),
-    ) );
-    if ( is_wp_error( $response ) ) return array();
-    $body = wp_remote_retrieve_body( $response );
-    $data = json_decode( $body, true );
-    return is_array( $data ) ? $data : array();
+// --- Helper: normalize brand name ---
+function norm( $s ) {
+    $s = strtolower( trim( $s ) );
+    $s = preg_replace( '/\b(brand|brands|the|inc|llc|co)\b/i', '', $s );
+    $s = preg_replace( '/[^a-z0-9]/', '', $s );
+    return $s;
 }
 
-// --- Step 1: Find the brands category ---
-$cats = cli_migrate_get( "$api_base/categories?slug=brands&_fields=id,count" );
-if ( empty( $cats ) || ! isset( $cats[0]['id'] ) ) {
-    echo "ERROR: Could not find the 'brands' category.\n";
-    return;
-}
-$cat_id   = $cats[0]['id'];
-$cat_count = $cats[0]['count'];
-echo "Found brands category: ID $cat_id ($cat_count posts)\n\n";
-
-// --- Step 2: Fetch ALL brand posts (paginated) ---
-$all_posts = array();
-$page = 1;
-while ( true ) {
-    $batch = cli_migrate_get( "$api_base/posts?categories=$cat_id&per_page=100&page=$page&_fields=id,slug,title,featured_media,content" );
-    if ( empty( $batch ) ) break;
-    $all_posts = array_merge( $all_posts, $batch );
-    echo "  Fetched page $page (" . count( $batch ) . " posts)\n";
-    if ( count( $batch ) < 100 ) break;
-    $page++;
-    sleep( 1 ); // be gentle on the API
-}
-echo "\nTotal brand posts fetched: " . count( $all_posts ) . "\n\n";
-
-// --- Step 3: Normalize a brand name for fuzzy matching ---
-function cli_normalize_name( $name ) {
-    $name = strtolower( trim( $name ) );
-    $name = preg_replace( '/\b(brand|brands|the|inc|llc|co)\b/i', '', $name );
-    $name = preg_replace( '/[^a-z0-9]/', '', $name );
-    return $name;
-}
-
-// --- Step 4: Find a matching brand CPT post by slug or fuzzy title ---
-function cli_find_brand_post( $post ) {
-    $title = isset( $post['title']['rendered'] ) ? $post['title']['rendered'] : '';
-    $slug  = isset( $post['slug'] ) ? $post['slug'] : '';
-
-    // Try exact slug match first.
-    $found = get_page_by_path( $slug, OBJECT, 'brand' );
-    if ( $found && $found->post_status === 'publish' ) return $found;
-
-    // Try fuzzy title match.
-    $norm_title = cli_normalize_name( $title );
-    if ( ! $norm_title ) return null;
-
-    $brands = get_posts( array(
-        'post_type'      => 'brand',
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-        'fields'         => 'ids',
-    ) );
-    foreach ( $brands as $bid ) {
-        $brand_name = get_the_title( $bid );
-        if ( cli_normalize_name( $brand_name ) === $norm_title ) {
-            return get_post( $bid );
-        }
-    }
-    return null;
-}
-
-// --- Step 5: Extract photo URLs from content HTML ---
-function cli_extract_photos( $html, $exclude_logo_url = '' ) {
-    preg_match_all( '/src="(https:\/\/[^"]+wp-content\/uploads\/[^"]+)"/', $html, $matches );
-    if ( empty( $matches[1] ) ) return array();
-
-    $boilerplate = array(
-        'shopifiy.png', 'shopify.png', 'shopify-dropshipping.png',
-        'shopify-app-store.png', 'woo-commerce.jpg', 'woocommerce-logo.svg',
-        'big-commerce-1.jpg', 'bigcommerce-logo.svg', 'orders.png',
-        'darth-vapor-logo-600.png', 'session.jpg', 'download-1.png', 'download.png',
-        'sd-white-logo.png',
-    );
-    $logo_base = $exclude_logo_url ? basename( parse_url( $exclude_logo_url, PHP_URL_PATH ) ) : '';
-
-    $photos = array();
-    foreach ( $matches[1] as $url ) {
-        $base = basename( parse_url( $url, PHP_URL_PATH ) );
-        if ( in_array( strtolower( $base ), $boilerplate ) ) continue;
+// --- Helper: extract image URLs from HTML ---
+function extract_imgs( $html ) {
+    preg_match_all( '/src="(https?:\/\/[^"]+wp-content\/uploads\/[^"]+)"/', $html, $m );
+    if ( empty( $m[1] ) ) return array();
+    $skip = array( 'shopifiy.png','shopify.png','shopify-dropshipping.png','shopify-app-store.png',
+        'woo-commerce.jpg','woocommerce-logo.svg','big-commerce-1.jpg','bigcommerce-logo.svg',
+        'orders.png','darth-vapor-logo-600.png','session.jpg','download-1.png','download.png','sd-white-logo.png' );
+    $out = array();
+    foreach ( $m[1] as $url ) {
+        $base = strtolower( basename( parse_url( $url, PHP_URL_PATH ) ) );
+        if ( in_array( $base, $skip ) ) continue;
         if ( strpos( $base, '-300x162' ) !== false ) continue;
-        if ( $logo_base && $base === $logo_base ) continue;
-        $photos[] = $url;
+        $out[] = $url;
     }
-    return $photos;
+    return $out;
 }
 
-// --- Step 6: Process each brand ---
-$updated = 0;
-$skipped = 0;
-$not_found = 0;
+// --- Process in batches ---
+$updated  = 0;
+$skipped  = 0;
+$no_match = 0;
+$count    = 0;
 
-echo "Processing brands...\n\n";
+// Build a lookup of all brand CPT posts once.
+$cpt_brands = get_posts( array(
+    'post_type'      => 'brand',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+) );
+$cpt_map = array();
+foreach ( $cpt_brands as $cb ) {
+    $cpt_map[ norm( $cb->post_title ) ] = $cb;
+    $cpt_map[ $cb->post_name ] = $cb; // also by slug
+}
+echo "Loaded " . count( $cpt_map ) . " brand CPT posts for matching\n\n";
 
-foreach ( $all_posts as $i => $post ) {
-    $title = isset( $post['title']['rendered'] ) ? $post['title']['rendered'] : '(unknown)';
-    $slug  = isset( $post['slug'] ) ? $post['slug'] : '';
+foreach ( $brand_posts as $bp_id ) {
+    $count++;
+    $bp = get_post( $bp_id );
+    $bp_title = $bp->post_title;
+    $bp_slug  = $bp->post_name;
 
-    echo "[" . ( $i + 1 ) . "/" . count( $all_posts ) . "] $title ($slug)... ";
+    echo "[$count/" . count( $brand_posts ) . "] $bp_title... ";
 
-    // Find the matching brand CPT post.
-    $brand_post = cli_find_brand_post( $post );
-    if ( ! $brand_post ) {
-        echo "NOT FOUND (no CPT match)\n";
-        $not_found++;
+    // Find matching CPT post.
+    $match = null;
+    if ( isset( $cpt_map[ $bp_slug ] ) ) {
+        $match = $cpt_map[ $bp_slug ];
+    } elseif ( isset( $cpt_map[ norm( $bp_title ) ] ) ) {
+        $match = $cpt_map[ norm( $bp_title ) ];
+    }
+
+    if ( ! $match ) {
+        echo "NO CPT MATCH\n";
+        $no_match++;
         continue;
     }
 
-    // 1) Logo from featured_media.
+    // 1) Logo from featured image.
     $logo_url = '';
-    $fm_id = isset( $post['featured_media'] ) ? intval( $post['featured_media'] ) : 0;
-    if ( $fm_id ) {
-        $media = cli_migrate_get( "$api_base/media/$fm_id?_fields=source_url,alt_text", $timeout );
-        if ( ! empty( $media['source_url'] ) ) {
-            $logo_url = $media['source_url'];
-        }
+    $thumb_id = get_post_thumbnail_id( $bp_id );
+    if ( $thumb_id ) {
+        $logo_url = wp_get_attachment_url( $thumb_id );
     }
 
-    // 2) Extract hero + gallery from content.
-    $content_html = isset( $post['content']['rendered'] ) ? $post['content']['rendered'] : '';
-    $photos = cli_extract_photos( $content_html, $logo_url );
+    // 2) Extract photos from content.
+    $photos = extract_imgs( $bp->post_content );
+    $hero   = ! empty( $photos ) ? $photos[0] : '';
+    $gallery = array_slice( $photos, 1, 3 );
 
-    $hero_url   = ! empty( $photos ) ? $photos[0] : '';
-    $gallery_urls = array_slice( $photos, 1, 3 );
-    $gallery_str = implode( ',', $gallery_urls );
-
-    // 3) Extract description (strip boilerplate/shortcodes).
-    $desc = wp_strip_all_tags( $content_html, '<h2><h3><h4><p><strong><b><em><i><ul><ol><li><br><blockquote>' );
-    // Remove Elementor shortcode remnants.
-    $desc = preg_replace( '/\[.*?\]/', '', $desc );
+    // 3) Description.
+    $desc = wp_strip_all_tags( $bp->post_content, '<h2><h3><h4><p><strong><b><em><i><ul><ol><li><br><blockquote>' );
+    $desc = preg_replace( '/\[.*?\]/s', '', $desc );
     $desc = trim( $desc );
 
-    // 4) Write to the brand CPT post (only if not empty, don't overwrite existing good data).
+    // 4) Write meta (only if empty).
     $changed = false;
+    if ( $logo_url && ! get_post_meta( $match->ID, 'brand_logo', true ) ) {
+        update_post_meta( $match->ID, 'brand_logo', $logo_url );
+        $changed = true;
+    }
+    if ( $hero && ! get_post_meta( $match->ID, 'brand_hero_image', true ) ) {
+        update_post_meta( $match->ID, 'brand_hero_image', $hero );
+        $changed = true;
+    }
+    if ( ! empty( $gallery ) && ! get_post_meta( $match->ID, 'brand_gallery', true ) ) {
+        update_post_meta( $match->ID, 'brand_gallery', implode( ',', $gallery ) );
+        $changed = true;
+    }
 
-    if ( $logo_url && ! get_post_meta( $brand_post->ID, 'brand_logo', true ) ) {
-        update_post_meta( $brand_post->ID, 'brand_logo', $logo_url );
-        $changed = true;
-    }
-    if ( $hero_url && ! get_post_meta( $brand_post->ID, 'brand_hero_image', true ) ) {
-        update_post_meta( $brand_post->ID, 'brand_hero_image', $hero_url );
-        $changed = true;
-    }
-    if ( $gallery_str && ! get_post_meta( $brand_post->ID, 'brand_gallery', true ) ) {
-        update_post_meta( $brand_post->ID, 'brand_gallery', $gallery_str );
-        $changed = true;
-    }
-    // Update description if current content is boilerplate.
-    $current_content = $brand_post->post_content;
-    $is_boilerplate = stripos( $current_content, 'products are available for dropship and wholesale on SmokeDrop' ) !== false
-        || stripos( $current_content, 'Cookies branded' ) !== false;
-    if ( $desc && strlen( $desc ) > 100 && $is_boilerplate ) {
-        wp_update_post( array(
-            'ID'           => $brand_post->ID,
-            'post_content' => $desc,
-        ) );
+    // Description — only if current is boilerplate.
+    $cur = $match->post_content;
+    $is_bp = stripos( $cur, 'products are available for dropship and wholesale' ) !== false
+          || stripos( $cur, 'Cookies branded' ) !== false;
+    if ( $desc && strlen( $desc ) > 100 && $is_bp ) {
+        wp_update_post( array( 'ID' => $match->ID, 'post_content' => $desc ) );
         $changed = true;
     }
 
     if ( $changed ) {
-        echo "UPDATED (logo:" . ( $logo_url ? 'Y' : 'N' ) . " hero:" . ( $hero_url ? 'Y' : 'N' ) . " gallery:" . count( $gallery_urls ) . " desc:" . ( $desc && strlen( $desc ) > 100 ? 'Y' : 'N' ) . ")\n";
+        echo "OK (logo:" . ( $logo_url ? 'Y' : '-' ) . " hero:" . ( $hero ? 'Y' : '-' ) . " gal:" . count( $gallery ) . " desc:" . ( strlen( $desc ) > 100 ? 'Y' : '-' ) . ")\n";
         $updated++;
     } else {
-        echo "SKIP (already has data or nothing to migrate)\n";
+        echo "skip\n";
         $skipped++;
     }
 
-    // Small delay to be gentle on the server.
-    if ( $fm_id ) usleep( 100000 ); // 0.1s
+    // Don't let it run too long without output.
+    if ( $count % 20 == 0 ) echo "--- $count done ---\n";
 }
 
-// --- Done ---
-echo "\n=== Migration Complete ===\n";
-echo "Finished: " . date( 'Y-m-d H:i:s' ) . "\n";
-echo "Total posts: " . count( $all_posts ) . "\n";
-echo "Updated: $updated\n";
-echo "Skipped (already had data): $skipped\n";
-echo "Not found (no CPT match): $not_found\n";
-echo "\nMarking sdn_brands_migrated = '6'...\n";
+echo "\n=== Done: " . date( 'Y-m-d H:i:s' ) . " ===\n";
+echo "Total: $count | Updated: $updated | Skipped: $skipped | No match: $no_match\n";
+echo "Setting sdn_brands_migrated = 6\n";
 update_option( 'sdn_brands_migrated', '6' );
-echo "Done. Brand pages should now show real data.\n";
+echo "Migration complete.\n";
