@@ -25,7 +25,7 @@
         <span class="sq sq-br"></span>
         <span class="sq sq-bl"></span>
         <div class="sdn-loader-logo">
-            <img src="<?php echo esc_url( home_url( '/wp-content/uploads/SmokeDrop-Logo-loading.gif' ) ); ?>" alt="SmokeDrop" width="140" height="44">
+            <?php echo sdn_logo( 40 ); // phpcs:ignore — uses the PNG logo (GIFs get broken by LiteSpeed WebP conversion) ?>
         </div>
     </div>
 </div>
