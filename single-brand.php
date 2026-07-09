@@ -236,11 +236,11 @@ get_header();
 
           <!-- Platform mini-CTAs -->
           <a href="https://apps.shopify.com/smoke-drop" class="foot-mini-cta" style="display:flex;">
-            <span class="fmc-ic"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="#95bf47" d="M15.337 4.13a4.36 4.36 0 0 0-2.69 1.43 4.07 4.07 0 0 0-3.34-1.42c-2.41.12-3.96 2.13-3.96 4.4 0 4.04 3.86 7.04 5.95 8.34l.04.02.04-.02c2.09-1.3 5.95-4.3 5.95-8.34 0-2.27-1.55-4.28-3.96-4.4z"/></svg></span>
+            <span class="fmc-ic"><img src="<?php echo esc_url( home_url( '/wp-content/uploads/2024/01/5f1a58272cd5b8c219db0ba4_shopify-logo.svg' ) ); ?>" alt="Shopify" style="width:30px;height:30px;object-fit:contain;"></span>
             <div><strong>Install on Shopify</strong><small>One-click from App Store</small></div>
           </a>
           <a href="<?php echo esc_url( home_url( '/download-smokedrop-plugin' ) ); ?>" class="foot-mini-cta" style="display:flex;">
-            <span class="fmc-ic"><svg viewBox="0 0 24 24" width="26" height="26"><path fill="#7f54b3" d="M3 3h18v18H3z"/><path fill="#fff" d="M8.5 8.8c.3-1.2 1.2-1.8 2.4-1.8 1.8 0 3 1.4 3 3.5 0 2-1.3 3.5-3.1 3.5-.7 0-1.3-.2-1.7-.7l-.4 2.5c0 .3-.2.5-.5.6h-.1c-.3 0-.5-.2-.5-.5l.9-7.1z"/></svg></span>
+            <span class="fmc-ic"><img src="<?php echo esc_url( home_url( '/wp-content/uploads/2024/01/5f1a59d6f884854a22b65124_woocommerce-logo.svg' ) ); ?>" alt="WooCommerce" style="width:30px;height:30px;object-fit:contain;"></span>
             <div><strong>WooCommerce Plugin</strong><small>Self-hosted WordPress</small></div>
           </a>
         </aside>
