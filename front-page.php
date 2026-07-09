@@ -43,17 +43,22 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
           <span class="line-mask line-mask-d2"><span>marketplace.</span></span>
         </h1>
 
-        <!-- Flip text: rotating value props -->
+        <!-- Flip text: rotating product categories -->
         <div class="hero-flip reveal reveal-d3">
-          <span class="hf-prefix">SmokeDrop is</span>
+          <span class="hf-prefix">Thousands of</span>
           <div id="flip" class="hf-flip">
             <div>
-              <div>dropshipping</div>
-              <div>wholesale</div>
-              <div>automation</div>
-              <div>marketplace</div>
+              <div>Dab Rigs</div>
+              <div>Pipes</div>
+              <div>Bongs</div>
+              <div>Vaporizers</div>
+              <div>Rolling Papers</div>
+              <div>Grinders</div>
+              <div>Vape Pens</div>
+              <div>Gummies</div>
             </div>
           </div>
+          <span class="hf-suffix">SKU's Available</span>
         </div>
 
         <p class="lede reveal reveal-d4">Import over 20,000 smoke shop products to your online store. The dropshipping platform built for smoke shops &mdash; connect to 300+ smoke, vape, hemp and glass brands. Customers order from you. Suppliers ship for you. You keep the margin.</p>

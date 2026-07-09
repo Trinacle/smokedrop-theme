@@ -987,20 +987,26 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .sdn-loader-logo img{display:block;width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(255,255,255,.3))}
 @keyframes sdn-loader-pulse{0%,100%{transform:scale(1);opacity:.95}50%{transform:scale(.85);opacity:.6}}
 
-/* ---------- Hero flip text (rotating value props) ---------- */
-.hero-flip{display:flex;align-items:center;justify-content:center;gap:14px;font-family:var(--display);font-size:clamp(1.6rem,4.5vw,2.6rem);font-weight:600;letter-spacing:-.02em;margin:20px 0 8px;text-transform:uppercase}
-.hero-flip .hf-prefix{color:var(--ink-mute)}
-.hero-flip .hf-flip{height:1.4em;overflow:hidden;display:inline-block;vertical-align:bottom}
-.hero-flip .hf-flip > div{height:100%;animation:sdn-flip 9s steps(1,end) infinite}
-.hero-flip .hf-flip > div > div{color:#fff;padding:0 14px;display:block;height:1.4em;line-height:1.4em;background:var(--green);border-radius:8px;text-align:center}
+/* ---------- Hero flip text (rotating product categories) ---------- */
+.hero-flip{display:flex;align-items:center;justify-content:flex-start;gap:12px;font-family:var(--display);font-size:clamp(1.4rem,4vw,2.2rem);font-weight:600;letter-spacing:-.02em;margin:20px 0 12px;text-transform:uppercase;text-align:left}
+.hero-flip .hf-prefix{color:var(--ink-mute);flex-shrink:0}
+.hero-flip .hf-suffix{color:var(--ink-mute);flex-shrink:0}
+.hero-flip .hf-flip{height:1.4em;overflow:hidden;display:inline-block;vertical-align:bottom;flex-shrink:0}
+.hero-flip .hf-flip > div{height:100%;animation:sdn-flip 16s steps(1,end) infinite}
+.hero-flip .hf-flip > div > div{color:#fff;padding:0 14px;display:block;height:1.4em;line-height:1.4em;background:var(--green);border-radius:8px;text-align:center;white-space:nowrap}
 @keyframes sdn-flip{
-  0%,20%{transform:translateY(0)}
-  25%,45%{transform:translateY(-1.4em)}
-  50%,70%{transform:translateY(-2.8em)}
-  75%,95%{transform:translateY(-4.2em)}
+  0%,9%{transform:translateY(0)}
+  12.5%,21.5%{transform:translateY(-1.4em)}
+  25%,34%{transform:translateY(-2.8em)}
+  37.5%,46.5%{transform:translateY(-4.2em)}
+  50%,59%{transform:translateY(-5.6em)}
+  62.5%,71.5%{transform:translateY(-7em)}
+  75%,84%{transform:translateY(-8.4em)}
+  87.5%,96%{transform:translateY(-9.8em)}
   100%{transform:translateY(0)}
 }
-@media(max-width:560px){.hero-flip{font-size:1.3rem;gap:8px}.hero-flip .hf-flip > div > div{padding:0 10px}}
+@media(max-width:760px){.hero-flip{flex-wrap:wrap;font-size:1.1rem}.hero-flip .hf-prefix,.hero-flip .hf-suffix{flex-basis:100%}}
+@media(max-width:560px){.hero-flip{font-size:1rem;gap:6px}.hero-flip .hf-flip > div > div{padding:0 10px}}
 
 /* ---------- Parallax + directional slide-in (BetterUp-style) ---------- */
 .slide-r{opacity:0;transform:translateX(80px);transition:opacity .9s var(--ease),transform .9s var(--ease);will-change:opacity,transform}
