@@ -46,6 +46,23 @@ function sdn_get_brand_field( $field, $post_id = null ) {
     return get_post_meta( $post_id, $field, true );
 }
 
+/* ---------- Check if a URL looks like a real logo (not a product photo) ----
+ * The migration stored production featured_media (product photos) into the
+ * brand_logo meta for ~70% of brands. This heuristic rejects those so they
+ * fall through to the initials fallback instead of showing a wrong image.
+ * Logos typically have: -300x162 suffix, bare name.png, or small dimensions.
+ * Product photos typically have: Snapinst.app_*, -600x600, large unsuffixed.
+ */
+function sdn_is_logo_url( $url ) {
+    if ( ! $url ) return false;
+    $base = basename( parse_url( $url, PHP_URL_PATH ) );
+    // Reject Instagram-snapshot style filenames (product photos).
+    if ( stripos( $base, 'Snapinst.app' ) !== false ) return false;
+    // Reject -600x600 and other large square crops (product photos).
+    if ( preg_match( '/-\d{3,}x\d{3,}\./i', $base ) && ! preg_match( '/-300x162\./i', $base ) ) return false;
+    return true;
+}
+
 /* ---------- Get the brand logo URL ----------
  * Resolution priority (directory data is AUTHORITATIVE over migration meta,
  * which often contains a product photo instead of a logo):
@@ -64,9 +81,9 @@ function sdn_brand_logo_url( $post_id = null ) {
         if ( $dir_logo ) return $dir_logo;
     }
 
-    // 3) Migration 'brand_logo' meta (fallback — may be a product photo).
+    // 3) Migration 'brand_logo' meta — guarded (reject product photos).
     $logo = sdn_get_brand_field( 'brand_logo', $post_id );
-    if ( $logo ) return sdn_normalize_upload_url( $logo );
+    if ( $logo && sdn_is_logo_url( $logo ) ) return sdn_normalize_upload_url( $logo );
 
     // 4) ucfirst(slug).png convention guess.
     $capitalized = ucfirst( $slug );
@@ -103,12 +120,12 @@ function sdn_brand_logo_for_slug( $slug ) {
         }
     }
 
-    // 3) Migration 'brand_logo' meta — LAST resort (may contain a product photo,
-    //    but better than nothing for brands with CPT posts and no directory data).
+    // 3) Migration 'brand_logo' meta — guarded (reject product photos so they
+    //    fall through to initials instead of showing wrong images).
     $cpt = get_page_by_path( $slug, OBJECT, 'brand' );
     if ( $cpt && $cpt->post_status === 'publish' ) {
         $logo = get_post_meta( $cpt->ID, 'brand_logo', true );
-        if ( $logo ) return sdn_normalize_upload_url( $logo );
+        if ( $logo && sdn_is_logo_url( $logo ) ) return sdn_normalize_upload_url( $logo );
     }
 
     return '';
@@ -127,7 +144,17 @@ function sdn_brand_directory_images( $slug ) {
     foreach ( $all as $b ) {
         $bslug = isset( $b['slug'] ) ? $b['slug'] : sanitize_title( $b['name'] );
         if ( $bslug === $slug && ! empty( $b['images'] ) && is_array( $b['images'] ) ) {
-            return $b['images'];
+            // Prefix bare filenames with the uploads path so they resolve.
+            $out = array();
+            foreach ( $b['images'] as $key => $val ) {
+                if ( empty( $val ) ) continue;
+                if ( preg_match( '#^https?://#i', $val ) || strpos( $val, '/' ) !== false ) {
+                    $out[ $key ] = $val; // already a path/URL
+                } else {
+                    $out[ $key ] = home_url( '/wp-content/uploads/' . $val );
+                }
+            }
+            return $out;
         }
     }
     return array();

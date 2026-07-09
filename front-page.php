@@ -69,9 +69,6 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
           <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg" data-magnetic>Start Free Trial <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
           <a href="#how" class="btn btn-outline btn-lg" data-magnetic>See how it works</a>
         </div>
-        <div class="hero-integrations reveal reveal-d6">
-          <?php sdn_integration_bubbles( array( 'shopify', 'woocommerce', 'bigcommerce', 'api' ), 'sm' ); ?>
-        </div>
       </div>
     </section>
 
