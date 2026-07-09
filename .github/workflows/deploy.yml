@@ -54,10 +54,11 @@ jobs:
             --exclude='.github' \
             --exclude='.cpanel.yml' \
             --exclude='README.md' \
+            --exclude='.htaccess' \
             -e "ssh" \
             ./ "deploy:${{ secrets.DEPLOY_PATH }}/"
 
-      - name: Bust LiteSpeed cache (optional)
+      - name: Fix file permissions + purge cache
         continue-on-error: true
         run: |
-          ssh deploy "find ${{ secrets.DEPLOY_PATH }} -name '*.php' -newermt '-1 minute' >/dev/null 2>&1 || true"
+          ssh deploy "chmod -R 755 ${{ secrets.DEPLOY_PATH }} && find ${{ secrets.DEPLOY_PATH }} -type f -exec chmod 644 {} \; && touch ${{ secrets.DEPLOY_PATH }}/../../cache/.litespeed_purgeall 2>/dev/null; echo done"
