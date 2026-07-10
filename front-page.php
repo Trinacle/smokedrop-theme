@@ -418,42 +418,6 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
       </div>
     </section>
 
-    <!-- ===== INDUSTRY VERTICALS ===== -->
-    <section class="sec" id="industries">
-      <div class="wrap">
-        <div style="max-width:820px;margin-bottom:56px;">
-          <p class="eyebrow reveal">By category</p>
-          <h2 class="display reveal reveal-d1" style="margin-top:20px;">We carry the latest items<br>from the <span class="italic gradient-text">top brands.</span></h2>
-        </div>
-        <div class="industries">
-          <a href="<?php echo esc_url( $brands_url ); ?>" class="ind-card reveal" style="text-decoration:none;">
-            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900&q=80" alt="Water pipes &amp; bongs">
-            <div class="ind-inner">
-              <span class="ind-tag">Water Pipes</span>
-              <h3>Bongs &amp; glass</h3>
-              <p>Thousands of water pipes, bongs, and glass accessories from the top brands.</p>
-            </div>
-          </a>
-          <a href="<?php echo esc_url( $brands_url ); ?>" class="ind-card reveal reveal-d1" style="text-decoration:none;">
-            <img src="https://images.unsplash.com/photo-1604881991720-f91add269bed?w=900&q=80" alt="Vaporizers">
-            <div class="ind-inner">
-              <span class="ind-tag">Vaporizers</span>
-              <h3>Dry herb &amp; concentrate</h3>
-              <p>The latest vaporizers and vape hardware from PAX, Puffco, DynaVap and more.</p>
-            </div>
-          </a>
-          <a href="<?php echo esc_url( $brands_url ); ?>" class="ind-card reveal reveal-d2" style="text-decoration:none;">
-            <img src="https://images.unsplash.com/photo-1604881991720-f91add269bed?w=900&q=80" alt="CBD">
-            <div class="ind-inner">
-              <span class="ind-tag">CBD &amp; Hemp</span>
-              <h3>CBD products</h3>
-              <p>Flower, prerolls, edibles, tinctures, and topicals. All in one place.</p>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
-
     <!-- ===== BLOG PREVIEW (animated background) ===== -->
     <section class="sec blog-animated" id="blog">
       <div class="wrap">
