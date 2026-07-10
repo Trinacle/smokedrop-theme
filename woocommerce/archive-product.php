@@ -120,7 +120,8 @@ $sdn_top_brands = array_slice( $sdn_top_brands, 0, 10 );
               echo '<div class="shop-empty"><p>No products found.</p><a href="' . esc_url( $register ) . '" class="btn btn-lime">Start dropshipping</a></div>';
           }
 
-          <?php woocommerce_pagination(); ?>
+          woocommerce_pagination();
+          ?>
 
           <!-- Login to see all products -->
           <div class="login-cta-banner">
