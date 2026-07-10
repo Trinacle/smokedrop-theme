@@ -257,6 +257,18 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
       </div>
     </section>
 
+    <!-- ===== SCALE STATS BAND (full-width #13c27b, all black text) ===== -->
+    <section class="sec-sm" style="background:#13c27b;">
+      <div class="wrap">
+        <div class="scale-stats">
+          <div class="ss reveal"><div class="n" style="color:#000;font-weight:800;"><span data-count="20000" data-suffix="+">0</span></div><div class="l" style="color:#000;font-weight:600;">Smoke shop products</div></div>
+          <div class="ss reveal reveal-d1"><div class="n" style="color:#000;font-weight:800;"><span data-count="300" data-suffix="+">0</span></div><div class="l" style="color:#000;font-weight:600;">Top brands</div></div>
+          <div class="ss reveal reveal-d2"><div class="n" style="color:#000;font-weight:800;"><span data-count="30" data-suffix="+">0</span></div><div class="l" style="color:#000;font-weight:600;">Countries shipped to</div></div>
+          <div class="ss reveal reveal-d3"><div class="n" style="color:#000;font-weight:800;">Real Time</div><div class="l" style="color:#000;font-weight:600;">Order sync</div></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== GETTING STARTED ===== -->
     <section class="sec" id="getting-started">
       <div class="wrap">
@@ -403,18 +415,6 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
             <?php
         endif;
         ?>
-      </div>
-    </section>
-
-    <!-- ===== SCALE STATS BAND (full-width #13c27b, all black text) ===== -->
-    <section class="sec-sm" style="background:#13c27b;">
-      <div class="wrap">
-        <div class="scale-stats">
-          <div class="ss reveal"><div class="n" style="color:#000;font-weight:800;"><span data-count="20000" data-suffix="+">0</span></div><div class="l" style="color:#000;font-weight:600;">Smoke shop products</div></div>
-          <div class="ss reveal reveal-d1"><div class="n" style="color:#000;font-weight:800;"><span data-count="300" data-suffix="+">0</span></div><div class="l" style="color:#000;font-weight:600;">Top brands</div></div>
-          <div class="ss reveal reveal-d2"><div class="n" style="color:#000;font-weight:800;"><span data-count="30" data-suffix="+">0</span></div><div class="l" style="color:#000;font-weight:600;">Countries shipped to</div></div>
-          <div class="ss reveal reveal-d3"><div class="n" style="color:#000;font-weight:800;">Real Time</div><div class="l" style="color:#000;font-weight:600;">Order sync</div></div>
-        </div>
       </div>
     </section>
 
