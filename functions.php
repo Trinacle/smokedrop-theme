@@ -161,8 +161,9 @@ add_filter( 'body_class', 'sdn_clean_body_classes', 20 );
 /* ---------- Performance: defer jQuery + WooCommerce JS to footer ---------- */
 add_filter( 'script_loader_tag', 'sdn_defer_jquery', 10, 3 );
 function sdn_defer_jquery( $tag, $handle, $src ) {
-    // Don't defer jQuery on pages that need it immediately (Forminator forms).
-    if ( is_page( 'contact' ) || is_page( 'call' ) ) {
+    // Don't defer jQuery on pages with Forminator forms (contact, call, or
+    // any page with the footer newsletter form — which is every page).
+    if ( is_page( 'contact' ) || is_page( 'call' ) || ! is_admin() ) {
         return $tag;
     }
     $defer_handles = array( 'jquery-core', 'jquery-migrate', 'jquery', 'sourcebuster',

@@ -13,10 +13,9 @@
                 <h3>Get the drop.</h3>
                 <p>New brands, guides, and growth tactics, monthly. No spam.</p>
             </div>
-            <form class="news-form" onsubmit="return false">
-                <input type="email" placeholder="you@yourstore.com">
-                <button class="btn btn-lime">Subscribe</button>
-            </form>
+            <div class="news-form-wrap">
+                <?php echo do_shortcode( '[forminator_form id="37676"]' ); ?>
+            </div>
         </div>
 
         <div class="foot-grid">
