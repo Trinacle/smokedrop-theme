@@ -175,6 +175,20 @@ if ( ! $sdn_hero_img && ! empty( $sdn_gallery ) ) {
     $sdn_hero_img = $sdn_gallery[0];
 }
 
+// The migration stored featured_media (product photo) as brand_logo and
+// content photos as brand_hero_image + brand_gallery. For brands without a
+// directory override, the brand_logo meta is usually a product photo, not a
+// real logo — so use brand_hero_image as the Image 1 (hero right side).
+// The logo spot will show initials for brands without a verified logo.
+if ( empty( $sdn_dir_images ) && $sdn_cpt_id ) {
+    $meta_logo = get_post_meta( $sdn_cpt_id, 'brand_logo', true );
+    // If brand_logo looks like a product photo (not a real logo), clear it so
+    // the logo spot shows initials instead of a wrong image.
+    if ( $meta_logo && function_exists( 'sdn_is_logo_url' ) && ! sdn_is_logo_url( $meta_logo ) ) {
+        $sdn_logo_url = ''; // force initials fallback
+    }
+}
+
 get_header();
 ?>
 
@@ -218,13 +232,9 @@ get_header();
         <!-- SIDEBAR (30%) -->
         <aside class="brand-sidebar reveal">
           <?php
-          // Image 2 and Image 3 from the gallery (indices 1 and 2).
-          $sdn_img2 = ! empty( $sdn_gallery[1] ) ? $sdn_gallery[1] : '';
+          // Only Image 3 (index 2) in the sidebar — Image 2 removed per user.
           $sdn_img3 = ! empty( $sdn_gallery[2] ) ? $sdn_gallery[2] : '';
           ?>
-          <?php if ( $sdn_img2 ) : ?>
-            <div class="bs-img"><img src="<?php echo esc_url( $sdn_img2 ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?> product" loading="lazy"></div>
-          <?php endif; ?>
           <?php if ( $sdn_img3 ) : ?>
             <div class="bs-img"><img src="<?php echo esc_url( $sdn_img3 ); ?>" alt="<?php echo esc_attr( $sdn_name ); ?> product" loading="lazy"></div>
           <?php endif; ?>
@@ -251,7 +261,14 @@ get_header();
         <div class="brand-main reveal reveal-d1">
           <h2 class="brand-title">Dropship &amp; Wholesale <?php echo esc_html( $sdn_name ); ?> Products</h2>
           <div class="brand-desc-full">
-            <?php echo $sdn_desc ? wp_kses_post( $sdn_desc ) : wp_kses_post( wpautop( sdn_brand_description( $sdn_name ) ) ); ?>
+            <?php
+            $desc_out = $sdn_desc ? $sdn_desc : wpautop( sdn_brand_description( $sdn_name ) );
+            // Ensure proper paragraph formatting (fixes giant text chunks).
+            if ( stripos( $desc_out, '<p>' ) === false && stripos( $desc_out, '<h' ) === false ) {
+                $desc_out = wpautop( $desc_out );
+            }
+            echo wp_kses_post( $desc_out );
+            ?>
           </div>
         </div>
 
