@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '2.8.2' );
+define( 'SDN_VERSION', '2.9.0' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 
@@ -157,6 +157,39 @@ function sdn_strip_builder_assets() {
 
 /* ---------- Drop leftover Astra/Elementor body classes on bespoke views ---------- */
 add_filter( 'body_class', 'sdn_clean_body_classes', 20 );
+
+/* ---------- Performance: defer jQuery + WooCommerce JS to footer ---------- */
+add_filter( 'script_loader_tag', 'sdn_defer_jquery', 10, 3 );
+function sdn_defer_jquery( $tag, $handle, $src ) {
+    $defer_handles = array( 'jquery-core', 'jquery-migrate', 'jquery', 'sourcebuster',
+        'wc-order-attribution', 'woocommerce', 'js-cookie', 'jquery-blockui' );
+    if ( in_array( $handle, $defer_handles, true ) ) {
+        return str_replace( ' src', ' defer src', $tag );
+    }
+    return $tag;
+}
+
+/* ---------- Performance: only load WooCommerce CSS/JS on shop pages ---------- */
+add_action( 'wp_enqueue_scripts', 'sdn_strip_wc_on_nonshop', 99 );
+function sdn_strip_wc_on_nonshop() {
+    if ( sdn_is_bespoke_view() && ! is_woocommerce() && ! is_shop() && ! is_product() && ! is_product_taxonomy() ) {
+        wp_dequeue_style( 'woocommerce-general' );
+        wp_dequeue_style( 'woocommerce-layout' );
+        wp_dequeue_style( 'woocommerce-smallscreen' );
+        wp_dequeue_script( 'woocommerce' );
+        wp_dequeue_script( 'wc-cart-fragments' );
+        wp_dequeue_script( 'wc-order-attribution' );
+        wp_dequeue_script( 'sourcebuster' );
+        wp_dequeue_script( 'js-cookie' );
+    }
+}
+
+/* ---------- Performance: add preload hints for fonts + LCP image ---------- */
+add_action( 'wp_head', 'sdn_preload_hints', 1 );
+function sdn_preload_hints() {
+    // Preload the logo (likely LCP element).
+    echo '<link rel="preload" as="image" href="' . esc_url( home_url( '/wp-content/uploads/2023/07/logo.png' ) ) . '">' . "\n";
+}
 
 /* ---------- Default product sort to 'latest' on the shop/marketplace ---------- */
 add_filter( 'woocommerce_default_catalog_orderby_options', 'sdn_default_orderby_latest' );

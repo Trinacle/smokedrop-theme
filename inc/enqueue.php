@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 add_action( 'wp_enqueue_scripts', 'sdn_enqueue', 20 );
 function sdn_enqueue() {
-    // Google Fonts: Inter + Inter Tight
+    // Google Fonts: Inter + Inter Tight (with swap for non-blocking)
     wp_enqueue_style(
         'sdn-fonts',
         'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700&display=swap',
@@ -17,11 +17,11 @@ function sdn_enqueue() {
         null
     );
 
-    // Main stylesheet (the full design system)
+    // Main stylesheet (the full design system) — no WC dependency
     wp_enqueue_style(
         'sdn-styles',
         get_stylesheet_directory_uri() . '/assets/css/styles.css',
-        array( 'sdn-fonts' ),
+        array(),
         SDN_VERSION
     );
 
@@ -44,6 +44,13 @@ function sdn_enqueue() {
             true
         );
     }
+}
+
+/* ---------- Preconnect to third-party origins for faster font/image loads ---------- */
+add_action( 'wp_head', 'sdn_preconnect', 1 );
+function sdn_preconnect() {
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
 }
 
 /* ---------- Add <html> class for theme-color (helps mobile browsers) ---------- */
