@@ -14,7 +14,23 @@
                 <p>New brands, guides, and growth tactics, monthly. No spam.</p>
             </div>
             <div class="news-form-wrap">
-                <?php echo do_shortcode( '[forminator_form id="37676"]' ); ?>
+                <?php
+                // Hardcoded clean newsletter signup that submits into Forminator form 37676.
+                // Nonce is fetched fresh via JS (forminator_get_nonce) to bypass LiteSpeed page-cache staleness.
+                $sdn_form_id = '37676';
+                ?>
+                <form class="news-form sdn-news" id="sdn-news-form" novalidate>
+                    <input type="email" name="email-1" id="sdn-news-email" placeholder="Enter your email" required aria-label="Email address">
+                    <button type="submit" id="sdn-news-btn">Subscribe</button>
+                    <input type="hidden" name="action" value="forminator_submit_form_custom-forms">
+                    <input type="hidden" name="form_id" value="<?php echo esc_attr( $sdn_form_id ); ?>">
+                    <input type="hidden" name="form_type" value="default">
+                    <input type="hidden" name="forminator_nonce" id="sdn-news-nonce" value="">
+                    <input type="hidden" name="current_url" value="<?php echo esc_url( home_url( add_query_arg( null, null ) ) ); ?>">
+                    <input type="hidden" name="render_id" value="0">
+                    <input type="hidden" name="page_id" value="<?php echo esc_attr( get_the_ID() ? get_the_ID() : '0' ); ?>">
+                </form>
+                <div id="sdn-news-msg" class="sdn-news-msg" role="status" aria-live="polite"></div>
             </div>
         </div>
 

@@ -399,4 +399,76 @@
     window.addEventListener('load', initProductGallery);
   }
 
+  /* ============================================================
+     Newsletter signup -> Forminator form 37676 (AJAX)
+     Hardcoded form; nonce fetched fresh to bypass page cache.
+     ============================================================ */
+  (function () {
+    var form = document.getElementById('sdn-news-form');
+    if (!form) return;
+    var btn = document.getElementById('sdn-news-btn');
+    var emailEl = document.getElementById('sdn-news-email');
+    var nonceEl = document.getElementById('sdn-news-nonce');
+    var msgEl = document.getElementById('sdn-news-msg');
+    var ajaxUrl = (window.sdnData && window.sdnData.ajaxUrl) || '/wp-admin/admin-ajax.php';
+
+    function showMsg(txt, ok) {
+      if (!msgEl) return;
+      msgEl.textContent = txt || '';
+      msgEl.className = 'sdn-news-msg' + (ok ? ' is-ok' : ' is-err');
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = emailEl.value.trim();
+      if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        showMsg('Please enter a valid email address.', false);
+        emailEl.focus();
+        return;
+      }
+      btn.disabled = true;
+      btn.classList.add('is-loading');
+      btn.textContent = 'Sending\u2026';
+      showMsg('');
+
+      // 1) Fetch a fresh Forminator nonce (page-cached footers carry stale nonces).
+      fetch(ajaxUrl + '?action=forminator_get_nonce')
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          var nonce = (j && j.success && j.data) ? j.data : '';
+          if (!nonce) throw new Error('no nonce');
+          nonceEl.value = nonce;
+
+          // 2) Submit the form payload to Forminator's AJAX endpoint.
+          var body = new URLSearchParams(new FormData(form));
+          body.set('action', 'forminator_submit_form_custom-forms');
+          body.set('form_id', '37676');
+          body.set('forminator_nonce', nonce);
+          return fetch(ajaxUrl, { method: 'POST', body: body });
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (j && j.success) {
+            form.reset();
+            showMsg('You\u2019re subscribed. Check your inbox to confirm.', true);
+          } else {
+            // Forminator returns validation errors in data.message or data[] errors.
+            var d = j && j.data;
+            var m = '';
+            if (Array.isArray(d)) { d.forEach(function (i) { if (i.message) m = i.message; }); }
+            else if (d && d.message) { m = d.message; }
+            showMsg(m || 'Something went wrong. Please try again.', false);
+          }
+        })
+        .catch(function () {
+          showMsg('Network error. Please try again.', false);
+        })
+        .finally(function () {
+          btn.disabled = false;
+          btn.classList.remove('is-loading');
+          btn.textContent = 'Subscribe';
+        });
+    });
+  })();
+
 })();

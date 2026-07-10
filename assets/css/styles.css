@@ -897,6 +897,14 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .news-form{display:flex;gap:10px;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-pill);padding:6px}
 .news-form input{flex:1;background:none;border:none;outline:none;color:var(--ink);font-family:inherit;font-size:1rem;padding:0 18px}
 .news-form input::placeholder{color:var(--ink-mute)}
+#sdn-news-btn{flex:0 0 auto;background:var(--green-xl);color:#0a0b0a;border:none;border-radius:var(--r-pill);padding:12px 24px;font-family:inherit;font-size:.92rem;font-weight:600;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease),opacity .25s var(--ease)}
+#sdn-news-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(19,194,123,.35)}
+#sdn-news-btn:active{transform:translateY(0)}
+#sdn-news-btn.is-loading{opacity:.7;cursor:wait}
+.sdn-news-msg{margin-top:10px;font-size:.85rem;min-height:1.1em;line-height:1.3}
+.sdn-news-msg.is-ok{color:var(--green-xl)}
+.sdn-news-msg.is-err{color:#ff6b6b}
+html.light .sdn-news-msg.is-ok{color:var(--green-d)}
 
 /* ---------- 18. Reveal ---------- */
 .reveal{opacity:0;transform:translateY(40px);transition:opacity 1.1s var(--ease),transform 1.1s var(--ease);will-change:opacity,transform}

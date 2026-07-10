@@ -34,6 +34,13 @@ function sdn_enqueue() {
         true // load in footer
     );
 
+    // Expose AJAX URL for the hardcoded newsletter form (Forminator submit).
+    wp_add_inline_script(
+        'sdn-main',
+        'window.sdnData = window.sdnData || {}; window.sdnData.ajaxUrl = ' . wp_json_encode( admin_url( 'admin-ajax.php' ) ) . ';',
+        'before'
+    );
+
     // Calendly scheduler widget — only on the Schedule Call page
     if ( is_page_template( 'page-call.php' ) ) {
         wp_enqueue_script(
