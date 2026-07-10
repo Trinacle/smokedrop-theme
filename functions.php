@@ -161,6 +161,10 @@ add_filter( 'body_class', 'sdn_clean_body_classes', 20 );
 /* ---------- Performance: defer jQuery + WooCommerce JS to footer ---------- */
 add_filter( 'script_loader_tag', 'sdn_defer_jquery', 10, 3 );
 function sdn_defer_jquery( $tag, $handle, $src ) {
+    // Don't defer jQuery on pages that need it immediately (Forminator forms).
+    if ( is_page( 'contact' ) || is_page( 'call' ) ) {
+        return $tag;
+    }
     $defer_handles = array( 'jquery-core', 'jquery-migrate', 'jquery', 'sourcebuster',
         'wc-order-attribution', 'woocommerce', 'js-cookie', 'jquery-blockui' );
     if ( in_array( $handle, $defer_handles, true ) ) {
