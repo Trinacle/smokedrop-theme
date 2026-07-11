@@ -342,9 +342,15 @@
       thumbs.forEach(function (t, i) { t.classList.toggle('is-active', i === current); });
     }
 
-    // Thumbnail click -> swap main image.
+    // Keep the main image + active thumbnail in sync with lightbox position.
+    function syncMain() {
+      mainImg.src = set[current];
+      thumbs.forEach(function (t, i) { t.classList.toggle('is-active', i === current); });
+    }
+
+    // Thumbnail click -> open the lightbox directly at that image.
     thumbs.forEach(function (t, i) {
-      t.addEventListener('click', function () { show(i); });
+      t.addEventListener('click', function () { open(i); });
     });
 
     // ---- Lightbox ----
@@ -370,6 +376,8 @@
     function close() {
       overlay.classList.remove('is-open');
       document.body.style.overflow = '';
+      // Sync the main image to where the user navigated in the lightbox.
+      syncMain();
     }
     function step(d) {
       current = (current + d + set.length) % set.length;
