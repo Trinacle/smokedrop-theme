@@ -49,28 +49,30 @@ function sdn_get_brand_field( $field, $post_id = null ) {
  * The migration stored production featured_media (product photos) into the
  * brand_logo meta for ~70% of brands. This heuristic rejects those so they
  * fall through to the initials fallback instead of showing a wrong image.
- * Logos typically have: -300x162 suffix, or Capitalized-Name.png convention.
- * Product photos typically have: Snapinst.app_*, -600x600, bare lowercase.jpg,
- * or UUID-style filenames (8-4-4-4-12 hex pattern from Shopify imports).
+ *
+ * POSITIVE model: a URL is only accepted as a logo if it matches one of the
+ * verified logo conventions. Everything else is treated as a product photo.
+ *   - '-300x162' crop suffix (the verified brand-logo banner size), OR
+ *   - '-300x' any-height crop at the logo width, OR
+ *   - 'logo' appears in the filename, OR
+ *   - an explicit override via the sdn_is_logo_url filter.
  */
 function sdn_is_logo_url( $url ) {
     if ( ! $url ) return false;
     $base = basename( parse_url( $url, PHP_URL_PATH ) );
-    // Reject Instagram-snapshot style filenames (product photos).
-    if ( stripos( $base, 'Snapinst.app' ) !== false ) return false;
+    $base_l = strtolower( $base );
     // The -300x162 crop is the verified brand-logo banner size -> always a logo.
     if ( preg_match( '/-300x162\./i', $base ) ) return true;
-    // Reject -600x600 and other large square crops (product photos).
-    if ( preg_match( '/-\d{3,}x\d{3,}\./i', $base ) ) return false;
-    // Reject UUID-style filenames (Shopify product photo imports).
-    if ( preg_match( '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i', $base ) ) return false;
-    // Reject bare lowercase filenames like "arizer.jpg", "g-pen.jpg" (product
-    // photos). Real logos follow ucfirst convention: "Arizer.png", "PAX.png".
-    $name_part = preg_replace( '/\.(jpg|jpeg|png|webp)$/i', '', $base );
-    if ( $name_part === strtolower( $name_part ) && preg_match( '/[a-z]/', $name_part ) ) {
-        return false; // all-lowercase name = product photo, not a logo
-    }
-    return true;
+    // Other -300x.. crops at logo width are also logos.
+    if ( preg_match( '/-300x\d+\./i', $base ) ) return true;
+    // 'logo' anywhere in the filename is a strong signal.
+    if ( stripos( $base_l, 'logo' ) !== false ) return true;
+    // Allow extensions to override (e.g. directory data marks a file as a logo).
+    $override = apply_filters( 'sdn_is_logo_url', null, $url );
+    if ( null !== $override ) return (bool) $override;
+    // Default: reject. Bare names like arizer.jpg, Blazy-Susan.jpg, DynaVap1.jpg,
+    // UUID imports, and large crops are all product photos.
+    return false;
 }
 
 /* ---------- Get the brand logo URL ----------
