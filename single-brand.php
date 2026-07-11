@@ -185,8 +185,15 @@ if ( empty( $sdn_dir_images ) && $sdn_cpt_id ) {
     $meta_hero = get_post_meta( $sdn_cpt_id, 'brand_hero_image', true );
     $logo_is_photo = $meta_logo && function_exists( 'sdn_is_logo_url' ) && ! sdn_is_logo_url( $meta_logo );
     $hero_is_logo  = $meta_hero && function_exists( 'sdn_is_logo_url' ) && sdn_is_logo_url( $meta_hero );
+    // Detect the "same photo in both fields" case (migration wrote one product
+    // photo into both logo + hero). In that situation neither field is a logo.
+    $same_in_both = $meta_logo && $meta_hero && trim( $meta_logo ) === trim( $meta_hero );
 
-    if ( $logo_is_photo && $hero_is_logo ) {
+    if ( $same_in_both ) {
+        // One product photo fills both fields — force initials for the logo
+        // spot and keep the photo as Image 1 only.
+        $sdn_logo_url = '';
+    } elseif ( $logo_is_photo && $hero_is_logo ) {
         // Classic swap: logo meta holds a product photo, hero meta holds the
         // real logo. Restore correct positions.
         $sdn_logo_url = $meta_hero;
