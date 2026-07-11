@@ -109,9 +109,14 @@ foreach ( $brand_posts as $bp_id ) {
     $hero   = ! empty( $photos ) ? $photos[0] : '';
     $gallery = array_slice( $photos, 1, 3 );
 
-    // 3) Description.
-    $desc = wp_strip_all_tags( $bp->post_content, '<h2><h3><h4><p><strong><b><em><i><ul><ol><li><br><blockquote>' );
+    // 3) Description — strip_tags() preserves the allowlist; wp_strip_all_tags()
+    //    was a bug (it stripped ALL tags regardless of the 2nd arg and collapsed
+    //    whitespace, producing one giant unformatted blob).
+    $desc = strip_tags( $bp->post_content, '<h2><h3><h4><p><strong><b><em><i><ul><ol><li><br><blockquote>' );
     $desc = preg_replace( '/\[.*?\]/s', '', $desc );
+    // Normalize whitespace inside tags but preserve block-level structure.
+    $desc = preg_replace( '/\s+/', ' ', $desc );
+    $desc = preg_replace( '/\s*(<\/?(?:h[2-4]|p|ul|ol|li|br|blockquote)[^>]*>)\s*/', "\n$1\n", $desc );
     $desc = trim( $desc );
 
     // 4) FORCE overwrite (don't skip existing data).

@@ -460,7 +460,7 @@ body.menu-open .mega{transform:translateY(0);opacity:1;visibility:visible}
 .logo-wall-white .lw-row{display:flex;gap:80px;width:max-content;animation:logoScroll 55s linear infinite;align-items:center;justify-content:center}
 .logo-wall-white .lw-row.rev{animation-direction:reverse;animation-duration:65s}
 .logo-wall-white .lw-row:hover{animation-play-state:paused}
-.logo-wall-white .lgo{height:96px;display:flex;align-items:center;font-family:var(--display);font-weight:700;font-size:1.9rem;color:#86868b;opacity:.85;white-space:nowrap;letter-spacing:-.03em;transition:color .3s,opacity .3s,transform .3s}
+.logo-wall-white .lgo{height:96px;display:flex;align-items:center;font-family:var(--display);font-weight:700;font-size:1.9rem;color:#86868b;opacity:.85;white-space:nowrap;letter-spacing:-.03em;transition:color .3s,opacity .3s,transform .3s;text-decoration:none}
 .logo-wall-white .lgo:hover{color:#004122;opacity:1;transform:scale(1.05)}
 .lgo-img{height:88px;width:auto;max-width:240px;object-fit:contain;filter:grayscale(1);opacity:.6;transition:filter .35s var(--ease),opacity .35s var(--ease),transform .35s var(--ease)}
 .lgo:hover .lgo-img{filter:grayscale(0);opacity:1;transform:scale(1.1)}

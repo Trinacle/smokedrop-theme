@@ -109,12 +109,6 @@
                         }
                     endif;
                     ?>
-
-                    <div class="mega-col-head">Shop by Category</div>
-                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>Vaporizers</strong><span>Dry herb &amp; concentrate</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>Hemp &amp; CBD</strong><span>Flower, prerolls, edibles</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>Glass &amp; Rigs</strong><span>Bongs, dab rigs, tools</span></a>
-                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>All Brands</strong><span>Browse 380+ in the catalog</span></a>
                 </div>
             </div>
 

@@ -22,7 +22,6 @@ function sdn_real_brand_logos() {
         array( 'name' => 'Marley Natural', 'slug' => 'marley-natural', 'file' => '2023/07/marley-300x162.png' ),
         array( 'name' => 'Eyce', 'slug' => 'eyce', 'file' => '2023/07/eyce-300x162.png' ),
         array( 'name' => 'Wax Maid', 'slug' => 'wax-maid', 'file' => '2023/07/wax-maid-300x162.png' ),
-        array( 'name' => 'Firefly', 'slug' => 'firefly', 'file' => '2024/08/firefly-300x162.jpg' ),
         array( 'name' => 'Alchemy Naturals', 'slug' => 'alchemy-naturals', 'file' => '2024/08/alchemy-naturals-300x162.jpg' ),
         array( 'name' => 'AFG Distribution', 'slug' => 'afg-distribution', 'file' => '2024/08/afg-logo-hd-300x162.png' ),
         array( 'name' => 'O.pen', 'slug' => 'o-pen', 'file' => '2024/08/o.pen_-300x162.jpg' ),
@@ -50,16 +49,27 @@ function sdn_get_brand_field( $field, $post_id = null ) {
  * The migration stored production featured_media (product photos) into the
  * brand_logo meta for ~70% of brands. This heuristic rejects those so they
  * fall through to the initials fallback instead of showing a wrong image.
- * Logos typically have: -300x162 suffix, bare name.png, or small dimensions.
- * Product photos typically have: Snapinst.app_*, -600x600, large unsuffixed.
+ * Logos typically have: -300x162 suffix, or Capitalized-Name.png convention.
+ * Product photos typically have: Snapinst.app_*, -600x600, bare lowercase.jpg,
+ * or UUID-style filenames (8-4-4-4-12 hex pattern from Shopify imports).
  */
 function sdn_is_logo_url( $url ) {
     if ( ! $url ) return false;
     $base = basename( parse_url( $url, PHP_URL_PATH ) );
     // Reject Instagram-snapshot style filenames (product photos).
     if ( stripos( $base, 'Snapinst.app' ) !== false ) return false;
+    // The -300x162 crop is the verified brand-logo banner size -> always a logo.
+    if ( preg_match( '/-300x162\./i', $base ) ) return true;
     // Reject -600x600 and other large square crops (product photos).
-    if ( preg_match( '/-\d{3,}x\d{3,}\./i', $base ) && ! preg_match( '/-300x162\./i', $base ) ) return false;
+    if ( preg_match( '/-\d{3,}x\d{3,}\./i', $base ) ) return false;
+    // Reject UUID-style filenames (Shopify product photo imports).
+    if ( preg_match( '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i', $base ) ) return false;
+    // Reject bare lowercase filenames like "arizer.jpg", "g-pen.jpg" (product
+    // photos). Real logos follow ucfirst convention: "Arizer.png", "PAX.png".
+    $name_part = preg_replace( '/\.(jpg|jpeg|png|webp)$/i', '', $base );
+    if ( $name_part === strtolower( $name_part ) && preg_match( '/[a-z]/', $name_part ) ) {
+        return false; // all-lowercase name = product photo, not a logo
+    }
     return true;
 }
 
@@ -562,13 +572,13 @@ function sdn_brands_marquee_section( $limit = 12 ) {
       <div class="lw-wall">
         <div class="lw-row">
           <?php for ( $i = 0; $i < 3; $i++ ) : foreach ( $row_a as $b ) : ?>
-            <span class="lgo"><img class="lgo-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['logo'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy"></span>
+            <a class="lgo" href="<?php echo esc_url( home_url( '/brand/' . $b['slug'] . '/' ) ); ?>"><img class="lgo-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['logo'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy"></a>
           <?php endforeach; endfor; ?>
         </div>
         <?php if ( ! empty( $row_b ) ) : ?>
         <div class="lw-row rev" style="margin-top:40px;">
           <?php for ( $i = 0; $i < 3; $i++ ) : foreach ( $row_b as $b ) : ?>
-            <span class="lgo"><img class="lgo-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['logo'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy"></span>
+            <a class="lgo" href="<?php echo esc_url( home_url( '/brand/' . $b['slug'] . '/' ) ); ?>"><img class="lgo-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['logo'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy"></a>
           <?php endforeach; endfor; ?>
         </div>
         <?php endif; ?>

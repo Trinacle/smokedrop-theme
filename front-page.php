@@ -93,12 +93,12 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
       <div class="lw-wall">
         <div class="lw-row">
           <?php for ( $r1 = 0; $r1 < 2; $r1++ ) : foreach ( $sdn_brand_row1 as $b ) : ?>
-            <span class="lgo"><img class="lgo-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['file'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy"></span>
+            <a class="lgo" href="<?php echo esc_url( home_url( '/brand/' . $b['slug'] . '/' ) ); ?>"><img class="lgo-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['file'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy"></a>
           <?php endforeach; endfor; ?>
         </div>
         <div class="lw-row rev" style="margin-top:40px;">
           <?php for ( $r2 = 0; $r2 < 2; $r2++ ) : foreach ( $sdn_brand_row2 as $b ) : ?>
-            <span class="lgo"><img class="lgo-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['file'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy"></span>
+            <a class="lgo" href="<?php echo esc_url( home_url( '/brand/' . $b['slug'] . '/' ) ); ?>"><img class="lgo-img" src="<?php echo esc_url( home_url( '/wp-content/uploads/' . $b['file'] ) ); ?>" alt="<?php echo esc_attr( $b['name'] ); ?>" loading="lazy"></a>
           <?php endforeach; endfor; ?>
         </div>
       </div>

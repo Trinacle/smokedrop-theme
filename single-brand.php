@@ -182,10 +182,23 @@ if ( ! $sdn_hero_img && ! empty( $sdn_gallery ) ) {
 // The logo spot will show initials for brands without a verified logo.
 if ( empty( $sdn_dir_images ) && $sdn_cpt_id ) {
     $meta_logo = get_post_meta( $sdn_cpt_id, 'brand_logo', true );
-    // If brand_logo looks like a product photo (not a real logo), clear it so
-    // the logo spot shows initials instead of a wrong image.
-    if ( $meta_logo && function_exists( 'sdn_is_logo_url' ) && ! sdn_is_logo_url( $meta_logo ) ) {
-        $sdn_logo_url = ''; // force initials fallback
+    $meta_hero = get_post_meta( $sdn_cpt_id, 'brand_hero_image', true );
+    $logo_is_photo = $meta_logo && function_exists( 'sdn_is_logo_url' ) && ! sdn_is_logo_url( $meta_logo );
+    $hero_is_logo  = $meta_hero && function_exists( 'sdn_is_logo_url' ) && sdn_is_logo_url( $meta_hero );
+
+    if ( $logo_is_photo && $hero_is_logo ) {
+        // Classic swap: logo meta holds a product photo, hero meta holds the
+        // real logo. Restore correct positions.
+        $sdn_logo_url = $meta_hero;
+        $sdn_hero_img = $meta_logo;
+    } elseif ( $logo_is_photo ) {
+        // Logo meta is a product photo, hero is unknown/empty -> clear logo
+        // so the spot shows initials; keep hero as-is.
+        $sdn_logo_url = '';
+    } elseif ( $hero_is_logo && ! empty( $sdn_gallery[0] ) ) {
+        // Hero meta holds a logo banner (e.g. Grav) -> use a real product
+        // photo from the gallery for Image 1 instead.
+        $sdn_hero_img = $sdn_gallery[0];
     }
 }
 
