@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '2.9.9' );
+define( 'SDN_VERSION', '2.9.10' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 
@@ -321,28 +321,66 @@ function sdn_yoast_metadesc( $desc ) {
 
     // Match by page path.
     $path = trim( parse_url( $_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH ), '/' );
+    // Strip staging subpath if present (/staging/5411/...).
+    $home_path = trim( wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+    if ( $home_path && strpos( $path, $home_path ) === 0 ) {
+        $path = ltrim( substr( $path, strlen( $home_path ) ), '/' );
+    }
     if ( isset( $map[ $path ] ) ) {
         return $map[ $path ];
     }
 
     // Brand pages: generate a description from the brand name.
-    if ( function_exists( 'sdn_brand_description' ) && is_singular( 'brand' ) ) {
-        $name = get_the_title();
-        $d = sdn_brand_description( $name );
-        // Strip to plain text and cap at 155 chars.
-        $d = wp_strip_all_tags( $d );
-        if ( strlen( $d ) > 155 ) $d = substr( $d, 0, 152 ) . '...';
-        return $d;
+    // Note: brand pages use virtual routing (sdn_brand_slug query var), so
+    // is_singular('brand') is false. Detect by URL path instead.
+    if ( preg_match( '#^brand/([a-z0-9-]+)/?$#i', $path, $bm ) ) {
+        $bslug = $bm[1];
+        // Resolve the brand name from the CPT post or directory.
+        $bname = '';
+        $cpt = get_page_by_path( $bslug, OBJECT, 'brand' );
+        if ( $cpt ) {
+            $bname = get_the_title( $cpt );
+        } else {
+            foreach ( sdn_brand_directory() as $b ) {
+                if ( ( $b['slug'] ?? '' ) === $bslug ) { $bname = $b['name'] ?? ''; break; }
+            }
+        }
+        if ( $bname && function_exists( 'sdn_brand_description' ) ) {
+            $d = wp_strip_all_tags( sdn_brand_description( $bname ) );
+            if ( strlen( $d ) > 155 ) $d = substr( $d, 0, 152 ) . '...';
+            return $d;
+        }
     }
 
     return $desc;
 }
 
 /* Homepage meta title — clean, no duplicated brand name. */
-add_filter( 'wpseo_title', 'sdn_yoast_homepage_title', 10, 2 );
-function sdn_yoast_homepage_title( $title ) {
+add_filter( 'wpseo_title', 'sdn_yoast_title', 10, 2 );
+function sdn_yoast_title( $title ) {
     if ( is_front_page() ) {
         return 'SmokeDrop — #1 Smoke Shop Dropshipping App | Shopify & WooCommerce';
+    }
+    // Brand pages: build a proper SEO title from the brand name.
+    $path = trim( parse_url( $_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH ), '/' );
+    $home_path = trim( wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+    if ( $home_path && strpos( $path, $home_path ) === 0 ) {
+        $path = ltrim( substr( $path, strlen( $home_path ) ), '/' );
+    }
+    if ( preg_match( '#^brand/([a-z0-9-]+)/?$#i', $path, $bm ) ) {
+        $bslug = $bm[1];
+        $bname = '';
+        $cpt = get_page_by_path( $bslug, OBJECT, 'brand' );
+        if ( $cpt ) {
+            $bname = get_the_title( $cpt );
+        } else {
+            foreach ( sdn_brand_directory() as $b ) {
+                if ( ( $b['slug'] ?? '' ) === $bslug ) { $bname = $b['name'] ?? ''; break; }
+            }
+        }
+        if ( $bname ) {
+            return 'Dropship & Wholesale ' . $bname . ' Products | SmokeDrop';
+        }
     }
     return $title;
 }
