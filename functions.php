@@ -248,11 +248,12 @@ add_action( 'wp_ajax_nopriv_sdn_news_nonce', 'sdn_news_nonce' );
 function sdn_news_nonce() {
     // Return nonces for all known Forminator nonce actions.
     wp_send_json_success( array(
-        'forminator_form_nonce'      => wp_create_nonce( 'forminator_form_nonce' ),
-        'forminator_nonce'           => wp_create_nonce( 'forminator_nonce' ),
-        'forminatorFrontSubmit'      => wp_create_nonce( 'forminatorFrontSubmit' ),
-        'forminator_submit_form'     => wp_create_nonce( 'forminator_submit_form' ),
-        'forminator_custom-forms'    => wp_create_nonce( 'forminator_submit_form_custom-forms' ),
+        'forminator_form_request'   => wp_create_nonce( 'forminator_form_request' ),
+        'forminator_form_nonce'     => wp_create_nonce( 'forminator_form_nonce' ),
+        'forminator_nonce'          => wp_create_nonce( 'forminator_nonce' ),
+        'forminatorFrontSubmit'     => wp_create_nonce( 'forminatorFrontSubmit' ),
+        'forminator_submit_form'    => wp_create_nonce( 'forminator_submit_form' ),
+        'forminator_custom-forms'   => wp_create_nonce( 'forminator_submit_form_custom-forms' ),
     ) );
 }
 function sdn_contact_forminator_overrides() {
