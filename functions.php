@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '2.9.7' );
+define( 'SDN_VERSION', '2.9.8' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 
@@ -269,19 +269,121 @@ function sdn_clean_body_classes( $classes ) {
     } );
 }
 
-/* ---------- SEO: Open Graph + meta ---------- */
-add_action( 'wp_head', 'sdn_meta_tags', 5 );
-function sdn_meta_tags() {
-    if ( is_front_page() ) {
-        echo '<meta name="description" content="SmokeDrop — the #1 online smoke shop dropshipping app. Import over 20,000 smoke shop products. Shopify, WooCommerce & BigCommerce.">' . "\n";
-        echo '<meta property="og:title" content="SmokeDrop — #1 Online Smoke Shop Dropshipping App">' . "\n";
-        echo '<meta property="og:type" content="website">' . "\n";
-        echo '<meta property="og:url" content="' . esc_url( home_url( '/' ) ) . '">' . "\n";
-        echo '<meta property="og:image" content="' . esc_url( home_url( '/wp-content/uploads/2023/07/drop-shipping-smoke-products-2.png' ) ) . '">' . "\n";
+/* ---------- SEO: Yoast integration + enhanced schema ----------
+ * Yoast SEO is active and handles meta titles, descriptions, and OG tags.
+ * We DON'T duplicate those (duplicate og:image / og:title confused social
+ * crawlers). Instead we FILTER Yoast to enforce correct values where the
+ * DB-configured defaults are wrong or missing, and add schema types Yoast
+ * doesn't generate (WebSite SearchAction, additional Organization data).
+ */
+
+// Default social share image — used as fallback OG image on every page.
+define( 'SDN_OG_IMAGE', '/wp-content/uploads/2024/06/smokedrop-600x338.webp' );
+
+/* Enforce the correct OG image when Yoast's per-page value is missing or
+ * points to a wrong/old file. Runs late so Yoast's own filters apply first. */
+add_filter( 'wpseo_opengraph_image', 'sdn_yoast_og_image' );
+add_filter( 'wpseo_twitter_image',   'sdn_yoast_og_image' );
+function sdn_yoast_og_image( $img ) {
+    if ( $img && strpos( $img, 'shopifiy.png' ) === false && strpos( $img, 'drop-shipping-smoke-products' ) === false ) {
+        return $img; // a real, correct image is already set — respect it
     }
-    // Structured data
+    return home_url( SDN_OG_IMAGE );
+}
+
+/* Homepage meta title — clean, no duplicated brand name. */
+add_filter( 'wpseo_title', 'sdn_yoast_homepage_title', 10, 2 );
+function sdn_yoast_homepage_title( $title ) {
     if ( is_front_page() ) {
-        echo '<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"SmokeDrop","url":"' . esc_url( home_url( '/' ) ) . '","logo":"' . esc_url( home_url( '/wp-content/uploads/2023/07/logo.png' ) ) . '"}</script>' . "\n";
+        return 'SmokeDrop — #1 Smoke Shop Dropshipping App | Shopify & WooCommerce';
+    }
+    return $title;
+}
+
+/* Homepage meta description — Yoast auto-generated garbage from page content;
+ * override with a proper marketing description. */
+add_filter( 'wpseo_metadesc', 'sdn_yoast_homepage_desc' );
+function sdn_yoast_homepage_desc( $desc ) {
+    if ( is_front_page() && ( ! $desc || strlen( $desc ) > 160 ) ) {
+        return 'SmokeDrop is the #1 smoke shop dropshipping platform. Import 20,000+ smoke, vape & CBD products to your Shopify or WooCommerce store. Start free.';
+    }
+    return $desc;
+}
+
+/* Homepage OG title + description — match the clean values above. */
+add_filter( 'wpseo_opengraph_title', 'sdn_yoast_homepage_og_title' );
+function sdn_yoast_homepage_og_title( $title ) {
+    if ( is_front_page() ) {
+        return 'SmokeDrop — #1 Smoke Shop Dropshipping App';
+    }
+    return $title;
+}
+add_filter( 'wpseo_opengraph_desc', 'sdn_yoast_homepage_og_desc' );
+function sdn_yoast_homepage_og_desc( $desc ) {
+    if ( is_front_page() ) {
+        return 'Import 20,000+ smoke, vape & CBD products to your store. Sync inventory, auto-fulfill orders. Shopify & WooCommerce. Start free.';
+    }
+    return $desc;
+}
+
+/* ---------- Enhanced JSON-LD schema (complements Yoast's graph) ----------
+ * Yoast outputs Organization + WebSite + Breadcrumb schema already. We add
+ * a richer Organization block (sameAs social profiles) + a WebSite
+ * SearchAction so Google can show a sitelinks search box.
+ */
+add_action( 'wp_head', 'sdn_schema', 20 );
+function sdn_schema() {
+    if ( is_admin() ) return;
+    $home = home_url( '/' );
+
+    // Organization / Business — enriched with social profiles + contact.
+    $org = array(
+        '@context' => 'https://schema.org',
+        '@type'    => 'Organization',
+        '@id'      => $home . '#organization',
+        'name'     => 'SmokeDrop',
+        'url'      => $home,
+        'logo'     => home_url( '/wp-content/uploads/2023/07/logo.png' ),
+        'image'    => home_url( SDN_OG_IMAGE ),
+        'description' => 'The #1 smoke shop dropshipping platform. Sync 20,000+ smoke, vape & CBD products to Shopify and WooCommerce stores.',
+        'sameAs'   => array(
+            'https://www.facebook.com/thesmokedrop/',
+            'https://x.com/smokedropapp',
+            'https://www.youtube.com/@thesmokedrop',
+            'https://apps.shopify.com/smoke-drop',
+        ),
+        'contactPoint' => array(
+            array(
+                '@type'       => 'ContactPoint',
+                'contactType' => 'customer support',
+                'url'         => home_url( '/contact' ),
+                'areaServed'  => 'US',
+            ),
+        ),
+    );
+    echo '<script type="application/ld+json">' . wp_json_encode( $org ) . '</script>' . "\n";
+
+    // WebSite with SearchAction (enables Google sitelinks search box).
+    if ( is_front_page() ) {
+        $site = array(
+            '@context'       => 'https://schema.org',
+            '@type'          => 'WebSite',
+            '@id'            => $home . '#website',
+            'url'            => $home,
+            'name'           => 'SmokeDrop',
+            'publisher'      => array( '@id' => $home . '#organization' ),
+            'potentialAction' => array(
+                array(
+                    '@type'       => 'SearchAction',
+                    'target'      => array(
+                        '@type'       => 'EntryPoint',
+                        'urlTemplate' => home_url( '/marketplace-search?q={search_term_string}' ),
+                    ),
+                    'query-input' => 'required name=search_term_string',
+                ),
+            ),
+        );
+        echo '<script type="application/ld+json">' . wp_json_encode( $site ) . '</script>' . "\n";
     }
 }
 
