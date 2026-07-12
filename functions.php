@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '2.9.6' );
+define( 'SDN_VERSION', '2.9.7' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 
@@ -211,6 +211,21 @@ function sdn_hide_out_of_stock( $q ) {
         'key'     => '_stock_status',
         'value'   => 'outofstock',
         'compare' => '!=',
+    );
+    $q->set( 'meta_query', $meta_query );
+}
+
+/* ---------- Hide products without a featured image on the marketplace -------
+ * Products with no product photo look unfinished in the grid (they'd show the
+ * Unsplash placeholder). Exclude them at the query level so pagination counts
+ * stay correct.
+ */
+add_action( 'woocommerce_product_query', 'sdn_hide_no_image_products' );
+function sdn_hide_no_image_products( $q ) {
+    $meta_query   = $q->get( 'meta_query' );
+    $meta_query[] = array(
+        'key'     => '_thumbnail_id',
+        'compare' => 'EXISTS',
     );
     $q->set( 'meta_query', $meta_query );
 }

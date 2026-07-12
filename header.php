@@ -109,6 +109,7 @@
                         }
                     endif;
                     ?>
+                    <a class="mega-link" href="<?php echo esc_url( $sdn_brands_url ); ?>"><strong>All Brands</strong><span>Browse 380+ in the catalog</span></a>
                 </div>
             </div>
 
