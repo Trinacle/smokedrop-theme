@@ -37,6 +37,7 @@ echo "Found " . count( $brand_posts ) . " brand blog posts\n\n";
 ob_flush(); flush();
 
 function _norm( $s ) {
+    $s = html_entity_decode( $s, ENT_QUOTES, 'UTF-8' ); // decode &amp; -> &
     $s = strtolower( trim( $s ) );
     $s = preg_replace( '/\b(brand|brands|the|inc|llc|co)\b/i', '', $s );
     $s = preg_replace( '/[^a-z0-9]/', '', $s );
@@ -77,14 +78,36 @@ $cpt_brands = get_posts( array(
     'posts_per_page' => -1,
 ) );
 $cpt_map = array();
+$cpt_by_slug = array();
 foreach ( $cpt_brands as $cb ) {
-    $cpt_map[ _norm( $cb->post_title ) ] = $cb;
+    $norm_title                = _norm( $cb->post_title );
+    $cpt_map[ $norm_title ]    = $cb;
     $cpt_map[ $cb->post_name ] = $cb;
+    $cpt_by_slug[ $cb->post_name ] = $cb;
 }
 echo "Loaded " . count( $cpt_brands ) . " brand CPT posts\n\n";
+
+// Known slug aliases: blog post slug -> CPT post slug (for brands where the
+// blog slug doesn't match the CPT slug exactly).
+$slug_aliases = array(
+    'wyld-cbd'           => 'wyld',
+    'elements'           => 'elements-rolling-papers',
+    'zeus'               => 'zeus-arsenal',
+    'zippo'              => 'zippo-lighters',
+    'ocb'                => 'ocb-rolling-papers',
+    'infyniti-scales'    => 'infyniti',
+    'cloudious-9'        => 'cloudious',
+    'high-voltage-detox' => 'high-voltage',
+    'nwtn-home'          => 'nwtn',
+    'shine-papers'       => 'shine',
+    'evolv'              => 'evolved',
+    'sweet-lyfe-2'       => 'sweet-lyfe',
+    'nectar-collector'   => 'original-nectar-collector',
+);
+
 ob_flush(); flush();
 
-$updated = 0; $skipped = 0; $no_match = 0; $count = 0;
+$updated = 0; $skipped = 0; $no_match = 0; $created = 0; $count = 0;
 
 foreach ( $brand_posts as $bp_id ) {
     $count++;
@@ -95,16 +118,64 @@ foreach ( $brand_posts as $bp_id ) {
     echo "[$count/" . count( $brand_posts ) . "] $bp_title... ";
     ob_flush(); flush();
 
-    // Find matching CPT post.
+    // Find matching CPT post — try multiple strategies.
     $match = null;
+    // 1) Exact slug match.
     if ( isset( $cpt_map[ $bp_slug ] ) ) {
         $match = $cpt_map[ $bp_slug ];
-    } elseif ( isset( $cpt_map[ _norm( $bp_title ) ] ) ) {
+    }
+    // 2) Normalized title match.
+    if ( ! $match && isset( $cpt_map[ _norm( $bp_title ) ] ) ) {
         $match = $cpt_map[ _norm( $bp_title ) ];
+    }
+    // 3) Known slug alias.
+    if ( ! $match && isset( $slug_aliases[ $bp_slug ] ) && isset( $cpt_by_slug[ $slug_aliases[ $bp_slug ] ] ) ) {
+        $match = $cpt_by_slug[ $slug_aliases[ $bp_slug ] ];
+    }
+    // 4) Fuzzy: blog slug is a prefix of a CPT slug (puffco -> puffco-brand).
+    if ( ! $match ) {
+        foreach ( $cpt_by_slug as $cs => $cb ) {
+            if ( $cs === $bp_slug ) { $match = $cb; break; }
+            if ( strpos( $cs, $bp_slug ) === 0 && strlen( $bp_slug ) >= 3 ) {
+                $match = $cb; // prefix match — best candidate
+                break;
+            }
+        }
+    }
+    // 5) Fuzzy: blog title contains a CPT title (or vice versa).
+    if ( ! $match ) {
+        $blog_norm = _norm( $bp_title );
+        foreach ( $cpt_brands as $cb ) {
+            $cpt_norm = _norm( $cb->post_title );
+            if ( strlen( $cpt_norm ) >= 3 && ( strpos( $blog_norm, $cpt_norm ) !== false || strpos( $cpt_norm, $blog_norm ) !== false ) ) {
+                $match = $cb;
+                break;
+            }
+        }
+    }
+
+    // 6) Auto-create CPT post if no match — the blog post proves this brand
+    //    should have a page. Create one with the blog slug + title.
+    if ( ! $match ) {
+        $new_id = wp_insert_post( array(
+            'post_type'   => 'brand',
+            'post_status' => 'publish',
+            'post_title'  => $bp_title,
+            'post_name'   => $bp_slug,
+        ), true );
+        if ( ! is_wp_error( $new_id ) ) {
+            $match = get_post( $new_id );
+            $cpt_map[ $bp_slug ]         = $match;
+            $cpt_map[ _norm( $bp_title ) ] = $match;
+            $cpt_by_slug[ $bp_slug ]     = $match;
+            $cpt_brands[]                = $match;
+            echo "CREATED CPT (id=$new_id) ";
+            $created++;
+        }
     }
 
     if ( ! $match ) {
-        echo "NO CPT MATCH\n";
+        echo "NO CPT MATCH (create failed)\n";
         $no_match++;
         continue;
     }
@@ -170,5 +241,5 @@ foreach ( $brand_posts as $bp_id ) {
 update_option( 'sdn_brands_migrated', '6' );
 
 echo "\n=== Done: " . date( 'Y-m-d H:i:s' ) . " ===\n";
-echo "Total: $count | Updated: $updated | Skipped: $skipped | No match: $no_match\n";
+echo "Total: $count | Updated: $updated | Created: $created | Skipped: $skipped | No match: $no_match\n";
 echo "Migration complete. Purge LiteSpeed cache to see changes.\n";
