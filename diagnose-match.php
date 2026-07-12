@@ -73,3 +73,36 @@ foreach ( $brand_posts as $bp ) {
 }
 
 echo "\n=== Summary: " . count( $no_match ) . " unmatched out of " . count( $brand_posts ) . " ===\n";
+
+// Show CPT slugs for key unmatched brands.
+echo "\n=== CPT posts containing key brand names in slug ===\n";
+$check_names = array( 'puffco', 'pax', 'raw', 'storz', 'pulsar', 'hemper', 'eyce', 'evolv', 'zippo', 'firefly', 'elements', 'shine', 'wyld', 'zeus' );
+foreach ( $check_names as $cn ) {
+    echo "\n$cn:\n";
+    foreach ( $cpt_slugs as $cs => $ct ) {
+        if ( stripos( $cs, $cn ) !== false ) {
+            echo "  CPT slug='$cs' title='$ct'\n";
+        }
+    }
+}
+
+// Also: for each unmatched blog post, try to find the CPT by slug-prefix or
+// title-contains match, and report what the correct CPT slug should be.
+echo "\n=== Suggested matches (CPT slug -> blog title) ===\n";
+foreach ( $no_match as $bp ) {
+    $bslug = $bp->post_name;
+    // Exact slug prefix match: blog slug 'puffco' matches CPT slug 'puffco-*'
+    $best = null;
+    foreach ( $cpt_slugs as $cs => $ct ) {
+        if ( $cs === $bslug ) { $best = $cs; break; }
+        // Blog slug is a prefix of CPT slug (puffco -> puffco-brand)
+        if ( strpos( $cs, $bslug . '-' ) === 0 || strpos( $cs, $bslug ) === 0 ) {
+            if ( ! $best || strlen( $cs ) < strlen( $best ) ) $best = $cs;
+        }
+    }
+    if ( $best ) {
+        echo "  blog='{$bslug}' -> CPT='{$best}' title='{$cpt_slugs[$best]}'\n";
+    } else {
+        echo "  blog='{$bslug}' -> NO CPT FOUND (may need seeding)\n";
+    }
+}
