@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '2.10.3' );
+define( 'SDN_VERSION', '2.10.4' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 
@@ -271,29 +271,19 @@ function sdn_newsletter_submit() {
 
     $form_id = 37676;
 
-    // Store the entry using Forminator's API if available.
-    if ( class_exists( 'Forminator_Form_Entry_Model' ) ) {
-        $entry_data = array(
-            array( 'name' => 'email-1', 'value' => $email ),
-        );
-        Forminator_Form_Entry_Model::save_entry( array(
-            'form_id'    => $form_id,
-            'form_type'  => 'custom-forms',
-            'entry_data' => $entry_data,
+    // Store as a sdn_sub CPT post. Duplicates are fine (deduplicate on export).
+    $existing = get_page_by_title( $email, OBJECT, 'sdn_sub' );
+    if ( ! $existing ) {
+        wp_insert_post( array(
+            'post_type'    => 'sdn_sub',
+            'post_title'   => $email,
+            'post_status'  => 'publish',
+            'meta_input'   => array(
+                'sdn_form_id' => $form_id,
+                'sdn_date'    => current_time( 'mysql' ),
+                'sdn_source'  => 'footer',
+            ),
         ) );
-    }
-
-    // Fallback: store as a post for manual import if Forminator isn't available.
-    if ( ! class_exists( 'Forminator_Form_Entry_Model' ) ) {
-        $existing = get_page_by_title( $email, OBJECT, 'sdn_sub' );
-        if ( ! $existing ) {
-            wp_insert_post( array(
-                'post_type'   => 'sdn_sub',
-                'post_title'  => $email,
-                'post_status' => 'publish',
-                'meta_input'  => array( 'sdn_form_id' => $form_id, 'sdn_date' => current_time( 'mysql' ) ),
-            ) );
-        }
     }
 
     wp_send_json_success( array( 'message' => "You're subscribed! Check your inbox to confirm." ) );
