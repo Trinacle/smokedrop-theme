@@ -4,6 +4,4 @@
   <text x="300" y="300" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#13c27b" text-anchor="middle" letter-spacing="0.5">SMOKEDROP</text>
   <text x="300" y="340" font-family="Inter, Arial, sans-serif" font-size="18" fill="#868886" text-anchor="middle">Create a free account</text>
   <text x="300" y="368" font-family="Inter, Arial, sans-serif" font-size="18" fill="#868886" text-anchor="middle">to view this product</text>
-  <rect x="210" y="395" width="180" height="44" rx="22" fill="#13c27b"/>
-  <text x="300" y="423" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="600" fill="#0a0b0a" text-anchor="middle">Get Started</text>
 </svg>
