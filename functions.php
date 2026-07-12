@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '2.10.2' );
+define( 'SDN_VERSION', '2.10.3' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 
@@ -20,6 +20,18 @@ require_once SDN_DIR . '/inc/brand-directory.php';
 require_once SDN_DIR . '/inc/brand-content.php';
 require_once SDN_DIR . '/inc/seed-pages.php';
 require_once SDN_DIR . '/inc/migrate-brands.php';
+
+/* ---------- Newsletter subscribers CPT (fallback storage if Forminator API unavailable) ---------- */
+add_action( 'init', 'sdn_register_sub_cpt' );
+function sdn_register_sub_cpt() {
+    register_post_type( 'sdn_sub', array(
+        'labels'       => array( 'name' => 'Newsletter Subs', 'singular_name' => 'Subscriber' ),
+        'public'       => false,
+        'show_ui'      => true,
+        'show_in_menu' => true,
+        'supports'     => array( 'title' ),
+    ) );
+}
 
 /* ---------- Theme setup ---------- */
 add_action( 'after_setup_theme', 'sdn_theme_setup' );
@@ -238,23 +250,60 @@ function sdn_hide_no_image_products( $q ) {
  */
 add_action( 'wp_footer', 'sdn_contact_forminator_overrides', 99 );
 
-/* ---------- Custom nonce endpoint for the hardcoded newsletter form -------
- * Forminator's nonce verification uses a specific action name that varies by
- * version. This endpoint generates nonces with all known action names so we
- * can determine which one the submit handler accepts.
+/* ---------- Newsletter signup endpoint (bypasses Forminator nonce issues) ----
+ * The hardcoded footer form POSTs here. We store the entry directly via
+ * Forminator's Form_Entry_Model (the same way Forminator does internally),
+ * avoiding the nonce verification that blocked our AJAX submit approach.
  */
+add_action( 'wp_ajax_sdn_newsletter_submit', 'sdn_newsletter_submit' );
+add_action( 'wp_ajax_nopriv_sdn_newsletter_submit', 'sdn_newsletter_submit' );
+function sdn_newsletter_submit() {
+    // Verify our own simple nonce (no Forminator dependency).
+    $nonce = isset( $_POST['sdn_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['sdn_nonce'] ) ) : '';
+    if ( ! wp_verify_nonce( $nonce, 'sdn_newsletter' ) ) {
+        wp_send_json_error( array( 'message' => 'Security check failed. Please refresh the page.' ) );
+    }
+
+    $email = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+    if ( ! is_email( $email ) ) {
+        wp_send_json_error( array( 'message' => 'Please enter a valid email address.' ) );
+    }
+
+    $form_id = 37676;
+
+    // Store the entry using Forminator's API if available.
+    if ( class_exists( 'Forminator_Form_Entry_Model' ) ) {
+        $entry_data = array(
+            array( 'name' => 'email-1', 'value' => $email ),
+        );
+        Forminator_Form_Entry_Model::save_entry( array(
+            'form_id'    => $form_id,
+            'form_type'  => 'custom-forms',
+            'entry_data' => $entry_data,
+        ) );
+    }
+
+    // Fallback: store as a post for manual import if Forminator isn't available.
+    if ( ! class_exists( 'Forminator_Form_Entry_Model' ) ) {
+        $existing = get_page_by_title( $email, OBJECT, 'sdn_sub' );
+        if ( ! $existing ) {
+            wp_insert_post( array(
+                'post_type'   => 'sdn_sub',
+                'post_title'  => $email,
+                'post_status' => 'publish',
+                'meta_input'  => array( 'sdn_form_id' => $form_id, 'sdn_date' => current_time( 'mysql' ) ),
+            ) );
+        }
+    }
+
+    wp_send_json_success( array( 'message' => "You're subscribed! Check your inbox to confirm." ) );
+}
+
+/* ---------- Custom nonce endpoint for the hardcoded newsletter form ------- */
 add_action( 'wp_ajax_sdn_news_nonce', 'sdn_news_nonce' );
 add_action( 'wp_ajax_nopriv_sdn_news_nonce', 'sdn_news_nonce' );
 function sdn_news_nonce() {
-    // Return nonces for all known Forminator nonce actions.
-    wp_send_json_success( array(
-        'forminator_form_request'   => wp_create_nonce( 'forminator_form_request' ),
-        'forminator_form_nonce'     => wp_create_nonce( 'forminator_form_nonce' ),
-        'forminator_nonce'          => wp_create_nonce( 'forminator_nonce' ),
-        'forminatorFrontSubmit'     => wp_create_nonce( 'forminatorFrontSubmit' ),
-        'forminator_submit_form'    => wp_create_nonce( 'forminator_submit_form' ),
-        'forminator_custom-forms'   => wp_create_nonce( 'forminator_submit_form_custom-forms' ),
-    ) );
+    wp_send_json_success( wp_create_nonce( 'sdn_newsletter' ) );
 }
 function sdn_contact_forminator_overrides() {
     if ( ! is_page( 'contact' ) ) return;

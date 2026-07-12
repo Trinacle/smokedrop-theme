@@ -439,34 +439,29 @@
       btn.textContent = 'Sending\u2026';
       showMsg('');
 
-      // 1) Fetch a fresh Forminator nonce with the correct action name.
-      //    (Forminator's built-in endpoint uses the wrong nonce action.)
+      // 1) Fetch our own nonce (avoids Forminator's nonce verification issues).
       fetch(ajaxUrl + '?action=sdn_news_nonce')
         .then(function (r) { return r.json(); })
         .then(function (j) {
           var nonce = (j && j.success && j.data) ? j.data : '';
           if (!nonce) throw new Error('no nonce');
-          nonceEl.value = nonce;
 
-          // 2) Submit the form payload to Forminator's AJAX endpoint.
-          var body = new URLSearchParams(new FormData(form));
-          body.set('action', 'forminator_submit_form_custom-forms');
-          body.set('form_id', '37676');
-          body.set('forminator_nonce', nonce);
+          // 2) Submit to our own endpoint, which stores into Forminator via PHP API.
+          var body = new URLSearchParams();
+          body.set('action', 'sdn_newsletter_submit');
+          body.set('sdn_nonce', nonce);
+          body.set('email', email);
           return fetch(ajaxUrl, { method: 'POST', body: body });
         })
         .then(function (r) { return r.json(); })
         .then(function (j) {
           if (j && j.success) {
             form.reset();
-            showMsg('You\u2019re subscribed. Check your inbox to confirm.', true);
+            var msg = (j.data && j.data.message) ? j.data.message : 'You\u2019re subscribed!';
+            showMsg(msg, true);
           } else {
-            // Forminator returns validation errors in data.message or data[] errors.
-            var d = j && j.data;
-            var m = '';
-            if (Array.isArray(d)) { d.forEach(function (i) { if (i.message) m = i.message; }); }
-            else if (d && d.message) { m = d.message; }
-            showMsg(m || 'Something went wrong. Please try again.', false);
+            var m = (j && j.data && j.data.message) ? j.data.message : 'Something went wrong. Please try again.';
+            showMsg(m, false);
           }
         })
         .catch(function () {
