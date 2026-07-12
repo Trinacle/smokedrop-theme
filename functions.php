@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '2.10.1' );
+define( 'SDN_VERSION', '2.10.2' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 
@@ -237,6 +237,18 @@ function sdn_hide_no_image_products( $q ) {
  * ALWAYS wins over Forminator's blue/white material theme.
  */
 add_action( 'wp_footer', 'sdn_contact_forminator_overrides', 99 );
+
+/* ---------- Custom nonce endpoint for the hardcoded newsletter form -------
+ * Forminator's built-in forminator_get_nonce endpoint generates a nonce with
+ * the 'forminator_nonce' action, but the submit handler verifies against
+ * 'forminator_form_nonce' — so that nonce is always rejected.
+ * This endpoint generates the correct nonce so our JS can submit successfully.
+ */
+add_action( 'wp_ajax_sdn_news_nonce', 'sdn_news_nonce' );
+add_action( 'wp_ajax_nopriv_sdn_news_nonce', 'sdn_news_nonce' );
+function sdn_news_nonce() {
+    wp_send_json_success( wp_create_nonce( 'forminator_form_nonce' ) );
+}
 function sdn_contact_forminator_overrides() {
     if ( ! is_page( 'contact' ) ) return;
     ?>

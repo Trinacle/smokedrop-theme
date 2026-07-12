@@ -439,8 +439,9 @@
       btn.textContent = 'Sending\u2026';
       showMsg('');
 
-      // 1) Fetch a fresh Forminator nonce (page-cached footers carry stale nonces).
-      fetch(ajaxUrl + '?action=forminator_get_nonce')
+      // 1) Fetch a fresh Forminator nonce with the correct action name.
+      //    (Forminator's built-in endpoint uses the wrong nonce action.)
+      fetch(ajaxUrl + '?action=sdn_news_nonce')
         .then(function (r) { return r.json(); })
         .then(function (j) {
           var nonce = (j && j.success && j.data) ? j.data : '';
