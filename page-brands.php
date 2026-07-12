@@ -179,7 +179,8 @@ $sdn_letters = array_keys( $sdn_grouped );
                   ?>
                   <a href="<?php echo esc_url( home_url( '/brand/' . $slug . '/' ) ); ?>" class="<?php echo esc_attr( $cls ); ?>">
                     <?php if ( $has_logo ) : ?>
-                      <span class="bp-logo"><img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( $name ); ?>" loading="lazy"></span>
+                      <span class="bp-logo"><img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( $name ); ?>" loading="lazy" onerror="this.parentElement.style.display='none';this.parentElement.nextElementSibling.style.display='inline-flex';"></span>
+                      <span class="bp-mark" style="display:none;"><?php echo esc_html( $initials ); ?></span>
                     <?php else : ?>
                       <span class="bp-mark"><?php echo esc_html( $initials ); ?></span>
                     <?php endif; ?>

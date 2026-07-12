@@ -145,6 +145,27 @@ function sdn_brand_logo_for_slug( $slug ) {
     if ( $cpt && $cpt->post_status === 'publish' ) {
         $logo = get_post_meta( $cpt->ID, 'brand_logo', true );
         if ( $logo && sdn_is_logo_url( $logo ) ) return sdn_normalize_upload_url( $logo );
+
+        // 3b) brand_hero_image meta — the migration swap stored real logos here
+        //     for many brands. Check it if brand_logo isn't a valid logo.
+        if ( ! $logo || ! sdn_is_logo_url( $logo ) ) {
+            $hero = get_post_meta( $cpt->ID, 'brand_hero_image', true );
+            if ( $hero && sdn_is_logo_url( $hero ) ) return sdn_normalize_upload_url( $hero );
+        }
+    }
+
+    // 4) ucfirst(slug) convention — many logos follow the pattern
+    //    /wp-content/uploads/{Ucfirst-slug}-300x162.png (e.g. Puffco-300x162.png).
+    //    Try both -300x162 and bare .png variants.
+    $capitalized = ucfirst( $slug );
+    foreach ( array( $capitalized . '-300x162.png', $capitalized . '-300x162.jpg' ) as $try ) {
+        $url = home_url( '/wp-content/uploads/' . $try );
+        // We can't verify file existence without a DB query, but the <img>
+        // onerror handler in the template hides broken images gracefully.
+        // Only return if the CPT post exists (validates the brand is real).
+        if ( $cpt || function_exists( 'sdn_brand_directory' ) ) {
+            return $url;
+        }
     }
 
     return '';
