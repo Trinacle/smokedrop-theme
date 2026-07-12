@@ -58,7 +58,7 @@ while ( have_posts() ) :
                 <?php if ( has_post_thumbnail() ) : ?>
                   <?php the_post_thumbnail( 'large', array( 'alt' => the_title_attribute( 'echo=0' ), 'id' => 'pg-main-img' ) ); ?>
                 <?php else : ?>
-                  <img id="pg-main-img" src="<?php echo esc_url( 'https://images.unsplash.com/photo-1604881991720-f91add269bed?w=800&q=80' ); ?>" alt="<?php the_title_attribute(); ?>">
+                  <img id="pg-main-img" src="<?php echo esc_url( sdn_product_placeholder_url() ); ?>" alt="<?php the_title_attribute(); ?>">
                 <?php endif; ?>
                 <span class="pg-flag">&#127482;&#127480; Ships from USA</span>
               </div>
@@ -196,7 +196,7 @@ while ( have_posts() ) :
                     ?>
                     <a href="<?php echo esc_url( $rel->get_permalink() ); ?>" class="market-card reveal<?php echo esc_attr( $d[ $i % 4 ] ); ?>" style="text-decoration:none;color:inherit;">
                       <div class="mimg">
-                        <?php $img = wp_get_attachment_image_url( $rel->get_image_id(), 'woocommerce_thumbnail' ) ?: 'https://images.unsplash.com/photo-1604881991720-f91add269bed?w=400&q=80'; ?>
+                        <?php $img = wp_get_attachment_image_url( $rel->get_image_id(), 'woocommerce_thumbnail' ) ?: sdn_product_placeholder_url(); ?>
                         <img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $rel->get_name() ); ?>" loading="lazy">
                       </div>
                       <div class="mbody">

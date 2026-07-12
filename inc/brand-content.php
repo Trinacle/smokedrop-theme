@@ -150,11 +150,7 @@ function sdn_brand_gallery_images( $brand_name, $limit = 3 ) {
 
 /* ---------- Fallback product images when a brand has no Woo products ---------- */
 function sdn_brand_gallery_fallback( $limit = 3 ) {
-    $fallbacks = array(
-        'https://images.unsplash.com/photo-1604881991720-f91add269bed?w=800&q=80',
-        'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80',
-        'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800&q=80',
-        'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=800&q=80',
-    );
+    $placeholder = function_exists( 'sdn_product_placeholder_url' ) ? sdn_product_placeholder_url() : '';
+    $fallbacks = $placeholder ? array_fill( 0, $limit, $placeholder ) : array();
     return array_slice( $fallbacks, 0, $limit );
 }

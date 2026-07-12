@@ -159,16 +159,11 @@ if ( ! empty( $sdn_gallery_urls ) ) {
     }
 }
 
-// 2) Backfill to 3 from Woo products ONLY (real brand products, no Unsplash).
-//    sdn_brand_gallery_images() falls back to Unsplash internally, so filter
-//    those out — we'd rather show fewer real photos than fake ones.
-if ( count( $sdn_gallery ) < 3 ) {
-    $woo_imgs = sdn_brand_gallery_images( $sdn_name, 3 );
-    foreach ( $woo_imgs as $wi ) {
-        if ( strpos( $wi, 'unsplash.com' ) === false ) $sdn_gallery[] = $wi;
-    }
-    $sdn_gallery = array_slice( array_unique( $sdn_gallery ), 0, 3 );
-}
+// 2) No Woo backfill — the sidebar Image 3 should only show a real brand photo
+//    from the migration, not a random product. When fewer than 3 migration
+//    images exist, we simply show fewer images. The sidebar gracefully hides
+//    when $sdn_gallery[2] is empty (the template checks $sdn_img3 before render).
+$sdn_gallery = array_slice( array_unique( $sdn_gallery ), 0, 3 );
 
 // If we have gallery images but no dedicated hero, use the first gallery image.
 if ( ! $sdn_hero_img && ! empty( $sdn_gallery ) ) {
@@ -314,7 +309,7 @@ get_header();
               $pid = ( $p instanceof WC_Product ) ? $p->get_id() : ( is_object( $p ) ? $p->ID : $p );
               $prod = wc_get_product( $pid );
               if ( ! $prod ) continue;
-              $img = wp_get_attachment_image_url( $prod->get_image_id(), 'woocommerce_thumbnail' ) ?: 'https://images.unsplash.com/photo-1604881991720-f91add269bed?w=400&q=80';
+              $img = wp_get_attachment_image_url( $prod->get_image_id(), 'woocommerce_thumbnail' ) ?: sdn_product_placeholder_url();
               ?>
               <a href="<?php echo esc_url( $prod->get_permalink() ); ?>" class="market-card reveal<?php echo esc_attr( $d[ $i % 4 ] ); ?>" style="text-decoration:none;color:inherit;">
                 <div class="mimg"><img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $prod->get_name() ); ?>" loading="lazy"></div>

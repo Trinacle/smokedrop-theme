@@ -145,7 +145,7 @@ $register  = 'https://wholesale.thesmokedrop.com/register';
               $d = array( '', ' reveal-d1', ' reveal-d2', ' reveal-d3' );
               foreach ( $sdn_products as $i => $prod ) :
                   $pid   = $prod->get_id();
-                  $img   = wp_get_attachment_image_url( $prod->get_image_id(), 'woocommerce_thumbnail' ) ?: 'https://images.unsplash.com/photo-1604881991720-f91add269bed?w=400&q=80';
+                  $img   = wp_get_attachment_image_url( $prod->get_image_id(), 'woocommerce_thumbnail' ) ?: sdn_product_placeholder_url();
                   $bt    = get_the_terms( $pid, 'product_brand' );
                   $bname = ( $bt && ! is_wp_error( $bt ) ) ? $bt[0]->name : '';
                   ?>

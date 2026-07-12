@@ -100,7 +100,7 @@ $sdn_top_brands = array_slice( $sdn_top_brands, 0, 10 );
                       <?php if ( has_post_thumbnail() ) : ?>
                         <?php the_post_thumbnail( 'woocommerce_thumbnail', array( 'loading' => 'lazy', 'alt' => the_title_attribute( 'echo=0' ) ) ); ?>
                       <?php else : ?>
-                        <img src="<?php echo esc_url( 'https://images.unsplash.com/photo-1604881991720-f91add269bed?w=400&q=80' ); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
+                        <img src="<?php echo esc_url( sdn_product_placeholder_url() ); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
                       <?php endif; ?>
                       <?php if ( ! $product->is_in_stock() ) : ?><span class="mstock-out">Sold out</span><?php endif; ?>
                     </div>

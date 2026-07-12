@@ -155,6 +155,45 @@ function sdn_virtual_brand_template( $template ) {
     return $template;
 }
 
+/* ---------- 301 redirect legacy /{brand-slug}/ URLs to /brand/{slug}/ ----------
+ * The old site used bare slugs (e.g. /puffco/, /grav/) for brand blog posts.
+ * The new site uses /brand/{slug}/. When a visitor (or Google) hits a legacy
+ * URL that matches a known brand, 301 redirect to the canonical brand page so
+ * the correct template renders and SEO link equity transfers.
+ * Only fires for slugs that exist as a brand CPT post or in the directory —
+ * never hijacks real pages (about, contact, pricing, etc.).
+ */
+add_action( 'template_redirect', 'sdn_redirect_legacy_brand_urls', 1 );
+function sdn_redirect_legacy_brand_urls() {
+    if ( is_admin() || is_front_page() ) return;
+
+    // Only redirect single blog posts (the legacy brand pages).
+    if ( ! is_singular( 'post' ) ) return;
+
+    $slug = get_queried_object()->post_name ?? '';
+    if ( ! $slug ) return;
+
+    // Is this slug a known brand? Check the directory array.
+    $is_brand = false;
+    if ( function_exists( 'sdn_brand_directory' ) ) {
+        foreach ( sdn_brand_directory() as $b ) {
+            if ( ( $b['slug'] ?? '' ) === $slug ) { $is_brand = true; break; }
+        }
+    }
+    // Also check for a brand CPT post with this slug.
+    if ( ! $is_brand ) {
+        $cpt = get_page_by_path( $slug, OBJECT, 'brand' );
+        if ( $cpt && $cpt->post_status === 'publish' ) $is_brand = true;
+    }
+    if ( ! $is_brand ) return;
+
+    // Resolve canonical slug (handles storz-bickel -> storz-and-bickel).
+    $canonical = function_exists( 'sdn_resolve_brand_slug' ) ? sdn_resolve_brand_slug( $slug ) : $slug;
+
+    wp_safe_redirect( home_url( '/brand/' . $canonical . '/' ), 301 );
+    exit;
+}
+
 /* ---------- Ensure rewrite rules are flushed on theme activation ---------- */
 add_action( 'after_switch_theme', 'sdn_flush_brand_rewrites' );
 function sdn_flush_brand_rewrites() {

@@ -7,6 +7,13 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/* ---------- Product image placeholder (replaces Unsplash fallback) -------
+ * Used everywhere a product has no image. SVG so it's tiny + scales to any size.
+ */
+function sdn_product_placeholder_url() {
+    return get_stylesheet_directory_uri() . '/assets/img/no-product.svg';
+}
+
 /* ---------- Real brand logos (verified working files, used until the Brand CPT is populated) ---------- */
 function sdn_real_brand_logos() {
     return array(
@@ -630,7 +637,7 @@ function sdn_products_section( $limit = 8, $heading = 'Featured products' ) {
           $d = array( '', ' reveal-d1', ' reveal-d2', ' reveal-d3' );
           foreach ( $products as $i => $prod ) :
               $pid   = $prod->get_id();
-              $img   = wp_get_attachment_image_url( $prod->get_image_id(), 'woocommerce_thumbnail' ) ?: 'https://images.unsplash.com/photo-1604881991720-f91add269bed?w=400&q=80';
+              $img   = wp_get_attachment_image_url( $prod->get_image_id(), 'woocommerce_thumbnail' ) ?: sdn_product_placeholder_url();
               $bt    = get_the_terms( $pid, 'product_brand' );
               $bname = ( $bt && ! is_wp_error( $bt ) ) ? $bt[0]->name : '';
               ?>

@@ -36,16 +36,28 @@ function norm( $s ) {
 
 // --- Helper: extract image URLs from HTML ---
 function extract_imgs( $html ) {
-    preg_match_all( '/src="(https?:\/\/[^"]+wp-content\/uploads\/[^"]+)"/', $html, $m );
-    if ( empty( $m[1] ) ) return array();
     $skip = array( 'shopifiy.png','shopify.png','shopify-dropshipping.png','shopify-app-store.png',
         'woo-commerce.jpg','woocommerce-logo.svg','big-commerce-1.jpg','bigcommerce-logo.svg',
-        'orders.png','darth-vapor-logo-600.png','session.jpg','download-1.png','download.png','sd-white-logo.png' );
+        'orders.png','darth-vapor-logo-600.png','session.jpg','download-1.png','download.png','sd-white-logo.png',
+        'hero-bg.png','logo.png','sd-white-logo.png' );
     $out = array();
-    foreach ( $m[1] as $url ) {
+    $seen = array();
+
+    // 1) <img src="..."> tags.
+    preg_match_all( '/src="(https?:\/\/[^"]+wp-content\/uploads\/[^"]+)"/', $html, $m );
+    // 2) CSS background-image: url(...) in inline styles.
+    preg_match_all( '/background(?:-image)?\s*:\s*url\(\s*["\']?(https?:\/\/[^"\')]+wp-content\/uploads\/[^"\')]+)["\']?\s*\)/', $html, $m2 );
+    // 3) background="..." HTML attributes.
+    preg_match_all( '/background="(https?:\/\/[^"]+wp-content\/uploads\/[^"]+)"/', $html, $m3 );
+
+    $all_urls = array_merge( $m[1], $m2[1], $m3[1] );
+    foreach ( $all_urls as $url ) {
         $base = strtolower( basename( parse_url( $url, PHP_URL_PATH ) ) );
         if ( in_array( $base, $skip ) ) continue;
         if ( strpos( $base, '-300x162' ) !== false ) continue;
+        // Dedupe by basename.
+        if ( isset( $seen[ $base ] ) ) continue;
+        $seen[ $base ] = true;
         $out[] = $url;
     }
     return $out;
