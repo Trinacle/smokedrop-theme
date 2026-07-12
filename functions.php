@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '2.9.8' );
+define( 'SDN_VERSION', '2.9.9' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 
@@ -291,6 +291,53 @@ function sdn_yoast_og_image( $img ) {
     return home_url( SDN_OG_IMAGE );
 }
 
+/* Per-page meta descriptions — Yoast DB fields are empty for these bespoke
+ * landing pages, so auto-generated descriptions pull page content (messy).
+ * These targeted, keyword-rich descriptions are ~155 chars each. */
+add_filter( 'wpseo_metadesc', 'sdn_yoast_metadesc' );
+function sdn_yoast_metadesc( $desc ) {
+    // If Yoast already has a hand-written description for this page, keep it.
+    if ( $desc && strlen( $desc ) <= 160 ) return $desc;
+
+    $map = array(
+        // slug-path => meta description
+        ''                           => 'SmokeDrop is the #1 smoke shop dropshipping platform. Import 20,000+ smoke, vape & CBD products to your Shopify or WooCommerce store. Start free.',
+        'pricing'                    => 'SmokeDrop pricing starts at $49.99/mo with a 7-day free trial. Dropship 20,000+ smoke shop products. Shopify & WooCommerce integrations included. No transaction fees.',
+        'marketplace'                => 'Browse the SmokeDrop marketplace: 20,000+ smoke, vape, glass & CBD products from 300+ brands. Create a free account to unlock wholesale pricing and dropship.',
+        'brands'                     => 'Discover 300+ smoke shop brands available for dropshipping and wholesale on SmokeDrop: PAX, Puffco, Cookies, RAW, Storz & Bickel, DynaVap, GRAV and more.',
+        'retailers'                  => 'Retailers: automate smoke shop dropshipping with SmokeDrop. Sync 20,000+ products, auto-fulfill orders, white-label shipping. Shopify & WooCommerce integration.',
+        'suppliers'                  => 'Suppliers: launch a dropship channel on SmokeDrop from $49.99/mo. Reach thousands of retailers, automate order fulfillment, and grow distribution.',
+        'wholesalers'                => 'Wholesalers: buy smoke, vape & CBD products at wholesale pricing through SmokeDrop. Browse 300+ brands, bulk ordering, no minimums on most items.',
+        'help'                       => 'SmokeDrop Help Center: guides, FAQs, and docs for setting up your dropshipping store, syncing products, and managing orders on Shopify and WooCommerce.',
+        'contact'                    => 'Contact SmokeDrop for smoke shop dropshipping support, supplier partnerships, or sales inquiries. Reach our team and start dropshipping 20,000+ products.',
+        'about'                      => 'SmokeDrop is the industry-leading smoke shop dropshipping marketplace, connecting retailers with 300+ suppliers and 20,000+ products since 2023.',
+        'advertise'                  => 'Advertise on SmokeDrop: featured listings, homepage placement, newsletter sponsorships, and sponsored content. Reach smoke shop retailers and suppliers.',
+        'demo'                       => 'Get a personalized SmokeDrop demo. See how to dropship 20,000+ smoke shop products with automatic inventory sync and order fulfillment.',
+        'integrations'               => 'SmokeDrop integrates with Shopify, WooCommerce, and BigCommerce. One-click product import, automatic inventory sync, and order fulfillment.',
+        'industries'                 => 'SmokeDrop serves smoke shops, vape shops, CBD stores, dispensaries, and headshops. Dropship products across the entire smoke, vape & hemp industry.',
+        'resources'                  => 'SmokeDrop resources: dropshipping guides, growth tactics, supplier spotlights, and industry insights for smoke shop retailers.',
+        'testimonials'               => 'Read what smoke shop retailers say about SmokeDrop. Real reviews from Shopify and WooCommerce store owners growing with smoke shop dropshipping.',
+    );
+
+    // Match by page path.
+    $path = trim( parse_url( $_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH ), '/' );
+    if ( isset( $map[ $path ] ) ) {
+        return $map[ $path ];
+    }
+
+    // Brand pages: generate a description from the brand name.
+    if ( function_exists( 'sdn_brand_description' ) && is_singular( 'brand' ) ) {
+        $name = get_the_title();
+        $d = sdn_brand_description( $name );
+        // Strip to plain text and cap at 155 chars.
+        $d = wp_strip_all_tags( $d );
+        if ( strlen( $d ) > 155 ) $d = substr( $d, 0, 152 ) . '...';
+        return $d;
+    }
+
+    return $desc;
+}
+
 /* Homepage meta title — clean, no duplicated brand name. */
 add_filter( 'wpseo_title', 'sdn_yoast_homepage_title', 10, 2 );
 function sdn_yoast_homepage_title( $title ) {
@@ -298,16 +345,6 @@ function sdn_yoast_homepage_title( $title ) {
         return 'SmokeDrop — #1 Smoke Shop Dropshipping App | Shopify & WooCommerce';
     }
     return $title;
-}
-
-/* Homepage meta description — Yoast auto-generated garbage from page content;
- * override with a proper marketing description. */
-add_filter( 'wpseo_metadesc', 'sdn_yoast_homepage_desc' );
-function sdn_yoast_homepage_desc( $desc ) {
-    if ( is_front_page() && ( ! $desc || strlen( $desc ) > 160 ) ) {
-        return 'SmokeDrop is the #1 smoke shop dropshipping platform. Import 20,000+ smoke, vape & CBD products to your Shopify or WooCommerce store. Start free.';
-    }
-    return $desc;
 }
 
 /* Homepage OG title + description — match the clean values above. */
