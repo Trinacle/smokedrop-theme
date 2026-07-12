@@ -239,15 +239,21 @@ function sdn_hide_no_image_products( $q ) {
 add_action( 'wp_footer', 'sdn_contact_forminator_overrides', 99 );
 
 /* ---------- Custom nonce endpoint for the hardcoded newsletter form -------
- * Forminator's built-in forminator_get_nonce endpoint generates a nonce with
- * the 'forminator_nonce' action, but the submit handler verifies against
- * 'forminator_form_nonce' — so that nonce is always rejected.
- * This endpoint generates the correct nonce so our JS can submit successfully.
+ * Forminator's nonce verification uses a specific action name that varies by
+ * version. This endpoint generates nonces with all known action names so we
+ * can determine which one the submit handler accepts.
  */
 add_action( 'wp_ajax_sdn_news_nonce', 'sdn_news_nonce' );
 add_action( 'wp_ajax_nopriv_sdn_news_nonce', 'sdn_news_nonce' );
 function sdn_news_nonce() {
-    wp_send_json_success( wp_create_nonce( 'forminator_form_nonce' ) );
+    // Return nonces for all known Forminator nonce actions.
+    wp_send_json_success( array(
+        'forminator_form_nonce'      => wp_create_nonce( 'forminator_form_nonce' ),
+        'forminator_nonce'           => wp_create_nonce( 'forminator_nonce' ),
+        'forminatorFrontSubmit'      => wp_create_nonce( 'forminatorFrontSubmit' ),
+        'forminator_submit_form'     => wp_create_nonce( 'forminator_submit_form' ),
+        'forminator_custom-forms'    => wp_create_nonce( 'forminator_submit_form_custom-forms' ),
+    ) );
 }
 function sdn_contact_forminator_overrides() {
     if ( ! is_page( 'contact' ) ) return;
