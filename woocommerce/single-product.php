@@ -92,11 +92,7 @@ while ( have_posts() ) :
 
               <!-- Integrated cart form -->
               <div class="cart-row">
-                <?php if ( $product->is_in_stock() ) : ?>
                   <?php woocommerce_template_single_add_to_cart(); ?>
-                <?php else : ?>
-                  <p class="out-of-stock">Out of stock &mdash; available for dropship preorder.</p>
-                <?php endif; ?>
               </div>
 
               <!-- Dropship + Wholesale CTAs -->
@@ -120,7 +116,6 @@ while ( have_posts() ) :
                 <?php if ( $brand_name ) : ?><div><dt>Brand</dt><dd><?php echo esc_html( $brand_name ); ?></dd></div><?php endif; ?>
                 <?php if ( $cat_names ) : ?><div><dt>Category</dt><dd><?php echo esc_html( $cat_names ); ?></dd></div><?php endif; ?>
                 <?php if ( $sku ) : ?><div><dt>SKU</dt><dd><?php echo esc_html( $sku ); ?></dd></div><?php endif; ?>
-                <div><dt>Availability</dt><dd><?php echo $product->is_in_stock() ? 'In stock' : 'Out of stock'; ?></dd></div>
                 <?php if ( $weight ) : ?><div><dt>Weight</dt><dd><?php echo esc_html( $weight . ' ' . get_option( 'woocommerce_weight_unit' ) ); ?></dd></div><?php endif; ?>
               </dl>
             </div>
@@ -156,7 +151,6 @@ while ( have_posts() ) :
                   <?php if ( $sku ) : ?><tr><td>SKU</td><td><?php echo esc_html( $sku ); ?></td></tr><?php endif; ?>
                   <?php if ( $weight ) : ?><tr><td>Weight</td><td><?php echo esc_html( $weight . ' ' . get_option( 'woocommerce_weight_unit' ) ); ?></td></tr><?php endif; ?>
                   <?php if ( ! empty( $dimensions ) ) : ?><tr><td>Dimensions</td><td><?php echo esc_html( implode( ' × ', $dimensions ) . ' ' . get_option( 'woocommerce_dimension_unit' ) ); ?></td></tr><?php endif; ?>
-                  <tr><td>Availability</td><td><?php echo $product->is_in_stock() ? 'In stock' : 'Out of stock'; ?></td></tr>
                 </table>
               </div>
               <div class="ptab-pane" data-pane="reviews">

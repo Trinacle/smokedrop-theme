@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SDN_VERSION', '2.10.5' );
+define( 'SDN_VERSION', '2.10.6' );
 define( 'SDN_DIR', get_stylesheet_directory() );
 define( 'SDN_URI', get_stylesheet_directory_uri() );
 
@@ -543,6 +543,10 @@ function sdn_woo_wrapper_end() {
 
 /* ---------- Remove WooCommerce breadcrumbs (we have our own nav) ---------- */
 remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 );
+
+/* ---------- Remove stock/availability display from product pages ---------- */
+remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
+remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_template_single_meta', 10 );
 
 /* ---------- Helper: get the logo ---------- */
 function sdn_logo( $size = 34 ) {
