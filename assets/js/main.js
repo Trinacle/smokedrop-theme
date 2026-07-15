@@ -289,14 +289,9 @@
       if (label) label.textContent = 'Light';
     }
   }
-  // Initial: saved pref > system default
+  // Initial: saved pref > default dark (ignore system prefers-color-scheme)
   const saved = localStorage.getItem('sd-theme');
-  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-  applyTheme(saved || (prefersLight ? 'light' : 'dark'));
-  // Listen for system changes if no manual pref
-  if (!saved) {
-    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function (e) { applyTheme(e.matches ? 'light' : 'dark'); });
-  }
+  applyTheme(saved || 'dark');
   // Toggle button
   document.addEventListener('click', function (e) {
     const btn = e.target.closest('#theme-toggle');
