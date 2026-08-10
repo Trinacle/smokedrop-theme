@@ -288,7 +288,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
             <span class="gs-num">02</span>
             <div class="gs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10v4M10 10v4M14 10v4M18 10v4"/></svg></div>
             <h4>Add the app to your store</h4>
-            <p><strong>Shopify:</strong> Install the SmokeDrop app from the Shopify App Store. <strong>WooCommerce:</strong> Download the SmokeDrop WordPress plugin. <strong>BigCommerce:</strong> Install from the BigCommerce marketplace. One click links your store.</p>
+            <p><strong>Shopify:</strong> Connect your store and import the SmokeDrop catalog. <strong>WooCommerce:</strong> Download the SmokeDrop WordPress plugin. <strong>BigCommerce:</strong> Install from the BigCommerce marketplace. One click links your store.</p>
           </div>
           <div class="gs-card reveal reveal-d2">
             <span class="gs-num">03</span>
@@ -304,7 +304,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
     <section class="sec">
       <div class="wrap">
         <div class="center" style="max-width:760px;margin:0 auto 56px;">
-          <p class="eyebrow reveal" style="justify-content:center;">From the Shopify App Store</p>
+          <p class="eyebrow reveal" style="justify-content:center;">From SmokeDrop retailers</p>
           <h2 class="h-sec reveal reveal-d1" style="margin-top:16px;">What retailers say.</h2>
         </div>
         <div class="testi-grid">
@@ -325,7 +325,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
           </div>
         </div>
         <div class="center reveal reveal-d3" style="margin-top:40px;">
-          <a href="https://apps.shopify.com/smoke-drop" class="link-arrow" style="font-size:1.05rem;">Read more reviews on the Shopify App Store <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          <a href="https://wholesale.thesmokedrop.com/register" class="link-arrow" style="font-size:1.05rem;">Create a free account to get started <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
         </div>
       </div>
     </section>
@@ -514,7 +514,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
             ),
             array(
                 'q'    => 'How do I start dropshipping on Shopify?',
-                'a'    => 'Install the SmokeDrop app from the Shopify App Store, connect your store, and import products from the catalog. Orders sync automatically once a customer checks out.',
+                'a'    => 'Create a free SmokeDrop account, connect your Shopify store, and import products from the catalog. Orders sync automatically once a customer checks out.',
                 'slug' => 'how-to-start-dropshipping-on-shopify-using-smokedrop',
             ),
             array(

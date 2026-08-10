@@ -52,7 +52,6 @@
         <button class="header-search-btn" aria-label="Search products" id="header-search-trigger">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </button>
-        <a href="https://apps.shopify.com/smoke-drop" class="btn btn-outline hide-mob" style="font-size:.85rem;padding:8px 16px;">Shopify App</a>
         <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime">Get Started</a>
         <button class="menu-trigger" aria-label="Menu" aria-expanded="false"><span></span></button>
     </div>

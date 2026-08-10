@@ -13,7 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 get_header();
 
-$shopify_app = 'https://apps.shopify.com/smoke-drop';
+// TEMP (app delisted): signup page instead of Shopify App Store.
+// TODO: switch back to https://apps.shopify.com/smoke-drop when relisted.
+$shopify_app = 'https://wholesale.thesmokedrop.com/register';
 $woo_plugin  = home_url( '/download-smokedrop-plugin' );
 $brands_url  = home_url( '/brands' );
 $register    = 'https://wholesale.thesmokedrop.com/register';
@@ -68,7 +70,7 @@ $sdn_top_brands = array_slice( $sdn_top_brands, 0, 10 );
 
           <a href="<?php echo esc_url( $shopify_app ); ?>" class="shopify-cta" style="display:flex;">
             <span class="fmc-ic"><img src="<?php echo esc_url( home_url( '/wp-content/uploads/2024/01/5f1a58272cd5b8c219db0ba4_shopify-logo.svg' ) ); ?>" alt="Shopify" style="width:30px;height:30px;object-fit:contain;"></span>
-            <div><strong>Install on Shopify</strong><small>One-click from App Store</small></div>
+            <div><strong>Create Free Account</strong><small>Start dropshipping today</small></div>
           </a>
 
           <a href="<?php echo esc_url( $woo_plugin ); ?>" class="shopify-cta" style="display:flex;">
