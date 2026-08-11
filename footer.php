@@ -76,7 +76,7 @@
                 <a href="<?php echo esc_url( home_url( '/testimonials' ) ); ?>">Testimonials</a>
                 <a href="<?php echo esc_url( home_url( '/help' ) ); ?>">Help Center</a>
                 <a href="<?php echo esc_url( home_url( '/demo' ) ); ?>">Get a Demo</a>
-                <a href="<?php echo esc_url( home_url( '/call' ) ); ?>">Schedule Call</a>
+                <a href="<?php echo esc_url( home_url( '/recommend-tools-for-ecommerce/' ) ); ?>">Recommended Tools</a>
                 <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>">Contact</a>
                 <a href="<?php echo esc_url( home_url( '/about' ) ); ?>">About</a>
             </div>
