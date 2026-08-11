@@ -58,6 +58,10 @@ function sdn_seed_pages_list() {
         'api'            => array( 'Custom API',          'page-integration-platform.php', 'integrations' ),
         // WooCommerce shop page
         'marketplace'    => array( 'Marketplace',         '' ),
+        // Blog (posts page). No bespoke template — WP renders this with
+        // home.php. Assigned as page_for_posts below so blog links resolve
+        // here instead of falling back to the homepage.
+        'blog'           => array( 'Blog',                '' ),
     );
 }
 
@@ -122,7 +126,7 @@ function sdn_seed_one_page( $slug, $title, $template, $parent_slug ) {
 /* ---------- Run the seed once (gated by an option) ---------- */
 add_action( 'init', 'sdn_seed_bespoke_pages', 40 );
 function sdn_seed_bespoke_pages() {
-    if ( get_option( 'sdn_pages_seeded' ) === '6' ) return;
+    if ( get_option( 'sdn_pages_seeded' ) === '7' ) return;
     if ( ! post_type_exists( 'page' ) ) return;
 
     foreach ( sdn_seed_pages_list() as $slug => $spec ) {
@@ -165,6 +169,15 @@ function sdn_seed_bespoke_pages() {
         update_option( 'page_on_front', $front->ID );
     }
 
-    update_option( 'sdn_pages_seeded', '6' );
+    // Assign the Blog page as the posts page so blog links (mega menu,
+    // footer, mobile nav — all via get_permalink(get_option('page_for_posts')))
+    // resolve to /blog/ instead of the homepage. Without this, page_for_posts
+    // is 0 and get_permalink(0) returns the homepage URL.
+    $blog = get_page_by_path( 'blog', OBJECT, 'page' );
+    if ( $blog ) {
+        update_option( 'page_for_posts', $blog->ID );
+    }
+
+    update_option( 'sdn_pages_seeded', '7' );
     flush_rewrite_rules();
 }
