@@ -481,11 +481,9 @@ function sdn_platforms() {
             'name'      => 'Shopify',
             'logo'      => $uploads . '5f1a58272cd5b8c219db0ba4_shopify-logo.svg',
             'color'     => '#95bf47',
-            'tagline'   => 'Connect your Shopify store and start dropshipping',
-            // TEMP (app delisted): signup page instead of Shopify App Store.
-            // TODO: switch back to https://apps.shopify.com/smoke-drop when relisted.
-            'install_url'   => 'https://wholesale.thesmokedrop.com/register',
-            'install_label' => 'Create Free Account',
+            'tagline'   => 'One-click install from the Shopify App Store',
+            'install_url'   => 'https://apps.shopify.com/smoke-drop',
+            'install_label' => 'Install on Shopify',
             'desc'      => 'The SmokeDrop Shopify app gives you everything you need to run a smoke shop dropshipping business. Import 20,000+ products in a few clicks, with automatic inventory sync, blind dropshipping, and order routing to suppliers.',
             'features'  => array(
                 array( 'Import in a few clicks', 'Add curated collections or individual products to your Shopify store instantly.' ),
@@ -494,7 +492,7 @@ function sdn_platforms() {
                 array( 'Tracking sync', 'Tracking numbers update across suppliers, your store, and your customer automatically.' ),
             ),
             'steps' => array(
-                array( 'Create an account', 'Sign up free and connect your Shopify store.' ),
+                array( 'Install the app', 'Add SmokeDrop from the Shopify App Store.' ),
                 array( 'Import products', 'Browse 20,000+ SKUs and import what you want to sell.' ),
                 array( 'Set prices & sell', 'Orders sync automatically — suppliers ship under your brand.' ),
             ),

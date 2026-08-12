@@ -27,7 +27,7 @@ $sdu = function ( $path ) { return home_url( '/wp-content/uploads/2024/01/' . $p
         <h1 class="display reveal reveal-d1" style="margin:24px 0;">The industry leading<br><span class="italic gradient-text">dropship marketplace.</span></h1>
         <p class="lede reveal reveal-d2" style="max-width:640px;margin:0 auto;">One platform to import over 20,000 smoke shop products, sync inventory in real time, and automate order fulfillment with your suppliers.</p>
         <div class="hero-actions reveal reveal-d3" style="justify-content:center;margin-top:36px;">
-          <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg">Create Free Account</a>
+          <a href="https://apps.shopify.com/smoke-drop" class="btn btn-lime btn-lg">Install on Shopify</a>
           <a href="<?php echo esc_url( $retail_url ); ?>" class="btn btn-outline btn-lg">For retailers</a>
         </div>
       </div>

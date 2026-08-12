@@ -29,9 +29,7 @@ $sdn_testis = array(
         'quote' => 'Best dropshipping app for smoke shops, hands down. The catalog depth is unreal — every brand my customers ask for, in one place.' ),
 );
 
-// TEMP (app delisted): signup page instead of Shopify App Store.
-// TODO: switch back to https://apps.shopify.com/smoke-drop when relisted.
-$shopify_url = 'https://wholesale.thesmokedrop.com/register';
+$shopify_url = 'https://apps.shopify.com/smoke-drop';
 $demo_url    = home_url( '/demo' );
 ?>
 
@@ -41,7 +39,7 @@ $demo_url    = home_url( '/demo' );
     <div class="ph-inner center">
       <p class="eyebrow reveal" style="justify-content:center;">We love your feedback</p>
       <h1 class="display reveal reveal-d1" style="margin:24px 0;">What retailers <span class="italic gradient-text">say.</span></h1>
-      <p class="lede reveal reveal-d2" style="max-width:620px;margin:0 auto;">Real reviews from SmokeDrop retailers and store owners growing with smoke shop dropshipping.</p>
+      <p class="lede reveal reveal-d2" style="max-width:620px;margin:0 auto;">Real reviews from SmokeDrop retailers on the Shopify App Store and beyond.</p>
     </div>
   </section>
 
@@ -62,7 +60,7 @@ $demo_url    = home_url( '/demo' );
       </div>
 
       <div class="center reveal" style="margin-top:56px;">
-        <a href="<?php echo esc_url( $shopify_url ); ?>" class="btn btn-lime btn-lg">Create a free account</a>
+        <a href="<?php echo esc_url( $shopify_url ); ?>" class="btn btn-lime btn-lg">Read more on the Shopify App Store</a>
         <p style="color:var(--ink-mute);margin-top:16px;font-size:.9rem;">Want to see SmokeDrop in action? <a href="<?php echo esc_url( $demo_url ); ?>" style="color:var(--green-xl);">Get a demo &rarr;</a></p>
       </div>
     </div>

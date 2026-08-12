@@ -28,7 +28,7 @@ $brands_url  = home_url( '/brands' );
         <h1 class="display reveal reveal-d1" style="margin:24px 0;">Become the next<br><span class="italic gradient-text">online success story.</span></h1>
         <p class="lede reveal reveal-d2" style="max-width:620px;">Control everything from your shopping cart &mdash; inventory, order management, and pricing. Stock 20,000+ SKUs from 300+ brands with zero inventory, zero minimums.</p>
         <div class="hero-actions reveal reveal-d3">
-          <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg">Create Free Account</a>
+          <a href="https://apps.shopify.com/smoke-drop" class="btn btn-lime btn-lg">Install on Shopify</a>
           <a href="#how" class="btn btn-outline btn-lg">See how it works</a>
         </div>
       </div>
@@ -88,7 +88,7 @@ $brands_url  = home_url( '/brands' );
           </div>
         </div>
         <div class="center reveal reveal-d3" style="margin-top:48px;">
-          <a href="https://wholesale.thesmokedrop.com/register" class="btn btn-lime btn-lg">Create Free Account <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          <a href="https://apps.shopify.com/smoke-drop" class="btn btn-lime btn-lg">Install on Shopify <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
         </div>
       </div>
     </section>

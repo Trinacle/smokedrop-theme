@@ -262,9 +262,9 @@ get_header();
           </div>
 
           <!-- Platform mini-CTAs -->
-          <a href="https://wholesale.thesmokedrop.com/register" class="foot-mini-cta" style="display:flex;">
+          <a href="https://apps.shopify.com/smoke-drop" class="foot-mini-cta" style="display:flex;">
             <span class="fmc-ic"><img src="<?php echo esc_url( home_url( '/wp-content/uploads/2024/01/5f1a58272cd5b8c219db0ba4_shopify-logo.svg' ) ); ?>" alt="Shopify" style="width:30px;height:30px;object-fit:contain;"></span>
-            <div><strong>Create Free Account</strong><small>Start dropshipping today</small></div>
+            <div><strong>Install on Shopify</strong><small>One-click from App Store</small></div>
           </a>
           <a href="<?php echo esc_url( home_url( '/download-smokedrop-plugin' ) ); ?>" class="foot-mini-cta" style="display:flex;">
             <span class="fmc-ic"><img src="<?php echo esc_url( home_url( '/wp-content/uploads/2024/01/5f1a59d6f884854a22b65124_woocommerce-logo.svg' ) ); ?>" alt="WooCommerce" style="width:30px;height:30px;object-fit:contain;"></span>
