@@ -17,6 +17,7 @@ get_header();
 
 $uploads = home_url( '/wp-content/uploads/' );
 $call    = home_url( '/call' );
+$paynet  = 'https://paynetsystemsllc.com/high-risk-payment-processing';
 ?>
 
 <main>
@@ -52,7 +53,7 @@ $call    = home_url( '/call' );
               <p><strong>Qualification:</strong> Start-ups selling SmokeDrop products welcome. No minimum sales volume. Valid business documentation required.</p>
               <p><strong>Setup:</strong> Minimal paperwork, approval within 1&ndash;2 business days, 24/7 merchant support, and full-service online account reporting.</p>
             </div>
-            <a href="<?php echo esc_url( $call ); ?>" class="btn btn-lime btn-lg" style="margin-top:8px;">Complete online application</a>
+            <a href="<?php echo esc_url( $paynet ); ?>" class="btn btn-lime btn-lg" style="margin-top:8px;">Complete online application</a>
           </div>
         </div>
       </div>
