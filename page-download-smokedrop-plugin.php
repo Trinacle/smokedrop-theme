@@ -13,9 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 get_header();
 
-$register = 'https://wholesale.thesmokedrop.com/register';
-$help_url = home_url( '/help' );
-$uploads  = home_url( '/wp-content/uploads/' );
+$register   = 'https://wholesale.thesmokedrop.com/register';
+$help_url   = home_url( '/help' );
+$uploads    = home_url( '/wp-content/uploads/' );
+// GitHub "latest release" URL — always serves the newest published ZIP.
+$plugin_zip = 'https://github.com/F13Works/smokedrop/releases/latest/download/smokedrop.zip';
 ?>
 
 <main>
@@ -26,8 +28,9 @@ $uploads  = home_url( '/wp-content/uploads/' );
         <h1 class="display reveal reveal-d1" style="margin:24px 0;">Dropship 20,000+ products<br><span class="italic gradient-text">on WooCommerce.</span></h1>
         <p class="lede reveal reveal-d2" style="max-width:600px;margin:0 auto;">The SmokeDrop WooCommerce plugin connects your store to the full marketplace &mdash; import products, sync inventory, and automate order fulfillment with no transaction fees.</p>
         <div class="hero-actions reveal reveal-d3" style="justify-content:center;margin-top:32px;">
-          <a href="<?php echo esc_url( $register ); ?>" class="btn btn-lime btn-lg">Download the Plugin</a>
-          <a href="<?php echo esc_url( $help_url ); ?>" class="btn btn-outline btn-lg">Setup Guide</a>
+          <a href="<?php echo esc_url( $plugin_zip ); ?>" class="btn btn-lime btn-lg">Download the Plugin</a>
+          <a href="<?php echo esc_url( $register ); ?>" class="btn btn-outline btn-lg">Create Free Account</a>
+          <a href="<?php echo esc_url( $help_url ); ?>" class="btn btn-ghost btn-lg">Setup Guide</a>
         </div>
       </div>
     </section>
@@ -96,7 +99,8 @@ $uploads  = home_url( '/wp-content/uploads/' );
               <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>PHP 7.4 or higher</span></div>
               <div class="tool-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>An active SmokeDrop account (free trial available)</span></div>
             </div>
-            <a href="<?php echo esc_url( $register ); ?>" class="btn btn-lime btn-lg">Download the Plugin</a>
+            <a href="<?php echo esc_url( $plugin_zip ); ?>" class="btn btn-lime btn-lg">Download the Plugin</a>
+            <a href="<?php echo esc_url( $register ); ?>" class="btn btn-outline btn-lg" style="margin-left:12px;">Create Free Account</a>
           </div>
         </div>
       </div>
